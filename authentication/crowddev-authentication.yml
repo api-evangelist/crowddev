@@ -1,0 +1,35 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/crowddev-cdp-akrites-external-openapi.yml, openapi/crowddev-cdp-akrites-openapi.yml,
+  openapi/crowddev-cdp-ossprey-openapi.yml, openapi/crowddev-cdp-packages-openapi.yml, openapi/crowddev-cdp-public-openapi.yml,
+  openapi/crowddev-cdp-stewardships-openapi.yml, openapi/crowddev-cm-id-openapi.yml
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - clientCredentials
+schemes:
+- name: M2MBearer
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+    scopes: 3
+  description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client
+    ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only
+    verifies the resulting token.'
+  sources:
+  - openapi/crowddev-cdp-akrites-external-openapi.yml
+  - openapi/crowddev-cdp-public-openapi.yml
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/crowddev-cdp-akrites-openapi.yml
+  - openapi/crowddev-cdp-ossprey-openapi.yml
+  - openapi/crowddev-cdp-packages-openapi.yml
+  - openapi/crowddev-cdp-public-openapi.yml
+  - openapi/crowddev-cdp-stewardships-openapi.yml
+  - openapi/crowddev-cm-id-openapi.yml
