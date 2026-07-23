@@ -1,0 +1,426 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Work Experiences API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Work Experiences
+  description: Manage and verify member work experiences (organization affiliations).
+paths:
+  /members/{memberId}/work-experiences:
+    get:
+      operationId: getMemberWorkExperiences
+      summary: List work experiences
+      description: Retrieve all work experiences for a member.
+      tags:
+      - Work Experiences
+      security:
+      - OAuth2Bearer:
+        - read:work-experiences
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      responses:
+        '200':
+          description: Work experiences retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - memberId
+                - workExperiences
+                properties:
+                  memberId:
+                    type: string
+                    format: uuid
+                  workExperiences:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkExperience'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/MemberNotFound'
+    post:
+      operationId: createMemberWorkExperience
+      summary: Add a work experience
+      description: 'Add a new work experience to a member profile. Returns 409 if a work experience with the same dates already exists.
+
+        '
+      tags:
+      - Work Experiences
+      security:
+      - OAuth2Bearer:
+        - write:work-experiences
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkExperienceInput'
+            example:
+              organizationId: 550e8400-e29b-41d4-a716-446655440000
+              jobTitle: Senior Engineer
+              verified: true
+              verifiedBy: admin@lfx.dev
+              source: lfxOne
+              startDate: '2020-01-01T00:00:00.000Z'
+              endDate: null
+      responses:
+        '201':
+          description: Work experience created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkExperience'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/MemberNotFound'
+        '409':
+          description: A work experience with the same dates already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+              example:
+                error:
+                  code: CONFLICT
+                  message: A work experience with the same dates already exists
+  /members/{memberId}/work-experiences/{workExperienceId}:
+    put:
+      operationId: updateMemberWorkExperience
+      summary: Update a work experience
+      description: Replace all fields of an existing work experience.
+      tags:
+      - Work Experiences
+      security:
+      - OAuth2Bearer:
+        - write:work-experiences
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      - $ref: '#/components/parameters/WorkExperienceId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkExperienceInput'
+      responses:
+        '200':
+          description: Work experience updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkExperience'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Member or work experience not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    patch:
+      operationId: verifyMemberWorkExperience
+      summary: Verify or reject a work experience
+      description: 'Set a work experience as verified or rejected. When rejected (`verified: false`), the work experience is soft-deleted and affiliations are recalculated.
+
+        '
+      tags:
+      - Work Experiences
+      security:
+      - OAuth2Bearer:
+        - write:work-experiences
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      - $ref: '#/components/parameters/WorkExperienceId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - verified
+              - verifiedBy
+              properties:
+                verified:
+                  type: boolean
+                  description: '`true` to verify, `false` to reject (soft-delete).
+
+                    '
+                verifiedBy:
+                  type: string
+                  description: Identifier of who performed the verification.
+            example:
+              verified: true
+              verifiedBy: admin@lfx.dev
+      responses:
+        '200':
+          description: Work experience updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkExperience'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Member or work experience not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    delete:
+      operationId: deleteMemberWorkExperience
+      summary: Delete a work experience
+      description: 'Soft-delete a work experience from a member profile. Affiliations are automatically recalculated.
+
+        '
+      tags:
+      - Work Experiences
+      security:
+      - OAuth2Bearer:
+        - write:work-experiences
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      - $ref: '#/components/parameters/WorkExperienceId'
+      responses:
+        '204':
+          description: Work experience deleted. No response body.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Member or work experience not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+components:
+  responses:
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+    MemberNotFound:
+      description: No member found with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Member not found
+  schemas:
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
+    WorkExperience:
+      type: object
+      required:
+      - id
+      - organizationId
+      - organizationName
+      - organizationDomains
+      - jobTitle
+      - verified
+      - verifiedBy
+      - source
+      - startDate
+      - endDate
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        organizationId:
+          type: string
+          format: uuid
+        organizationName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the organization.
+        organizationLogo:
+          type:
+          - string
+          - 'null'
+          description: URL of the organization logo.
+        organizationDomains:
+          type: array
+          items:
+            type: string
+          description: Verified primary domains for the organization, in alphabetical order.
+        jobTitle:
+          type:
+          - string
+          - 'null'
+        verified:
+          type: boolean
+        verifiedBy:
+          type:
+          - string
+          - 'null'
+        source:
+          type:
+          - string
+          - 'null'
+          description: Source system that created this work experience.
+        startDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: End date, or null if currently active.
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+    WorkExperienceInput:
+      type: object
+      required:
+      - organizationId
+      - jobTitle
+      - verified
+      - verifiedBy
+      - source
+      - startDate
+      properties:
+        organizationId:
+          type: string
+          format: uuid
+        jobTitle:
+          type: string
+          description: Job title at the organization.
+        verified:
+          type: boolean
+        verifiedBy:
+          type: string
+          description: Identifier of who verified this work experience.
+        source:
+          type: string
+          description: Source system (e.g. lfxOne).
+        startDate:
+          type: string
+          format: date-time
+          description: Start date of the work experience.
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: End date, or null if currently active.
+  parameters:
+    WorkExperienceId:
+      name: workExperienceId
+      in: path
+      required: true
+      description: UUID of the work experience.
+      schema:
+        type: string
+        format: uuid
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      description: UUID of the member.
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)

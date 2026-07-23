@@ -1,0 +1,269 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Stewardship API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Stewardship
+  description: Stewardship state — individual and batch.
+paths:
+  /packages:batch-stewardship:
+    post:
+      operationId: batchGetStewardship
+      summary: Batch stewardship state for a list of purls
+      description: 'Returns lean stewardship state for up to 100 purls in one request. Purls not found in CDP return `null`.
+
+        '
+      tags:
+      - Stewardship
+      security:
+      - M2MBearer:
+        - read:stewardships
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - purls
+              properties:
+                purls:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                  maxItems: 100
+                  example:
+                  - pkg:npm/lodash
+                  - pkg:npm/express
+                  - pkg:pypi/requests
+      responses:
+        '200':
+          description: 'Stewardship state keyed by purl. Unknown or invalid purls return `null`.
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - packages
+                properties:
+                  packages:
+                    type: object
+                    additionalProperties:
+                      oneOf:
+                      - $ref: '#/components/schemas/StewardshipSummary'
+                      - type: 'null'
+              example:
+                packages:
+                  pkg:npm/lodash@4.17.21:
+                    name: lodash
+                    ecosystem: npm
+                    lifecycle: declining
+                    health:
+                      score: 18
+                      label: critical
+                    impact: 71
+                    openVulns:
+                      low: 0
+                      medium: 0
+                      high: 1
+                      critical: 0
+                    stewardship: unassigned
+                    stewards: null
+                    lastActivityAt: null
+                    lastActivityDescription: null
+                  pkg:pypi/requests: null
+        '400':
+          description: Validation error (e.g. more than 100 purls).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Missing or invalid bearer token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Insufficient scopes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    OpenVulns:
+      type: object
+      description: Open vulnerability counts by severity from advisory_packages + advisories.
+      required:
+      - low
+      - medium
+      - high
+      - critical
+      properties:
+        low:
+          type: integer
+          example: 0
+        medium:
+          type: integer
+          example: 0
+        high:
+          type: integer
+          example: 1
+        critical:
+          type: integer
+          example: 0
+    Steward:
+      type: object
+      required:
+      - userId
+      - role
+      - assignedAt
+      properties:
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: abc123
+        username:
+          type:
+          - string
+          - 'null'
+          description: Username of the steward. Null if not available.
+          example: jrodriguez
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the steward. Null if not available.
+          example: Jonathan R.
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Package not found.
+    StewardshipSummary:
+      type: object
+      description: Null if the purl is not found in CDP.
+      required:
+      - name
+      - ecosystem
+      - stewardship
+      - stewards
+      - openVulns
+      - lastActivityAt
+      - lastActivityDescription
+      properties:
+        name:
+          type: string
+          example: lodash
+        ecosystem:
+          type: string
+          example: npm
+        lifecycle:
+          type:
+          - string
+          - 'null'
+          enum:
+          - active
+          - stable
+          - declining
+          - abandoned
+          - archived
+          - null
+        health:
+          type:
+          - integer
+          - 'null'
+          example: 52
+        impact:
+          type:
+          - integer
+          - 'null'
+          example: 94
+        openVulns:
+          oneOf:
+          - $ref: '#/components/schemas/OpenVulns'
+          - type: 'null'
+        stewardship:
+          $ref: '#/components/schemas/StewardshipStatus'
+        stewards:
+          description: Assigned stewards or null. Empty in v1.
+          oneOf:
+          - type: array
+            items:
+              $ref: '#/components/schemas/Steward'
+          - type: 'null'
+        lastActivityAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Null in v1.
+        lastActivityDescription:
+          type:
+          - string
+          - 'null'
+          description: Null in v1.
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)

@@ -1,0 +1,350 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Member Identities API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Member Identities
+  description: Manage and verify member identities across platforms.
+paths:
+  /members/{memberId}/identities:
+    get:
+      operationId: getMemberIdentities
+      summary: List member identities
+      description: Retrieve all identities for a member profile.
+      tags:
+      - Member Identities
+      security:
+      - OAuth2Bearer:
+        - read:member-identities
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      responses:
+        '200':
+          description: Identities retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - identities
+                properties:
+                  identities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MemberIdentity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/MemberNotFound'
+    post:
+      operationId: createMemberIdentity
+      summary: Add a new identity
+      description: 'Add a new identity to a member profile. Returns 409 if the identity already exists on this member or is verified on another member.
+
+        '
+      tags:
+      - Member Identities
+      security:
+      - OAuth2Bearer:
+        - write:member-identities
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - value
+              - platform
+              - type
+              - source
+              - verified
+              properties:
+                value:
+                  type: string
+                  minLength: 1
+                  description: Identity value (e.g. username, email address).
+                platform:
+                  type: string
+                  minLength: 1
+                  description: Platform name (e.g. github, linkedin).
+                type:
+                  type: string
+                  enum:
+                  - username
+                  - email
+                  description: Identity type.
+                source:
+                  type: string
+                  minLength: 1
+                  description: Source system that created this identity.
+                verified:
+                  type: boolean
+                  description: Whether the identity is verified.
+                verifiedBy:
+                  type: string
+                  description: Required when `verified` is true. Identifier of who verified.
+            example:
+              value: johndoe
+              platform: github
+              type: username
+              source: lfxOne
+              verified: true
+              verifiedBy: admin@lfx.dev
+      responses:
+        '201':
+          description: Identity created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberIdentity'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/MemberNotFound'
+        '409':
+          description: Identity already exists on another member.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+              example:
+                error:
+                  code: CONFLICT
+                  message: Identity already exists on another member
+  /members/{memberId}/identities/{identityId}:
+    patch:
+      operationId: verifyMemberIdentity
+      summary: Verify or reject an identity
+      description: 'Set an identity as verified or rejected. When rejected (`verified: false`), the identity is either soft-deleted (no linked activities) or unmerged to a new profile (has linked activities).
+
+        '
+      tags:
+      - Member Identities
+      security:
+      - OAuth2Bearer:
+        - write:member-identities
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      - name: identityId
+        in: path
+        required: true
+        description: UUID of the identity to verify or reject.
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - verified
+              - verifiedBy
+              properties:
+                verified:
+                  type: boolean
+                  description: '`true` to verify the identity, `false` to reject it.
+
+                    '
+                verifiedBy:
+                  type: string
+                  description: Identifier of who performed the verification.
+            example:
+              verified: true
+              verifiedBy: admin@lfx.dev
+      responses:
+        '200':
+          description: 'Identity updated. Returned when verifying, or when rejecting an identity that has linked activities (triggers unmerge).
+
+            '
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/MemberIdentity'
+                - type: object
+                  properties:
+                    unmergedToMemberId:
+                      type: string
+                      format: uuid
+                      description: 'Present only when rejection triggered an unmerge. The new member profile ID that the identity was moved to.
+
+                        '
+        '204':
+          description: 'Identity rejected and deleted (no linked activities). No response body.
+
+            '
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Member or identity not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        '409':
+          description: Identity already exists on another member.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+              example:
+                error:
+                  code: CONFLICT
+                  message: Identity already exists on another member
+components:
+  schemas:
+    MemberIdentity:
+      type: object
+      required:
+      - id
+      - value
+      - platform
+      - type
+      - verified
+      - verifiedBy
+      - source
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        value:
+          type: string
+          description: Identity value (username or email).
+        platform:
+          type: string
+          description: Platform name (e.g. github, linkedin, lfid).
+        type:
+          type: string
+          enum:
+          - username
+          - email
+          description: Identity type.
+        verified:
+          type: boolean
+        verifiedBy:
+          type:
+          - string
+          - 'null'
+          description: Identifier of who verified this identity, or null.
+        source:
+          type:
+          - string
+          - 'null'
+          description: Source system that created this identity.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
+  responses:
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+    MemberNotFound:
+      description: No member found with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Member not found
+  parameters:
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      description: UUID of the member.
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)

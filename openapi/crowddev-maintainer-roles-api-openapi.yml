@@ -1,0 +1,178 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Maintainer Roles API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Maintainer Roles
+  description: Retrieve maintainer roles for a member.
+paths:
+  /members/{memberId}/maintainer-roles:
+    get:
+      operationId: getMemberMaintainerRoles
+      summary: List maintainer roles
+      description: Retrieve all maintainer roles for a member across projects.
+      tags:
+      - Maintainer Roles
+      security:
+      - OAuth2Bearer:
+        - read:maintainer-roles
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      responses:
+        '200':
+          description: Maintainer roles retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - maintainerRoles
+                properties:
+                  maintainerRoles:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MaintainerRole'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/MemberNotFound'
+components:
+  responses:
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    MemberNotFound:
+      description: No member found with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Member not found
+  schemas:
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
+    MaintainerRole:
+      type: object
+      required:
+      - id
+      - memberId
+      - segmentId
+      - role
+      - url
+      - repoType
+      properties:
+        id:
+          type: string
+          format: uuid
+        memberId:
+          type: string
+          format: uuid
+        segmentId:
+          type: string
+          format: uuid
+        dateStart:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: Start date of the maintainer role.
+        dateEnd:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: End date of the maintainer role, or null if current.
+        url:
+          type: string
+          description: Repository URL.
+        repoType:
+          type: string
+          enum:
+          - github
+          - gitlab
+          - git
+          - gerrit
+          description: Repository platform type.
+        role:
+          type: string
+          description: Role name (e.g. maintainer, committer).
+        maintainerFile:
+          type:
+          - string
+          - 'null'
+          description: Path to the maintainer file in the repository, if applicable.
+  parameters:
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      description: UUID of the member.
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)

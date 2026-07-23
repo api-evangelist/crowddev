@@ -1,0 +1,314 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Affiliations API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Affiliations
+  description: Bulk contributor affiliation lookups by GitHub handle.
+paths:
+  /affiliations:
+    post:
+      operationId: getBulkAffiliations
+      summary: Bulk contributor lookup
+      description: 'Look up affiliation data for up to 100 GitHub handles in a single request. Handles that have no matching LFX profile are returned in the `notFound` array.
+
+        '
+      tags:
+      - Affiliations
+      security:
+      - StaticApiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - githubHandles
+              properties:
+                githubHandles:
+                  type: array
+                  description: 'List of GitHub login handles to look up (case-insensitive).
+
+                    '
+                  minItems: 1
+                  maxItems: 100
+                  items:
+                    type: string
+                    minLength: 1
+            example:
+              githubHandles:
+              - torvalds
+              - gvanrossum
+      parameters:
+      - name: page
+        in: query
+        description: Page number (1-based).
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: pageSize
+        in: query
+        description: Number of contributors to return per page.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+      responses:
+        '200':
+          description: Affiliations resolved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkAffiliationsResponse'
+              example:
+                total: 2
+                totalFound: 2
+                page: 1
+                pageSize: 20
+                contributorsInPage: 2
+                contributors:
+                - githubHandle: torvalds
+                  name: Linus Torvalds
+                  emails:
+                  - torvalds@linux-foundation.org
+                  affiliations:
+                  - organization: Linux Foundation
+                    startDate: '2007-01-01T00:00:00.000Z'
+                    endDate: null
+                notFound: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /affiliations/{githubHandle}:
+    get:
+      operationId: getAffiliationByHandle
+      summary: Single contributor lookup
+      description: 'Look up affiliation data for one developer by GitHub handle. Useful for debugging and ad-hoc queries.
+
+        '
+      tags:
+      - Affiliations
+      security:
+      - StaticApiKey: []
+      parameters:
+      - name: githubHandle
+        in: path
+        required: true
+        description: GitHub login handle (case-insensitive).
+        schema:
+          type: string
+          minLength: 1
+        example: torvalds
+      responses:
+        '200':
+          description: Developer found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contributor'
+              example:
+                githubHandle: torvalds
+                name: Linus Torvalds
+                emails:
+                - torvalds@linux-foundation.org
+                affiliations:
+                - organization: Linux Foundation
+                  startDate: '2007-01-01T00:00:00.000Z'
+                  endDate: null
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: No LFX profile found for the given GitHub handle.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: No LFX profile found for GitHub login 'nonexistent-user'.
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  responses:
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    TooManyRequests:
+      description: Rate limit exceeded (60 requests per 60 seconds).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: RATE_LIMITED
+              message: Too many requests, please try again later
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+  schemas:
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
+    Contributor:
+      type: object
+      required:
+      - githubHandle
+      - name
+      - emails
+      - affiliations
+      properties:
+        githubHandle:
+          type: string
+          description: Verified GitHub login handle.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display name from the LFX profile.
+        emails:
+          type: array
+          description: Verified email addresses linked to the profile.
+          items:
+            type: string
+            format: email
+        affiliations:
+          type: array
+          description: Resolved affiliation periods, most recent first.
+          items:
+            $ref: '#/components/schemas/AffiliationPeriod'
+    AffiliationPeriod:
+      type: object
+      required:
+      - organization
+      - startDate
+      - endDate
+      properties:
+        organization:
+          type: string
+          description: Name of the organization.
+        startDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Start date of the affiliation period.
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: End date, or null if currently active.
+    BulkAffiliationsResponse:
+      type: object
+      required:
+      - total
+      - totalFound
+      - page
+      - pageSize
+      - contributorsInPage
+      - contributors
+      - notFound
+      properties:
+        total:
+          type: integer
+          description: Total number of handles submitted in the request.
+        totalFound:
+          type: integer
+          description: Number of handles that matched an LFX profile.
+        page:
+          type: integer
+          description: Current page number.
+        pageSize:
+          type: integer
+          description: Maximum contributors per page.
+        contributorsInPage:
+          type: integer
+          description: Number of contributors returned in this page.
+        contributors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        notFound:
+          type: array
+          description: Handles from the request with no matching LFX profile.
+          items:
+            type: string
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)

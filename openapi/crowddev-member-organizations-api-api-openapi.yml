@@ -1,0 +1,284 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Member Organizations API API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Member Organizations API
+  description: API endpoints for managing work history organizations, including creating, reading, updating, and deleting organization relationships for profiles.
+paths:
+  /member/{memberId}/organization:
+    get:
+      security:
+      - BearerAuth: []
+      tags:
+      - Member Organizations API
+      summary: List Work History Organizations
+      description: Retrieve a list of organizations for a specific profile
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+        '400':
+          description: Bad request
+        '404':
+          description: Member not found
+    post:
+      security:
+      - BearerAuth: []
+      tags:
+      - Member Organizations API
+      summary: Create Work History Organization
+      description: Create a new organization for a specific profile
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - organizationId
+              - source
+              properties:
+                organizationId:
+                  type: string
+                  example: 550e8400-e29b-41d4-a716-446655440000
+                  description: Organization ID
+                source:
+                  type: string
+                  enum:
+                  - ui
+                  - email-domain
+                  - enrichment
+                  - github
+                  example: ui
+                  description: Data source. For manual updates, always use 'ui'
+                title:
+                  type: string
+                  example: Software Engineer
+                  description: Member role within the organization
+                dateStart:
+                  type: string
+                  format: date-time
+                  example: '2023-01-01T00:00:00.000Z'
+                  description: Organization role start date
+                dateEnd:
+                  type: string
+                  format: date-time
+                  example: '2024-01-01T00:00:00.000Z'
+                  description: Organization role end date
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+        '400':
+          description: Bad request
+        '404':
+          description: Member not found
+  /member/{memberId}/organization/{workHistoryId}:
+    patch:
+      security:
+      - BearerAuth: []
+      tags:
+      - Member Organizations API
+      summary: Update Work History Organization
+      description: Update an existing organization for a specific profile
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: workHistoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - id
+              - workHistoryId
+              - source
+              properties:
+                id:
+                  type: string
+                  example: 550e8400-e29b-41d4-a716-446655440000
+                  description: Work experience ID
+                organizationId:
+                  type: string
+                  example: 550e8400-e29b-41d4-a716-446655440000
+                  description: Organization ID
+                source:
+                  type: string
+                  enum:
+                  - ui
+                  - email-domain
+                  - enrichment
+                  - github
+                  example: ui
+                  description: Data source. For manual updates, always use 'ui'
+                title:
+                  type: string
+                  example: Software Engineer
+                  description: Member role within the organization
+                dateStart:
+                  type: string
+                  format: date-time
+                  example: '2023-01-01T00:00:00.000Z'
+                  description: Organization role start date
+                dateEnd:
+                  type: string
+                  format: date-time
+                  example: '2024-01-01T00:00:00.000Z'
+                  description: Organization role end date
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+        '400':
+          description: Bad request
+        '404':
+          description: Organization or member not found
+    delete:
+      security:
+      - BearerAuth: []
+      tags:
+      - Member Organizations API
+      summary: Delete Work History Organization
+      description: Delete an organization for a specific profile
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: workHistoryId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+        '404':
+          description: Organization or member not found
+components:
+  schemas:
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+          description: Unique identifier for the organization
+        displayName:
+          type: string
+          example: The Linux Foundation
+          description: Display name of the organization
+        logo:
+          type: string
+          example: https://avatars.githubusercontent.com/u/1040002?v=4
+          description: URL of the organization's logo
+        memberOrganizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberOrganization'
+    MemberOrganization:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+          description: Unique identifier for the organization
+        organizationId:
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+          description: Organization ID associated with this affiliation
+        dateEnd:
+          type: string
+          example: '2024-01-01T00:00:00.000Z'
+          format: date-time
+          description: End date of the affiliation
+        dateStart:
+          type: string
+          example: '2023-01-01T00:00:00.000Z'
+          format: date-time
+          description: Start date of the affiliation
+        memberId:
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+          description: Member ID associated with this affiliation
+        source:
+          type: string
+          example: ui
+          description: Data source. For manual updates, always use 'ui'
+        title:
+          type: string
+          example: Software Engineer
+          description: Member role within the organization
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)

@@ -1,0 +1,270 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Members API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Members
+  description: Resolve member profiles by identity.
+paths:
+  /members:
+    post:
+      operationId: createMember
+      summary: Create a member profile
+      description: 'Create a new member profile in CDP with one or more identities.
+
+        '
+      tags:
+      - Members
+      security:
+      - OAuth2Bearer:
+        - write:members
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - displayName
+              - identities
+              properties:
+                displayName:
+                  type: string
+                  minLength: 1
+                  description: Display name for the member profile.
+                identities:
+                  type: array
+                  minItems: 1
+                  description: Initial identities for the member.
+                  items:
+                    $ref: '#/components/schemas/MemberIdentityInput'
+            example:
+              displayName: Jane Doe
+              identities:
+              - value: abc123
+                platform: lfid
+                type: username
+                source: lfxOne
+                verified: true
+                verifiedBy: jane@lfx.dev
+      responses:
+        '201':
+          description: Member created successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - memberId
+                properties:
+                  memberId:
+                    type: string
+                    format: uuid
+              example:
+                memberId: 550e8400-e29b-41d4-a716-446655440000
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          description: Identity already exists on another member.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+              example:
+                error:
+                  code: CONFLICT
+                  message: Identity already exists on another member
+  /members/resolve:
+    post:
+      operationId: resolveMember
+      summary: Resolve a CDP member profile
+      description: 'Resolve memberId from identities. LFX One should always make a first request to this API to retrieve the corresponding memberId from CDP. If a member is found, use it. If not, create a member.
+
+        '
+      tags:
+      - Members
+      security:
+      - OAuth2Bearer:
+        - read:members
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - lfids
+              properties:
+                lfids:
+                  type: array
+                  description: LFX IDs to search for.
+                  minItems: 1
+                  items:
+                    type: string
+                    minLength: 1
+                emails:
+                  type: array
+                  description: Optional email addresses to include in the lookup.
+                  items:
+                    type: string
+                    format: email
+            example:
+              lfids:
+              - abc123
+              emails:
+              - user@example.com
+      responses:
+        '200':
+          description: Member resolved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - memberId
+                properties:
+                  memberId:
+                    type: string
+                    format: uuid
+              example:
+                memberId: 550e8400-e29b-41d4-a716-446655440000
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Profile not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: Member not found
+        '409':
+          description: Multiple member profiles matched.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+              example:
+                error:
+                  code: CONFLICT
+                  message: Multiple member profiles matched
+components:
+  responses:
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+  schemas:
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
+    MemberIdentityInput:
+      type: object
+      required:
+      - value
+      - platform
+      - type
+      - source
+      - verified
+      properties:
+        value:
+          type: string
+          minLength: 1
+          description: Identity value (e.g. username, email address).
+        platform:
+          type: string
+          minLength: 1
+          description: Platform name (e.g. github, lfid).
+        type:
+          type: string
+          enum:
+          - username
+          - email
+          description: Identity type.
+        source:
+          type: string
+          minLength: 1
+          description: Source system that created this identity.
+        verified:
+          type: boolean
+          description: Whether the identity is verified.
+        verifiedBy:
+          type: string
+          description: Required when `verified` is true. Identifier of who verified.
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)

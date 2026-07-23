@@ -1,0 +1,241 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Organizations API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Organizations
+  description: Look up and create organizations.
+paths:
+  /organizations:
+    get:
+      operationId: getOrganization
+      summary: Look up an organization by domain or name
+      description: 'Provide domain, name, or both. When both are provided, the domain and name must belong to the same organization. If multiple organizations match, the most active one is returned.
+
+        '
+      tags:
+      - Organizations
+      security:
+      - OAuth2Bearer:
+        - read:organizations
+      parameters:
+      - name: domain
+        in: query
+        required: false
+        description: Primary domain of the organization.
+        schema:
+          type: string
+          minLength: 1
+        example: linuxfoundation.org
+      - name: name
+        in: query
+        required: false
+        description: Exact display name of the organization.
+        schema:
+          type: string
+          minLength: 1
+        example: Linux Foundation
+      responses:
+        '200':
+          description: Organization found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+              example:
+                id: 550e8400-e29b-41d4-a716-446655440000
+                name: Linux Foundation
+                domain: linuxfoundation.org
+                logo: https://example.com/logo.png
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: No organization found for the given domain or name.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: Organization not found
+    post:
+      operationId: createOrganization
+      summary: Create an organization
+      description: 'Create a new organization with a verified primary domain. If an organization with the same domain already exists, it returns the existing one.
+
+        '
+      tags:
+      - Organizations
+      security:
+      - OAuth2Bearer:
+        - write:organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - domain
+              - source
+              - logo
+              properties:
+                name:
+                  type: string
+                  minLength: 1
+                  description: Display name of the organization.
+                domain:
+                  type: string
+                  minLength: 1
+                  description: Primary domain of the organization.
+                source:
+                  type: string
+                  minLength: 1
+                  description: Source system creating the organization.
+                logo:
+                  type: string
+                  format: uri
+                  description: URL of the organization's logo.
+            example:
+              name: Acme Corp
+              domain: acme.com
+              source: lfxOne
+              logo: https://example.com/logo.png
+      responses:
+        '201':
+          description: Organization created (or existing one returned).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - name
+                - domain
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  domain:
+                    type: string
+                    description: Verified primary domain of the organization.
+                  logo:
+                    type:
+                    - string
+                    - 'null'
+                    description: URL of the organization logo.
+              example:
+                id: 550e8400-e29b-41d4-a716-446655440000
+                name: Acme Corp
+                domain: acme.com
+                logo: https://example.com/logo.png
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  responses:
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+  schemas:
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
+    Organization:
+      type: object
+      required:
+      - id
+      - name
+      - domain
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Display name of the organization.
+        domain:
+          type: string
+          description: Verified primary domain.
+        logo:
+          type: string
+          description: URL of the organization logo. Only present if available.
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)

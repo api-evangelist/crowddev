@@ -1,0 +1,344 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Project Affiliations API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Project Affiliations
+  description: View and override per-project affiliation data for a member.
+paths:
+  /members/{memberId}/project-affiliations:
+    get:
+      operationId: getMemberProjectAffiliations
+      summary: List project affiliations
+      description: 'Retrieve per-project affiliation data for a member, including maintainer roles and resolved affiliations. Affiliations come from project-level overrides when available, otherwise from work experiences.
+
+        '
+      tags:
+      - Project Affiliations
+      security:
+      - OAuth2Bearer:
+        - read:project-affiliations
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      responses:
+        '200':
+          description: Project affiliations retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - projectAffiliations
+                properties:
+                  projectAffiliations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProjectAffiliation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/MemberNotFound'
+  /members/{memberId}/project-affiliations/{projectId}:
+    patch:
+      operationId: patchMemberProjectAffiliation
+      summary: Override project affiliations
+      description: 'Replace all project-level affiliation overrides for a member on a specific project. Pass an empty `affiliations` array to clear overrides (falling back to work experience-based affiliations).
+
+        '
+      tags:
+      - Project Affiliations
+      security:
+      - OAuth2Bearer:
+        - write:project-affiliations
+      parameters:
+      - $ref: '#/components/parameters/MemberId'
+      - name: projectId
+        in: path
+        required: true
+        description: UUID of the project (segment ID).
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - affiliations
+              properties:
+                affiliations:
+                  type: array
+                  description: 'Affiliation overrides. Pass an empty array to clear.
+
+                    '
+                  items:
+                    type: object
+                    required:
+                    - organizationId
+                    - dateStart
+                    properties:
+                      organizationId:
+                        type: string
+                        format: uuid
+                      dateStart:
+                        type: string
+                        format: date-time
+                        description: Start date of the affiliation period.
+                      dateEnd:
+                        type:
+                        - string
+                        - 'null'
+                        format: date-time
+                        description: End date, or null if currently active.
+                verifiedBy:
+                  type: string
+                  maxLength: 255
+                  description: Required when `affiliations` is non-empty.
+            example:
+              affiliations:
+              - organizationId: 550e8400-e29b-41d4-a716-446655440000
+                dateStart: '2020-01-01T00:00:00.000Z'
+                dateEnd: null
+              verifiedBy: admin@lfx.dev
+      responses:
+        '200':
+          description: Project affiliations updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectAffiliation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: Member or project not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+components:
+  responses:
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+    MemberNotFound:
+      description: No member found with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Member not found
+  schemas:
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
+    ProjectAffiliationEntry:
+      type: object
+      required:
+      - id
+      - organizationId
+      - organizationName
+      - organizationLogo
+      - verified
+      - verifiedBy
+      - startDate
+      - endDate
+      - type
+      properties:
+        id:
+          type: string
+          format: uuid
+        organizationId:
+          type: string
+          format: uuid
+        organizationName:
+          type: string
+        organizationLogo:
+          type:
+          - string
+          - 'null'
+        verified:
+          type: boolean
+        verifiedBy:
+          type:
+          - string
+          - 'null'
+        startDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        type:
+          type: string
+          enum:
+          - project
+          - work-history
+          description: '`project` — manually overridden at the project level. `work-history` — derived from work experiences.
+
+            '
+        source:
+          type:
+          - string
+          - 'null'
+          description: Present only for `work-history` type affiliations.
+    ProjectRole:
+      type: object
+      required:
+      - id
+      - role
+      - startDate
+      - endDate
+      - repoUrl
+      - repoFileUrl
+      properties:
+        id:
+          type: string
+          format: uuid
+        role:
+          type: string
+        startDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        repoUrl:
+          type:
+          - string
+          - 'null'
+        repoFileUrl:
+          type:
+          - string
+          - 'null'
+    ProjectAffiliation:
+      type: object
+      required:
+      - id
+      - projectSlug
+      - projectName
+      - projectLogo
+      - contributionCount
+      - roles
+      - affiliations
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Segment (project) ID.
+        projectSlug:
+          type: string
+        projectName:
+          type: string
+        projectLogo:
+          type:
+          - string
+          - 'null'
+        contributionCount:
+          type: integer
+          description: Total number of contributions in this project.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectRole'
+        affiliations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectAffiliationEntry'
+  parameters:
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      description: UUID of the member.
+      schema:
+        type: string
+        format: uuid
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)

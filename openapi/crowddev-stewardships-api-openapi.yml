@@ -1,0 +1,748 @@
+openapi: 3.0.3
+info:
+  title: CDP → Akrites External Advisories Stewardships API
+  version: 0.1.0
+  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+
+
+    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+
+
+    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+
+    '
+servers:
+- url: https://cm.lfx.dev/api/v1
+  description: Production
+security:
+- M2MBearer:
+  - read:packages
+  - read:stewardships
+tags:
+- name: Stewardships
+  description: Open, assign, escalate, and update stewardship status.
+paths:
+  /akrites/stewardships/me/packages:
+    get:
+      operationId: getMyPackages
+      summary: List packages stewarded by the authenticated user
+      description: 'Returns a paginated list of packages where the authenticated user (`req.actor.id`) is an active steward (`lead` or `co_steward`). Includes package metadata, health, open vulnerabilities, last activity, and the user''s role and stewardship status. The `meta.statusCounts` object always reflects counts across **all** of the user''s stewardships, regardless of the active `status` filter, so the tab bar can render all buckets at once.
+
+        '
+      tags:
+      - Stewardships
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 25
+      - name: status
+        in: query
+        description: Filter by stewardship status.
+        schema:
+          type: string
+          enum:
+          - assessing
+          - active
+          - needs_attention
+          - escalated
+          - blocked
+      - name: search
+        in: query
+        description: Case-insensitive substring match on package name or PURL.
+        schema:
+          type: string
+      - name: ecosystem
+        in: query
+        schema:
+          type: string
+          enum:
+          - npm
+          - maven
+          - pypi
+          - go
+          - cargo
+      - name: healthBand
+        in: query
+        schema:
+          type: string
+          enum:
+          - healthy
+          - fair
+          - concerning
+          - critical
+      - name: vulnSeverity
+        in: query
+        description: Filter to packages with at least one vulnerability of this severity or worse.
+        schema:
+          type: string
+          enum:
+          - high
+          - critical
+      - name: sortBy
+        in: query
+        schema:
+          type: string
+          enum:
+          - risk
+          - health
+          - vulns
+          - name
+          - last_activity
+          default: risk
+      - name: sortDir
+        in: query
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+      responses:
+        '200':
+          description: Paginated list of the user's stewarded packages.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                - meta
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - purl
+                      - name
+                      - ecosystem
+                      - openVulns
+                      - stewardshipId
+                      - stewardshipStatus
+                      - myRole
+                      properties:
+                        purl:
+                          type: string
+                          example: pkg:npm/minimist
+                        name:
+                          type: string
+                          example: minimist
+                        ecosystem:
+                          type: string
+                          example: npm
+                        lifecycle:
+                          type: string
+                          nullable: true
+                          example: abandoned
+                        healthScore:
+                          type: integer
+                          minimum: 0
+                          maximum: 100
+                          nullable: true
+                          description: Scorecard score scaled to 0–100.
+                        healthBand:
+                          type: string
+                          enum:
+                          - healthy
+                          - fair
+                          - concerning
+                          - critical
+                        openVulns:
+                          type: integer
+                          example: 2
+                        vulnSeverity:
+                          type: string
+                          enum:
+                          - critical
+                          - high
+                          - medium
+                          - low
+                          nullable: true
+                          description: Worst open vulnerability severity.
+                        lastActivityDescription:
+                          type: string
+                          nullable: true
+                          example: Escalated for intervention
+                        lastActivityAt:
+                          type: string
+                          format: date-time
+                          nullable: true
+                        stewardshipId:
+                          type: string
+                          example: '42'
+                        stewardshipStatus:
+                          type: string
+                          enum:
+                          - assessing
+                          - active
+                          - needs_attention
+                          - escalated
+                          - blocked
+                        myRole:
+                          type: string
+                          enum:
+                          - lead
+                          - co_steward
+                  meta:
+                    type: object
+                    required:
+                    - total
+                    - page
+                    - pageSize
+                    - statusCounts
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      pageSize:
+                        type: integer
+                      statusCounts:
+                        type: object
+                        required:
+                        - assessing
+                        - active
+                        - needs_attention
+                        - escalated
+                        - blocked
+                        properties:
+                          assessing:
+                            type: integer
+                          active:
+                            type: integer
+                          needs_attention:
+                            type: integer
+                          escalated:
+                            type: integer
+                          blocked:
+                            type: integer
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Missing or invalid bearer token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /akrites/stewardships/me/activity:
+    get:
+      operationId: getMyActivity
+      summary: Latest activity feed for the authenticated user's stewardships
+      description: 'Returns the most recent stewardship activity events scoped to packages where the authenticated user is an active steward. Results are **deduplicated by stewardship** — only the single most recent event per package is returned — and sorted newest-first. Designed to power the "Latest activity" strip on the My Stewardships page. Default `pageSize` is 3 (one card per attention-needed status); increase for a "load more" experience.
+
+        '
+      tags:
+      - Stewardships
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 3
+      - name: status
+        in: query
+        description: 'Comma-separated list of stewardship statuses to filter. Example: `needs_attention,blocked,escalated,assessing`
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Deduplicated activity feed for the user's stewardships.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - data
+                - meta
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - stewardshipId
+                      - packageName
+                      - purl
+                      - packageEcosystem
+                      - stewardshipStatus
+                      - activityType
+                      - createdAt
+                      properties:
+                        stewardshipId:
+                          type: string
+                          example: '42'
+                        packageName:
+                          type: string
+                          example: jackson-databind
+                        purl:
+                          type: string
+                          example: pkg:maven/com.fasterxml.jackson.core/jackson-databind
+                        packageEcosystem:
+                          type: string
+                          example: maven
+                        stewardshipStatus:
+                          type: string
+                          enum:
+                          - assessing
+                          - active
+                          - needs_attention
+                          - escalated
+                          - blocked
+                          - unassigned
+                          - open
+                          - inactive
+                        activityType:
+                          type: string
+                          example: advisory_detected
+                        description:
+                          type: string
+                          nullable: true
+                          example: New security advisory detected
+                        createdAt:
+                          type: string
+                          format: date-time
+                        suggestedAction:
+                          type: string
+                          nullable: true
+                          description: Label for the primary CTA button on the activity card.
+                          example: Review & respond
+                  meta:
+                    type: object
+                    required:
+                    - total
+                    - page
+                    - pageSize
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      pageSize:
+                        type: integer
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Missing or invalid bearer token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /akrites/stewardships/open:
+    post:
+      operationId: openStewardship
+      summary: Open a stewardship for a package
+      description: 'Creates a new stewardship record for the package identified by the given PURL, setting its status to `open`. The authenticated user is recorded as the actor who opened it.
+
+        '
+      tags:
+      - Stewardships
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - purl
+              properties:
+                purl:
+                  type: string
+                  description: Must start with `pkg:`.
+                  example: pkg:npm/%40angular/core@17.0.0
+      responses:
+        '200':
+          description: Stewardship opened.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - stewardship
+                properties:
+                  stewardship:
+                    $ref: '#/components/schemas/StewardshipRecord'
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Missing or invalid bearer token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Package not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /akrites/stewardships/{id}/assign:
+    post:
+      operationId: assignSteward
+      summary: Assign a steward to a stewardship
+      description: 'Assigns a user as a steward (lead or co-steward) for the given stewardship. Optionally transitions the stewardship status to `assessing` in the same operation.
+
+        '
+      tags:
+      - Stewardships
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - userId
+              - role
+              properties:
+                userId:
+                  type: string
+                  description: Auth0 sub of the user to assign.
+                  example: auth0|abc123
+                role:
+                  type: string
+                  enum:
+                  - lead
+                  - co_steward
+                note:
+                  type: string
+                  minLength: 1
+                  description: Optional note stored in the steward_added activity metadata.
+                moveToAssessing:
+                  type: boolean
+                  default: false
+                  description: 'When true, automatically transitions stewardship status to `assessing` after assignment.
+
+                    '
+      responses:
+        '200':
+          description: Steward assigned.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - stewardship
+                - stewards
+                properties:
+                  stewardship:
+                    $ref: '#/components/schemas/StewardshipRecord'
+                  stewards:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StewardEntry'
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Missing or invalid bearer token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Stewardship not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /akrites/stewardships/{id}/escalate:
+    post:
+      operationId: escalateStewardship
+      summary: Escalate a stewardship
+      description: 'Transitions the stewardship to `escalated` status and records the chosen resolution path. Optionally attaches a free-text note.
+
+        '
+      tags:
+      - Stewardships
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - resolutionPath
+              properties:
+                resolutionPath:
+                  $ref: '#/components/schemas/EscalationResolutionPath'
+                notes:
+                  type: string
+                  minLength: 1
+      responses:
+        '200':
+          description: Stewardship escalated.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - stewardship
+                properties:
+                  stewardship:
+                    $ref: '#/components/schemas/StewardshipRecord'
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Missing or invalid bearer token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Stewardship not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /akrites/stewardships/{id}/status:
+    patch:
+      operationId: updateStewardshipStatus
+      summary: Update stewardship status
+      description: 'Updates the stewardship status. Valid target statuses are: `assessing`, `active`, `needs_attention`, `blocked`, `inactive`. When setting `inactive`, `inactiveReason` is required.
+
+        '
+      tags:
+      - Stewardships
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - assessing
+                  - active
+                  - needs_attention
+                  - blocked
+                  - inactive
+                inactiveReason:
+                  $ref: '#/components/schemas/InactiveReason'
+                  description: Required when status is `inactive`.
+                notes:
+                  type: string
+                  minLength: 1
+      responses:
+        '200':
+          description: Stewardship status updated.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - stewardship
+                properties:
+                  stewardship:
+                    $ref: '#/components/schemas/StewardshipRecord'
+        '400':
+          description: 'Validation error. Also returned when `status` is `inactive` but `inactiveReason` is missing.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Missing or invalid bearer token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Stewardship not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    InactiveReason:
+      type: string
+      enum:
+      - quarterly_cadence_missed
+      - stepped_down
+      - no_longer_critical
+    EscalationResolutionPath:
+      type: string
+      enum:
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
+    StewardshipRecord:
+      type: object
+      required:
+      - id
+      - packageId
+      - status
+      - origin
+      - version
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+        packageId:
+          type: string
+        status:
+          $ref: '#/components/schemas/StewardshipStatus'
+        origin:
+          type: string
+        version:
+          type: integer
+        openedAt:
+          type: string
+          format: date-time
+          nullable: true
+        lastStatusAt:
+          type: string
+          format: date-time
+          nullable: true
+        inactiveReason:
+          $ref: '#/components/schemas/InactiveReason'
+          nullable: true
+        resolutionPath:
+          $ref: '#/components/schemas/EscalationResolutionPath'
+          nullable: true
+        statusNote:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    StewardEntry:
+      type: object
+      required:
+      - id
+      - stewardshipId
+      - userId
+      - role
+      - assignedAt
+      properties:
+        id:
+          type: string
+        stewardshipId:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+        assignedBy:
+          type: string
+          nullable: true
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+  securitySchemes:
+    M2MBearer:
+      type: oauth2
+      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+
+        '
+      flows:
+        clientCredentials:
+          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+          scopes:
+            read:packages: Read package detail
+            read:stewardships: Read package stewardship data
+            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)
