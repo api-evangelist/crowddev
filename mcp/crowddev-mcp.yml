@@ -1,0 +1,160 @@
+generated: '2026-07-18'
+method: derived
+status: candidate
+source: openapi/*.yml
+note: Candidate MCP tool list derived one-per-operationId from the CDP Public API OpenAPI specs. No official
+  hosted crowd.dev/LFX MCP server was found.
+server:
+  name: crowddev-cdp
+  transport: http
+tools:
+- name: getPackageDetail
+  description: Get package detail by PURL
+  source_operation: openapi/crowddev-cdp-akrites-external-openapi.yml#getPackageDetail
+- name: getPackageDetailBatch
+  description: Bulk package detail lookup
+  source_operation: openapi/crowddev-cdp-akrites-external-openapi.yml#getPackageDetailBatch
+- name: getAdvisoryDetail
+  description: Get advisories for a package by PURL
+  source_operation: openapi/crowddev-cdp-akrites-external-openapi.yml#getAdvisoryDetail
+- name: getAdvisoryDetailBatch
+  description: Bulk advisory lookup
+  source_operation: openapi/crowddev-cdp-akrites-external-openapi.yml#getAdvisoryDetailBatch
+- name: getContactDetail
+  description: Get security contact detail by PURL
+  source_operation: openapi/crowddev-cdp-akrites-external-openapi.yml#getContactDetail
+- name: getContactDetailBatch
+  description: Bulk security contact lookup
+  source_operation: openapi/crowddev-cdp-akrites-external-openapi.yml#getContactDetailBatch
+- name: getAkritesMetrics
+  description: Get KPI bar metrics
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#getAkritesMetrics
+- name: getAkritesActivity
+  description: Get stewardship activity feed
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#getAkritesActivity
+- name: listAkritesPackages
+  description: List packages with stewardship data
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#listAkritesPackages
+- name: getAkritesPackagesScatter
+  description: Get risk matrix scatter data
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#getAkritesPackagesScatter
+- name: getAkritesPackagesMetrics
+  description: Get package count metrics
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#getAkritesPackagesMetrics
+- name: getAkritesPackageDetail
+  description: Get package detail
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#getAkritesPackageDetail
+- name: getAkritesPackageAdvisories
+  description: Get advisories for a package
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#getAkritesPackageAdvisories
+- name: getAkritesPackageHistory
+  description: Get stewardship history for a package
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#getAkritesPackageHistory
+- name: batchGetStewardship
+  description: Batch stewardship lookup by PURL
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#batchGetStewardship
+- name: getMyPackages
+  description: List packages stewarded by the authenticated user
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#getMyPackages
+- name: getMyActivity
+  description: Latest activity feed for the authenticated user's stewardships
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#getMyActivity
+- name: openStewardship
+  description: Open a stewardship for a package
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#openStewardship
+- name: assignSteward
+  description: Assign a steward to a stewardship
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#assignSteward
+- name: escalateStewardship
+  description: Escalate a stewardship
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#escalateStewardship
+- name: updateStewardshipStatus
+  description: Update stewardship status
+  source_operation: openapi/crowddev-cdp-akrites-openapi.yml#updateStewardshipStatus
+- name: getOsspreyMetrics
+  description: Global KPI bar metrics
+  source_operation: openapi/crowddev-cdp-ossprey-openapi.yml#getOsspreyMetrics
+- name: listStewardshipActivity
+  description: Paginated stewardship activity feed
+  source_operation: openapi/crowddev-cdp-ossprey-openapi.yml#listStewardshipActivity
+- name: listOsspreyPackages
+  description: Filtered paginated package list
+  source_operation: openapi/crowddev-cdp-ossprey-openapi.yml#listOsspreyPackages
+- name: getOsspreyPackagesScatter
+  description: Scatter plot data for the Risk Matrix tab
+  source_operation: openapi/crowddev-cdp-ossprey-openapi.yml#getOsspreyPackagesScatter
+- name: listPackages
+  description: List packages
+  source_operation: openapi/crowddev-cdp-packages-openapi.yml#listPackages
+- name: getPackagesMetrics
+  description: Overview metrics for the list page header
+  source_operation: openapi/crowddev-cdp-packages-openapi.yml#getPackagesMetrics
+- name: getPackage
+  description: Get full package detail
+  source_operation: openapi/crowddev-cdp-packages-openapi.yml#getPackage
+- name: batchGetStewardship
+  description: Batch stewardship state for a list of purls
+  source_operation: openapi/crowddev-cdp-packages-openapi.yml#batchGetStewardship
+- name: createMember
+  description: Create a member profile
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#createMember
+- name: resolveMember
+  description: Resolve a CDP member profile
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#resolveMember
+- name: getMemberIdentities
+  description: List member identities
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#getMemberIdentities
+- name: createMemberIdentity
+  description: Add a new identity
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#createMemberIdentity
+- name: verifyMemberIdentity
+  description: Verify or reject an identity
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#verifyMemberIdentity
+- name: getMemberMaintainerRoles
+  description: List maintainer roles
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#getMemberMaintainerRoles
+- name: getMemberWorkExperiences
+  description: List work experiences
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#getMemberWorkExperiences
+- name: createMemberWorkExperience
+  description: Add a work experience
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#createMemberWorkExperience
+- name: updateMemberWorkExperience
+  description: Update a work experience
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#updateMemberWorkExperience
+- name: verifyMemberWorkExperience
+  description: Verify or reject a work experience
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#verifyMemberWorkExperience
+- name: deleteMemberWorkExperience
+  description: Delete a work experience
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#deleteMemberWorkExperience
+- name: getMemberProjectAffiliations
+  description: List project affiliations
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#getMemberProjectAffiliations
+- name: patchMemberProjectAffiliation
+  description: Override project affiliations
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#patchMemberProjectAffiliation
+- name: getOrganization
+  description: Look up an organization by domain or name
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#getOrganization
+- name: createOrganization
+  description: Create an organization
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#createOrganization
+- name: getBulkAffiliations
+  description: Bulk contributor lookup
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#getBulkAffiliations
+- name: getAffiliationByHandle
+  description: Single contributor lookup
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#getAffiliationByHandle
+- name: openStewardship
+  description: Open a package for stewardship
+  source_operation: openapi/crowddev-cdp-stewardships-openapi.yml#openStewardship
+- name: assignSteward
+  description: Assign a steward to a stewardship
+  source_operation: openapi/crowddev-cdp-stewardships-openapi.yml#assignSteward
+- name: escalateStewardship
+  description: Escalate a stewardship
+  source_operation: openapi/crowddev-cdp-stewardships-openapi.yml#escalateStewardship
+- name: updateStewardshipStatus
+  description: Update stewardship status
+  source_operation: openapi/crowddev-cdp-stewardships-openapi.yml#updateStewardshipStatus

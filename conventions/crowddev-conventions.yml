@@ -1,0 +1,32 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/crowddev-cdp-public-openapi.yml
+authentication:
+  styles:
+  - OAuth 2.0 client-credentials bearer (Auth0) — OAuth2Bearer / M2MBearer
+  - Static API key as HTTP bearer token — StaticApiKey / BearerAuth
+  scopes_artifact: scopes/crowddev-scopes.yml
+  authentication_artifact: authentication/crowddev-authentication.yml
+pagination:
+  style: page-number
+  params:
+    page: 1-based page index
+    pageSize: items per page
+    sortBy: field to sort by
+    sortDir: sort direction (asc/desc)
+    search: free-text filter
+idempotency:
+  supported: false
+  note: No Idempotency-Key header or parameter is declared in the OpenAPI.
+versioning:
+  scheme: uri-path
+  current: v1
+  base: https://cm.lfx.dev/api/v1
+error_envelope:
+  shape: '{ "error": { "code": string, "message": string } }'
+  format: application/json
+  artifact: errors/crowddev-problem-types.yml
+rate_limiting:
+  signaled: true
+  evidence: 429 Too Many Requests responses declared on operations
+content_type: application/json

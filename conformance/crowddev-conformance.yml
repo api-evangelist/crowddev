@@ -1,0 +1,26 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/*.yml
+standards:
+- id: oauth2
+  conforms: true
+  evidence: openapi securitySchemes type oauth2 (clientCredentials) — OAuth2Bearer, M2MBearer
+- id: oauth2-client-credentials
+  conforms: true
+  evidence: machine-to-machine client-credentials flow used across CDP modules
+- id: bearer-token-auth
+  conforms: true
+  evidence: http bearer securitySchemes (StaticApiKey, BearerAuth)
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: errors returned as application/json { error{code,message} }, not application/problem+json
+- id: openidconnect
+  conforms: false
+- id: pagination
+  conforms: true
+  evidence: page/pageSize/sortBy/sortDir query parameters
+- id: idempotency
+  conforms: false
+  evidence: no Idempotency-Key header/param declared
+- id: json-api
+  conforms: false

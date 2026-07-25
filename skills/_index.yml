@@ -1,0 +1,11 @@
+generated: '2026-07-18'
+method: generated
+skills:
+- file: crowddev-resolve-and-verify-identity.md
+  name: Resolve and verify a member identity
+  api: openapi/crowddev-cdp-public-openapi.yml
+  operations: [resolveMember, createMember, getMemberIdentities, createMemberIdentity, verifyMemberIdentity]
+- file: crowddev-contributor-affiliation-lookup.md
+  name: Look up contributor affiliations by GitHub handle
+  api: openapi/crowddev-cdp-public-openapi.yml
+  operations: [getBulkAffiliations, getAffiliationByHandle]

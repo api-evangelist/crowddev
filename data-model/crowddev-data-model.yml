@@ -1,0 +1,60 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/crowddev-cdp-public-openapi.yml
+entities:
+- name: Member
+  description: A contributor/community member profile in the CDP.
+  id: memberId
+- name: MemberIdentity
+  description: A platform identity (e.g. GitHub, email) linked to a member; verifiable.
+  id: identityId
+- name: Organization
+  description: A company/organization a member may be affiliated with.
+- name: WorkExperience
+  description: A member's organization affiliation over a time range; verifiable.
+  id: workExperienceId
+- name: ProjectAffiliation
+  description: A member's per-project affiliation, with override support.
+  id: projectId
+- name: MaintainerRole
+  description: A maintainer role held by a member on a project.
+- name: Affiliation
+  description: Contributor affiliation resolved by GitHub handle (bulk lookup).
+  id: githubHandle
+- name: Package
+  description: An open-source package tracked by CDP (Akrites/Packages intelligence).
+  id: purl
+- name: Stewardship
+  description: A package stewardship record (open/assign/escalate/status).
+  id: id
+- name: Advisory
+  description: A security advisory associated with a package.
+relationships:
+- from: Member
+  to: MemberIdentity
+  kind: has_many
+  via: memberId
+- from: Member
+  to: WorkExperience
+  kind: has_many
+  via: memberId
+- from: Member
+  to: ProjectAffiliation
+  kind: has_many
+  via: memberId
+- from: Member
+  to: MaintainerRole
+  kind: has_many
+  via: memberId
+- from: WorkExperience
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: Package
+  to: Stewardship
+  kind: has_many
+  via: purl
+- from: Package
+  to: Advisory
+  kind: has_many
+  via: purl

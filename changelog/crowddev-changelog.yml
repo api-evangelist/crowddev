@@ -1,0 +1,22 @@
+generated: '2026-07-18'
+method: searched
+source: https://github.com/linuxfoundation/crowd.dev/releases
+docs: https://changelog.crowd.dev/
+scheme: semver
+current_version: v0.49.0
+note: >-
+  Tagged GitHub releases stopped at v0.49.0 (Nov 2023) around the Linux
+  Foundation acquisition; ongoing product changes now ship through the LFX
+  Community Data Platform. changelog.crowd.dev redirects to the source repo.
+entries:
+- version: v0.49.0
+  date: '2023-11-21'
+  highlights: Final tagged crowd.dev open-source release before LFX consolidation.
+- version: v0.48.0
+  date: '2023-11-07'
+- version: v0.47.1
+  date: '2023-10-27'
+- version: v0.47.0
+  date: '2023-10-17'
+- version: v0.46.0
+  date: '2023-10-10'

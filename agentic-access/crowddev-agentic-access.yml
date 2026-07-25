@@ -1,0 +1,825 @@
+generated: '2026-07-18'
+method: generated
+source: openapi/crowddev-cdp-akrites-external-openapi.yml, openapi/crowddev-cdp-akrites-openapi.yml,
+  openapi/crowddev-cdp-ossprey-openapi.yml, openapi/crowddev-cdp-packages-openapi.yml, openapi/crowddev-cdp-public-openapi.yml,
+  openapi/crowddev-cdp-stewardships-openapi.yml, openapi/crowddev-cm-id-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 56
+  by_action_class:
+    connected: 28
+    acting: 28
+  by_consequence:
+    read: 28
+    write: 17
+    physical: 10
+    safety-critical: 1
+  human_in_the_loop_required: 1
+operations:
+- path: /akrites-external/packages/detail
+  method: get
+  operationId: getPackageDetail
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:packages
+    - read:stewardships
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites-external/packages/detail:batch
+  method: post
+  operationId: getPackageDetailBatch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - read:packages
+    - read:stewardships
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /akrites-external/advisories/detail
+  method: get
+  operationId: getAdvisoryDetail
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:packages
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites-external/advisories/detail:batch
+  method: post
+  operationId: getAdvisoryDetailBatch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - read:packages
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /akrites-external/contacts/detail
+  method: get
+  operationId: getContactDetail
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:maintainer-roles
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites-external/contacts/detail:batch
+  method: post
+  operationId: getContactDetailBatch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - read:maintainer-roles
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /akrites/metrics
+  method: get
+  operationId: getAkritesMetrics
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/activity
+  method: get
+  operationId: getAkritesActivity
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/packages
+  method: get
+  operationId: listAkritesPackages
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/packages/scatter
+  method: get
+  operationId: getAkritesPackagesScatter
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/packages/metrics
+  method: get
+  operationId: getAkritesPackagesMetrics
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/packages/detail
+  method: get
+  operationId: getAkritesPackageDetail
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/packages/advisories
+  method: get
+  operationId: getAkritesPackageAdvisories
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/packages/history
+  method: get
+  operationId: getAkritesPackageHistory
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/packages:batch-stewardship
+  method: post
+  operationId: batchGetStewardship
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /akrites/stewardships/me/packages
+  method: get
+  operationId: getMyPackages
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/stewardships/me/activity
+  method: get
+  operationId: getMyActivity
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /akrites/stewardships/open
+  method: post
+  operationId: openStewardship
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /akrites/stewardships/{id}/assign
+  method: post
+  operationId: assignSteward
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /akrites/stewardships/{id}/escalate
+  method: post
+  operationId: escalateStewardship
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /akrites/stewardships/{id}/status
+  method: patch
+  operationId: updateStewardshipStatus
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /ossprey/metrics
+  method: get
+  operationId: getOsspreyMetrics
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ossprey/activity
+  method: get
+  operationId: listStewardshipActivity
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ossprey/packages
+  method: get
+  operationId: listOsspreyPackages
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ossprey/packages/scatter
+  method: get
+  operationId: getOsspreyPackagesScatter
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /packages
+  method: get
+  operationId: listPackages
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:packages
+    - read:stewardships
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /packages/metrics
+  method: get
+  operationId: getPackagesMetrics
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:packages
+    - read:stewardships
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /packages/detail
+  method: get
+  operationId: getPackage
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:packages
+    - read:stewardships
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /packages:batch-stewardship
+  method: post
+  operationId: batchGetStewardship
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - read:stewardships
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /members
+  method: post
+  operationId: createMember
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - write:members
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /members/resolve
+  method: post
+  operationId: resolveMember
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - read:members
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /members/{memberId}/identities
+  method: get
+  operationId: getMemberIdentities
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:member-identities
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /members/{memberId}/identities
+  method: post
+  operationId: createMemberIdentity
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - write:member-identities
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /members/{memberId}/identities/{identityId}
+  method: patch
+  operationId: verifyMemberIdentity
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - write:member-identities
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /members/{memberId}/maintainer-roles
+  method: get
+  operationId: getMemberMaintainerRoles
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:maintainer-roles
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /members/{memberId}/work-experiences
+  method: get
+  operationId: getMemberWorkExperiences
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:work-experiences
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /members/{memberId}/work-experiences
+  method: post
+  operationId: createMemberWorkExperience
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - write:work-experiences
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /members/{memberId}/work-experiences/{workExperienceId}
+  method: put
+  operationId: updateMemberWorkExperience
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - write:work-experiences
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /members/{memberId}/work-experiences/{workExperienceId}
+  method: patch
+  operationId: verifyMemberWorkExperience
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - write:work-experiences
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /members/{memberId}/work-experiences/{workExperienceId}
+  method: delete
+  operationId: deleteMemberWorkExperience
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - write:work-experiences
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /members/{memberId}/project-affiliations
+  method: get
+  operationId: getMemberProjectAffiliations
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:project-affiliations
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /members/{memberId}/project-affiliations/{projectId}
+  method: patch
+  operationId: patchMemberProjectAffiliation
+  x-agentic-access:
+    action-class: acting
+    consequence: safety-critical
+    subject: required
+    scope:
+    - write:project-affiliations
+    audience: null
+    token:
+      max-ttl: 120
+      exchange: true
+      purpose-required: true
+      proof-of-possession: true
+    escalation:
+      human-in-the-loop: required
+    audit: required
+- path: /organizations
+  method: get
+  operationId: getOrganization
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    scope:
+    - read:organizations
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /organizations
+  method: post
+  operationId: createOrganization
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    scope:
+    - write:organizations
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /affiliations
+  method: post
+  operationId: getBulkAffiliations
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /affiliations/{githubHandle}
+  method: get
+  operationId: getAffiliationByHandle
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /stewardships/open
+  method: post
+  operationId: openStewardship
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - write:stewardships
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /stewardships/{id}/assign
+  method: post
+  operationId: assignSteward
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - write:stewardships
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /stewardships/{id}/escalate
+  method: post
+  operationId: escalateStewardship
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - write:stewardships
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /stewardships/{id}/status
+  method: patch
+  operationId: updateStewardshipStatus
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    scope:
+    - write:stewardships
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /member/{memberId}/organization
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /member/{memberId}/organization
+  method: post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /member/{memberId}/organization/{workHistoryId}
+  method: patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /member/{memberId}/organization/{workHistoryId}
+  method: delete
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /member/{memberId}/affiliation
+  method: get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /member/{memberId}/affiliation
+  method: patch
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required

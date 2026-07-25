@@ -1,0 +1,44 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/crowddev-cdp-public-openapi.yml
+format: json
+envelope:
+  shape: '{ "error": { "code": string, "message": string } }'
+  schema: HttpError / Error (components.schemas)
+  fields:
+    code: Machine-readable error code (e.g. NOT_FOUND)
+    message: Human-readable error description
+notes: >-
+  The CDP Public API uses a simple JSON error envelope (application/json), not
+  RFC 9457 application/problem+json. Codes are machine-readable string tokens.
+problems:
+- status: 400
+  code: BAD_REQUEST
+  title: Bad request
+  description: Malformed request (e.g. malformed purl).
+  source_operation: openapi/crowddev-cdp-packages-openapi.yml#getPackage
+- status: 401
+  code: UNAUTHORIZED
+  title: Missing or invalid bearer token
+  description: The request lacks a valid OAuth2 bearer token or static API key.
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#createMember
+- status: 403
+  code: FORBIDDEN
+  title: Insufficient scope
+  description: Token is missing a required scope (e.g. read:packages, read:stewardships).
+  source_operation: openapi/crowddev-cdp-packages-openapi.yml#getPackage
+- status: 404
+  code: NOT_FOUND
+  title: Resource not found
+  description: The requested member, organization, or package does not exist.
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#getMemberIdentities
+- status: 409
+  code: CONFLICT
+  title: Conflict
+  description: Resource conflict (e.g. identity already exists on another member).
+  source_operation: openapi/crowddev-cdp-public-openapi.yml#createMemberIdentity
+- status: 429
+  code: RATE_LIMITED
+  title: Too many requests
+  description: Rate limit exceeded; back off and retry.
+  source_operation: openapi/crowddev-cdp-public-openapi.yml

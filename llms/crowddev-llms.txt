@@ -1,0 +1,34 @@
+# Crowd.dev — LFX Community Data Platform (CDP)
+
+> Open-source developer data platform (Apache-2.0) that centralizes community, product,
+> and commercial data to unify contributor identities and resolve who engages with an
+> open-source project. Acquired by the Linux Foundation (April 2024); now powers the LFX
+> Community Data Platform. CDP Public API base: https://cm.lfx.dev/api/v1
+
+## APIs
+- [CDP Public API docs](https://docs.crowd.dev/docs/): Members, identities, work experiences, project affiliations, organizations, affiliations, packages, stewardship.
+- [API reference](https://api.crowd.dev/)
+
+## Specs
+- [CDP Public API OpenAPI](openapi/crowddev-cdp-public-openapi.yml)
+- [CDP Akrites (package intelligence) OpenAPI](openapi/crowddev-cdp-akrites-openapi.yml)
+- [CDP Akrites External OpenAPI](openapi/crowddev-cdp-akrites-external-openapi.yml)
+- [CDP Packages & Stewardship OpenAPI](openapi/crowddev-cdp-packages-openapi.yml)
+- [CDP Stewardship Admin OpenAPI](openapi/crowddev-cdp-stewardships-openapi.yml)
+- [CDP OSSPREY Admin OpenAPI](openapi/crowddev-cdp-ossprey-openapi.yml)
+- [CM API (id) OpenAPI](openapi/crowddev-cm-id-openapi.yml)
+
+## Artifacts
+- [Authentication](authentication/crowddev-authentication.yml)
+- [OAuth scopes](scopes/crowddev-scopes.yml)
+- [Conventions](conventions/crowddev-conventions.yml)
+- [Error catalog](errors/crowddev-problem-types.yml)
+- [Data model](data-model/crowddev-data-model.yml)
+- [Agent skills](skills/_index.yml)
+
+## Docs
+- [Documentation](https://docs.crowd.dev/docs/)
+- [Handbook](https://docs.crowd.dev/handbook/)
+- [Changelog](https://changelog.crowd.dev/)
+- [Source code](https://github.com/linuxfoundation/crowd.dev)
+- [Status](https://status.lfx.dev)

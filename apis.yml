@@ -1,25 +1,279 @@
 aid: crowddev
 name: Crowd.dev
-description: Crowd.dev is a company surfaced as a portfolio company of seedcamp and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Crowd.dev is an open-source developer data platform that centralizes
+  community, product, and commercial data to unify contributor identities,
+  resolve who is engaging with an open-source project, and activate that data
+  for developer relations and community-led growth. Founded in Berlin and
+  backed by Seedcamp, crowd.dev was acquired by the Linux Foundation in April
+  2024 and now powers the LFX Community Data Platform (CDP). The codebase is
+  Apache-2.0 open source at github.com/CrowdDotDev (now linuxfoundation/crowd.dev),
+  and the CDP Public API exposes transactional REST endpoints for member and
+  organization profiles, identity verification, work-experience and
+  project-affiliation management, contributor affiliation lookups, and
+  open-source package/stewardship intelligence.
 url: https://raw.githubusercontent.com/api-evangelist/crowddev/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://avatars.githubusercontent.com/u/85551972?v=4
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - seedcamp
 x-tier: stub
 x-tier-reason: portfolio-lead
+x-acquired-by: linux-foundation
+x-acquired-date: '2024-04'
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
 tags:
 - Company
-apis: []
+- Community
+- Developer Relations
+- Developer Data Platform
+- Identity Resolution
+- Open Source
+- Community Data Platform
+- Open Source Intelligence
+apis:
+- aid: crowddev:crowddev-advisories-api
+  name: Crowd.dev Advisories API
+  description: >-
+    Security advisories for a package, split out of package detail. The draft contract gates these behind
+    a dedicated read:advisories scope; until Auth0 issues it, the implementation reuses read:packages
+    (advisories need no stewardship read). Confirm the final scope name (read:advisories vs cdp:advisories:read)
+    with Akrites/product.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Advisories
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-advisories-api-openapi.yml
+- aid: crowddev:crowddev-affiliations-api
+  name: Crowd.dev Affiliations API
+  description: Bulk contributor affiliation lookups by GitHub handle.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Affiliations
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-affiliations-api-openapi.yml
+- aid: crowddev:crowddev-contacts-api
+  name: Crowd.dev Contacts API
+  description: >-
+    Security contacts for a package — includes contact PII (e.g. reporter emails). The contract gates
+    these behind a dedicated cdp:maintainers:read scope and forbids reaching them via the packages scope;
+    until Auth0 issues it, the implementation requires read:maintainer-roles (NOT read:packages). The
+    response shape is still under discussion upstream (reportingMethods / reportingGuidelines / integrationHints
+    are reserved and always null today).
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-contacts-api-openapi.yml
+- aid: crowddev:crowddev-dashboard-api
+  name: Crowd.dev Dashboard API
+  description: KPI bar metrics and activity feed.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Dashboard
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-dashboard-api-openapi.yml
+- aid: crowddev:crowddev-maintainer-roles-api
+  name: Crowd.dev Maintainer Roles API
+  description: Retrieve maintainer roles for a member.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Maintainer Roles
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-maintainer-roles-api-openapi.yml
+- aid: crowddev:crowddev-member-affiliations-api-api
+  name: Crowd.dev Member Affiliations API API
+  description: >-
+    API endpoints for managing project affiliations, including listing and bulk updating affiliation relationships
+    within a profile.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Member Affiliations API
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-member-affiliations-api-api-openapi.yml
+- aid: crowddev:crowddev-member-identities-api
+  name: Crowd.dev Member Identities API
+  description: Manage and verify member identities across platforms.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Member Identities
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-member-identities-api-openapi.yml
+- aid: crowddev:crowddev-member-organizations-api-api
+  name: Crowd.dev Member Organizations API API
+  description: >-
+    API endpoints for managing work history organizations, including creating, reading, updating, and
+    deleting organization relationships for profiles.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Member Organizations API
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-member-organizations-api-api-openapi.yml
+- aid: crowddev:crowddev-members-api
+  name: Crowd.dev Members API
+  description: Resolve member profiles by identity.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Members
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-members-api-openapi.yml
+- aid: crowddev:crowddev-organizations-api
+  name: Crowd.dev Organizations API
+  description: Look up and create organizations.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-organizations-api-openapi.yml
+- aid: crowddev:crowddev-packages-api
+  name: Crowd.dev Packages API
+  description: Package detail — requires read:packages and read:stewardships (see TODO above).
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Packages
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-packages-api-openapi.yml
+- aid: crowddev:crowddev-project-affiliations-api
+  name: Crowd.dev Project Affiliations API
+  description: View and override per-project affiliation data for a member.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Project Affiliations
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-project-affiliations-api-openapi.yml
+- aid: crowddev:crowddev-stewardship-actions-api
+  name: Crowd.dev Stewardship Actions API
+  description: Admin-initiated stewardship mutations.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Stewardship Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-stewardship-actions-api-openapi.yml
+- aid: crowddev:crowddev-stewardship-api
+  name: Crowd.dev Stewardship API
+  description: Stewardship state — individual and batch.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Stewardship
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-stewardship-api-openapi.yml
+- aid: crowddev:crowddev-stewardships-api
+  name: Crowd.dev Stewardships API
+  description: Open, assign, escalate, and update stewardship status.
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Stewardships
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-stewardships-api-openapi.yml
+- aid: crowddev:crowddev-work-experiences-api
+  name: Crowd.dev Work Experiences API
+  description: Manage and verify member work experiences (organization affiliations).
+  humanURL: https://docs.crowd.dev/docs/
+  baseURL: https://cm.lfx.dev/api/v1
+  tags:
+  - Work Experiences
+  properties:
+  - type: OpenAPI
+    url: openapi/crowddev-work-experiences-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/crowddev-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/crowddev-agentic-access.yml
+- type: OAuthScopes
+  url: scopes/crowddev-scopes.yml
+- type: Authentication
+  url: authentication/crowddev-authentication.yml
 - type: Website
-  url: http://crowd.dev
+  url: https://crowd.dev
+- type: DeveloperPortal
+  url: https://docs.crowd.dev/
+- type: Documentation
+  url: https://docs.crowd.dev/docs/
+- type: APIReference
+  url: https://api.crowd.dev/
+- type: ChangeLog
+  url: https://changelog.crowd.dev/
+- type: GitHubOrganization
+  url: https://github.com/CrowdDotDev
+- type: SourceCode
+  url: https://github.com/linuxfoundation/crowd.dev
+- type: License
+  url: https://github.com/linuxfoundation/crowd.dev/blob/main/LICENSE
+- type: StatusPage
+  url: https://status.lfx.dev
+- type: Lifecycle
+  url: lifecycle/crowddev-lifecycle.yml
+- type: Conventions
+  url: conventions/crowddev-conventions.yml
+- type: ErrorCatalog
+  url: errors/crowddev-problem-types.yml
+- type: DataModel
+  url: data-model/crowddev-data-model.yml
+- type: MCPServer
+  url: mcp/crowddev-mcp.yml
+- type: Conformance
+  url: conformance/crowddev-conformance.yml
+- type: Overlay
+  url: overlays/crowddev-cdp-public-overlay.yaml
+- type: LLMsTxt
+  url: llms/crowddev-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: ChangeLog
+  url: changelog/crowddev-changelog.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

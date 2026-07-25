@@ -1,0 +1,19 @@
+generated: '2026-07-18'
+method: searched
+source: https://cm.lfx.dev/api/v1
+versioning:
+  scheme: uri-path
+  current: v1
+  base: https://cm.lfx.dev/api/v1
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No documented deprecation/Sunset policy; no operations marked deprecated in the OpenAPI.
+sla:
+  url: null
+status_page: https://status.lfx.dev
+open_source:
+  license: Apache-2.0
+  repo: https://github.com/linuxfoundation/crowd.dev
+  acquired_by: Linux Foundation (April 2024)
+deprecated_operations: []

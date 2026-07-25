@@ -1,0 +1,99 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/crowddev-cdp-akrites-external-openapi.yml, openapi/crowddev-cdp-public-openapi.yml
+schemes:
+- name: M2MBearer
+  source: openapi/crowddev-cdp-akrites-external-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+  description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client
+    ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only
+    verifies the resulting token.'
+- name: OAuth2Bearer
+  source: openapi/crowddev-cdp-public-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+  description: 'OAuth 2.0 client credentials flow via Auth0. The consuming service obtains a
+    JWT using its client ID and secret, then passes it as `Authorization: Bearer <token>`'
+scopes:
+- scope: read:maintainer-roles
+  description: Read security contacts (interim scope for Contacts; see the Contacts tag)
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-akrites-external-openapi.yml
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: read:member-identities
+  description: Read member identities
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: read:members
+  description: Read member profiles
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: read:organizations
+  description: Look up organizations
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: read:packages
+  description: Read package detail
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-akrites-external-openapi.yml
+- scope: read:project-affiliations
+  description: Read project affiliations
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: read:stewardships
+  description: Read package stewardship data
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-akrites-external-openapi.yml
+- scope: read:work-experiences
+  description: Read work experiences
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: write:member-identities
+  description: Create and verify member identities
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: write:members
+  description: Create member profiles
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: write:organizations
+  description: Create organizations
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: write:project-affiliations
+  description: Override project affiliations
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
+- scope: write:work-experiences
+  description: Create, update, verify, and delete work experiences
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml

@@ -1,0 +1,11 @@
+overlay: 1.0.0
+info:
+  title: "API Evangelist enhancements for CDP Public API \u2014 Packages & Stewardship"
+  version: 1.0.0
+extends: openapi/crowddev-cdp-packages-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: true
+    x-apievangelist-provider: crowddev
+    x-apievangelist-generated: '2026-07-18'

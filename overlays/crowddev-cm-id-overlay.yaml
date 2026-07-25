@@ -1,0 +1,11 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for CM API Docs
+  version: 1.0.0
+extends: openapi/crowddev-cm-id-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: true
+    x-apievangelist-provider: crowddev
+    x-apievangelist-generated: '2026-07-18'
