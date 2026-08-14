@@ -14,17 +14,23 @@ description: >-
   open-source package/stewardship intelligence.
 url: https://raw.githubusercontent.com/api-evangelist/crowddev/refs/heads/main/apis.yml
 accessModel:
-  pricing: unknown
-  onboarding: self-serve
+  pricing: free
+  onboarding: request
   trial: false
   try_now: false
   public: false
-  label: Self-serve signup
-  confidence: medium
+  label: Free; API credentials provisioned by the Linux Foundation
+  confidence: high
   source:
-  - authentication
-  generated: '2026-07-22'
-  method: derived
+  - https://docs.linuxfoundation.org/lfx/community-management
+  - https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+  generated: '2026-08-14'
+  method: searched
+  note: >-
+    The Community Data Platform is free to use and has no pricing page or paid tier. API access is
+    not self-serve: Auth0 machine-to-machine clients on the cdp_public_api audience are provisioned
+    per consumer by the Linux Foundation, and UI access is documented as Linux Foundation employees
+    only. See plans/crowddev-plans-pricing.yml.
 image: https://avatars.githubusercontent.com/u/85551972?v=4
 x-type: company
 x-source: vc-portfolio
@@ -36,7 +42,7 @@ x-acquired-by: linux-foundation
 x-acquired-date: '2024-04'
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-18'
+modified: '2026-08-14'
 tags:
 - Company
 - Community
@@ -54,7 +60,7 @@ apis:
     a dedicated read:advisories scope; until Auth0 issues it, the implementation reuses read:packages
     (advisories need no stewardship read). Confirm the final scope name (read:advisories vs cdp:advisories:read)
     with Akrites/product.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Advisories
@@ -64,7 +70,7 @@ apis:
 - aid: crowddev:crowddev-affiliations-api
   name: Crowd.dev Affiliations API
   description: Bulk contributor affiliation lookups by GitHub handle.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Affiliations
@@ -79,7 +85,7 @@ apis:
     until Auth0 issues it, the implementation requires read:maintainer-roles (NOT read:packages). The
     response shape is still under discussion upstream (reportingMethods / reportingGuidelines / integrationHints
     are reserved and always null today).
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Contacts
@@ -89,7 +95,7 @@ apis:
 - aid: crowddev:crowddev-dashboard-api
   name: Crowd.dev Dashboard API
   description: KPI bar metrics and activity feed.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Dashboard
@@ -99,7 +105,7 @@ apis:
 - aid: crowddev:crowddev-maintainer-roles-api
   name: Crowd.dev Maintainer Roles API
   description: Retrieve maintainer roles for a member.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Maintainer Roles
@@ -111,7 +117,7 @@ apis:
   description: >-
     API endpoints for managing project affiliations, including listing and bulk updating affiliation relationships
     within a profile.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Member Affiliations API
@@ -121,7 +127,7 @@ apis:
 - aid: crowddev:crowddev-member-identities-api
   name: Crowd.dev Member Identities API
   description: Manage and verify member identities across platforms.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Member Identities
@@ -133,7 +139,7 @@ apis:
   description: >-
     API endpoints for managing work history organizations, including creating, reading, updating, and
     deleting organization relationships for profiles.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Member Organizations API
@@ -143,7 +149,7 @@ apis:
 - aid: crowddev:crowddev-members-api
   name: Crowd.dev Members API
   description: Resolve member profiles by identity.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Members
@@ -153,7 +159,7 @@ apis:
 - aid: crowddev:crowddev-organizations-api
   name: Crowd.dev Organizations API
   description: Look up and create organizations.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Organizations
@@ -163,7 +169,7 @@ apis:
 - aid: crowddev:crowddev-packages-api
   name: Crowd.dev Packages API
   description: Package detail — requires read:packages and read:stewardships (see TODO above).
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Packages
@@ -173,7 +179,7 @@ apis:
 - aid: crowddev:crowddev-project-affiliations-api
   name: Crowd.dev Project Affiliations API
   description: View and override per-project affiliation data for a member.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Project Affiliations
@@ -183,7 +189,7 @@ apis:
 - aid: crowddev:crowddev-stewardship-actions-api
   name: Crowd.dev Stewardship Actions API
   description: Admin-initiated stewardship mutations.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Stewardship Actions
@@ -193,7 +199,7 @@ apis:
 - aid: crowddev:crowddev-stewardship-api
   name: Crowd.dev Stewardship API
   description: Stewardship state — individual and batch.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Stewardship
@@ -203,7 +209,7 @@ apis:
 - aid: crowddev:crowddev-stewardships-api
   name: Crowd.dev Stewardships API
   description: Open, assign, escalate, and update stewardship status.
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Stewardships
@@ -213,7 +219,7 @@ apis:
 - aid: crowddev:crowddev-work-experiences-api
   name: Crowd.dev Work Experiences API
   description: Manage and verify member work experiences (organization affiliations).
-  humanURL: https://docs.crowd.dev/docs/
+  humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
   - Work Experiences
@@ -243,11 +249,21 @@ common:
 - type: Website
   url: https://crowd.dev
 - type: DeveloperPortal
-  url: https://docs.crowd.dev/
-- type: Documentation
   url: https://docs.crowd.dev/docs/
+- type: Documentation
+  url: https://docs.linuxfoundation.org/lfx/community-management
+- type: GettingStarted
+  url: https://docs.linuxfoundation.org/lfx/community-management/quick-start-guide
 - type: APIReference
-  url: https://api.crowd.dev/
+  url: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
+- type: Support
+  url: https://jira.linuxfoundation.org/plugins/servlet/desk/portal/4
+- type: SignUp
+  url: https://cm.lfx.dev/project-groups
+- type: TermsOfService
+  url: https://www.linuxfoundation.org/legal/terms
+- type: PrivacyPolicy
+  url: https://www.linuxfoundation.org/legal/privacy-policy
 - type: ChangeLog
   url: https://changelog.crowd.dev/
 - type: GitHubOrganization
@@ -274,12 +290,28 @@ common:
   url: overlays/crowddev-cdp-public-overlay.yaml
 - type: LLMsTxt
   url: llms/crowddev-llms.txt
+- type: LLMsTxt
+  url: https://docs.linuxfoundation.org/lfx/llms.txt
 - type: AgentSkill
   url: skills/_index.yml
 - type: ChangeLog
   url: changelog/crowddev-changelog.yml
+- type: Plans
+  url: plans/crowddev-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/crowddev-rate-limits.yml
+- type: Sandbox
+  url: sandbox/crowddev-sandbox.yml
+- type: CLI
+  url: cli/crowddev-cli.yml
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-14'
+  status: enriched
+  artifacts_added: 8
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence
+  note: >-
+    Ownership verified: all seven OpenAPI documents are published first-party in the Apache-2.0
+    repo linuxfoundation/crowd.dev under backend/src/api/public/ and backend/id-openapi.yaml, with
+    servers[] naming cm.lfx.dev (production) and lf-staging.crowd.dev (staging). Rate limits,
+    authentication and scopes upgraded to searched from the repo's dated ADR set. No SDK, no
+    AsyncAPI, no A2A card, no well-known document and no CDP MCP server exist.
