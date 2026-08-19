@@ -1,0 +1,53 @@
+generated: '2026-08-14'
+method: searched
+source: https://docs.linuxfoundation.org/lfx/community-management
+docs:
+- https://docs.linuxfoundation.org/lfx/community-management
+- https://docs.linuxfoundation.org/lfx/community-management/accessing-community-management
+note: >-
+  There is no pricing page and no priced tiers. crowd.dev was acquired by the Linux Foundation in
+  April 2024 and the commercial product was retired: crowd.dev now 301s to the source repository,
+  crowd.dev/pricing resolves to the same GitHub page, and lfx.linuxfoundation.org/pricing is a 404.
+  The successor - LFX Community Data Platform - is offered at no charge, and the CDP Public API is
+  reached with Auth0 machine-to-machine credentials issued by the Linux Foundation rather than
+  bought. There is no self-serve API key, no metered plan, and no published quota attached to a tier;
+  the only published quotas are the rate limits in rate-limits/crowddev-rate-limits.yml, which apply
+  to everyone.
+
+currency: USD
+billing_model: none
+plan_count: 1
+
+plans:
+- name: Community Data Platform
+  price: 0
+  currency: USD
+  period: none
+  free: true
+  quota: null
+  overage: null
+  signup: https://cm.lfx.dev/project-groups
+  evidence: >-
+    docs.linuxfoundation.org/lfx/community-management - "To get started for free,
+    sign up for Community Dats Platform" [sic], linking https://cm.lfx.dev/project-groups.
+  eligibility: >-
+    docs.linuxfoundation.org/lfx/community-management/accessing-community-management -
+    "Only Linux Foundation employees will have access to LFX Community Data Platform."
+    Project-group access for non-employees is requested through the LF support portal at
+    https://jira.linuxfoundation.org/plugins/servlet/desk/portal/4.
+
+api_access:
+  self_serve: false
+  mechanism: Auth0 machine-to-machine client credentials on the `cdp_public_api` audience
+  issuance: >-
+    Credentials are provisioned per consumer by the Linux Foundation (lfx-secrets-management), not
+    through a signup form. ADR-0016 records the Akrites consumer receiving an RSA private key,
+    client_id and credential kid by hand through a 1Password vault item.
+  evidence: https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+  price: 0
+
+historical:
+  note: >-
+    Pre-acquisition crowd.dev sold a hosted SaaS alongside the Apache-2.0 self-hosted edition.
+    Those tiers are gone; no archived pricing is recorded here because none is currently published
+    by the provider.

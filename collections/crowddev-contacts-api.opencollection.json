@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Contacts API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get security contact detail by PURL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites-external/contacts/detail",
+            "params": [
+              {
+                "name": "purl",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Requires read:maintainer-roles (interim for the contract's cdp:maintainers:read). Never reachable with the packages scope.\n"
+        },
+        {
+          "info": {
+            "name": "Bulk security contact lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/akrites-external/contacts/detail:batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Bulk security contact lookup"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

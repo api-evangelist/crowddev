@@ -1,6 +1,17 @@
-generated: '2026-07-18'
-method: derived
-source: openapi/crowddev-cdp-akrites-external-openapi.yml, openapi/crowddev-cdp-public-openapi.yml
+generated: '2026-08-14'
+method: searched
+source: https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+docs: https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+derived_from: openapi/crowddev-cdp-akrites-external-openapi.yml, openapi/crowddev-cdp-public-openapi.yml
+note: >-
+  Upgraded from derived to searched on 2026-08-14. ADR-0016 documents a scope migration the
+  OpenAPI does not yet reflect: three Akrites-namespaced scopes are now defined on the
+  `cdp_public_api` Auth0 API and granted only to the `Akrites Enclave` client, while each
+  /akrites-external subrouter transitionally accepts EITHER the namespaced scope OR its legacy
+  Self Serve equivalent via `requireScopes([...], 'any')`. The legacy fallbacks are removed once
+  Akrites confirms end-to-end token exchange. The specs in openapi/ still declare only the legacy
+  names, so both sets are recorded below with their status.
+auth0_api: cdp_public_api
 schemes:
 - name: M2MBearer
   source: openapi/crowddev-cdp-akrites-external-openapi.yml
@@ -18,7 +29,41 @@ schemes:
   description: 'OAuth 2.0 client credentials flow via Auth0. The consuming service obtains a
     JWT using its client ID and secret, then passes it as `Authorization: Bearer <token>`'
 scopes:
+- scope: read:akrites-packages
+  description: Read package detail on the /akrites-external route (Akrites-namespaced target scope)
+  flows:
+  - clientCredentials
+  status: target
+  granted_to: Akrites Enclave
+  sources:
+  - https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+  note: >-
+    Defined on cdp_public_api and granted only to the Akrites Enclave client. Not yet declared in
+    openapi/crowddev-cdp-akrites-external-openapi.yml, which still lists the legacy read:packages.
+- scope: read:akrites-advisories
+  description: Read package security advisories on the /akrites-external route (Akrites-namespaced target scope)
+  flows:
+  - clientCredentials
+  status: target
+  granted_to: Akrites Enclave
+  sources:
+  - https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+  note: >-
+    The akrites-external spec still notes the final name was undecided (read:advisories vs
+    cdp:advisories:read); ADR-0016 settles it as read:akrites-advisories.
+- scope: read:akrites-maintainers
+  description: Read package security contacts on the /akrites-external route (Akrites-namespaced target scope)
+  flows:
+  - clientCredentials
+  status: target
+  granted_to: Akrites Enclave
+  sources:
+  - https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+  note: >-
+    Gates security-contact PII. Legacy fallback during cut-over is read:maintainer-roles, never
+    read:packages.
 - scope: read:maintainer-roles
+  status: legacy
   description: Read security contacts (interim scope for Contacts; see the Contacts tag)
   flows:
   - clientCredentials
@@ -97,3 +142,14 @@ scopes:
   - clientCredentials
   sources:
   - openapi/crowddev-cdp-public-openapi.yml
+- scope: write:stewardships
+  description: Open, assign, escalate and update OSSPREY Program admin stewardship actions
+  flows:
+  - clientCredentials
+  status: declared-not-enforced
+  sources:
+  - openapi/crowddev-cdp-stewardships-openapi.yml
+  note: >-
+    Declared as required on all four stewardship write operations, but the spec's own V1 note says
+    the scope "is not yet added to the Auth0 staging tenant - scope enforcement is temporarily
+    disabled. See CM-1235." Recorded as declared, not as enforced.

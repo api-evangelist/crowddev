@@ -1,13 +1,29 @@
 # Crowd.dev — LFX Community Data Platform (CDP)
 
-> Open-source developer data platform (Apache-2.0) that centralizes community, product,
-> and commercial data to unify contributor identities and resolve who engages with an
-> open-source project. Acquired by the Linux Foundation (April 2024); now powers the LFX
-> Community Data Platform. CDP Public API base: https://cm.lfx.dev/api/v1
+> Open-source developer data platform (Apache-2.0) that centralizes community, product and
+> commercial data to unify contributor identities and resolve who engages with an open-source
+> project. Founded in Berlin, acquired by the Linux Foundation in April 2024 and renamed the LFX
+> Community Data Platform. The crowd.dev marketing site now redirects to the source repository.
+> CDP Public API base: https://cm.lfx.dev/api/v1 (production) · https://lf-staging.crowd.dev/api/v1 (staging).
+> Auth is Auth0 machine-to-machine client credentials; credentials are provisioned by the Linux
+> Foundation, not self-serve. The product is free.
+
+## Where the contract actually lives
+The API reference is NOT in the product documentation. All seven OpenAPI documents are published
+first-party in the Apache-2.0 monorepo, and the runtime semantics (auth, rate limits, identity
+storage, e2e test architecture) are published as dated Architecture Decision Records.
+
+- [OpenAPI documents](https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public)
+- [Architecture Decision Records (18)](https://github.com/linuxfoundation/crowd.dev/tree/main/docs/adr)
+- [ADR-0016 — CDP public API authentication](https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md)
+- [ADR-0018 — per-client rate limiting](https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0018-per-client-rate-limiting-members-resolve.md)
 
 ## APIs
-- [CDP Public API docs](https://docs.crowd.dev/docs/): Members, identities, work experiences, project affiliations, organizations, affiliations, packages, stewardship.
-- [API reference](https://api.crowd.dev/)
+- CDP Public API — members, member identities, maintainer roles, work experiences, project
+  affiliations, organizations, bulk contributor affiliations.
+- CDP Akrites / OSSPREY — package intelligence: package detail, security advisories, security
+  contacts, risk-matrix scatter, stewardship state and stewardship admin actions.
+- CM API (id) — work-history organizations and project affiliations for a profile.
 
 ## Specs
 - [CDP Public API OpenAPI](openapi/crowddev-cdp-public-openapi.yml)
@@ -22,13 +38,37 @@
 - [Authentication](authentication/crowddev-authentication.yml)
 - [OAuth scopes](scopes/crowddev-scopes.yml)
 - [Conventions](conventions/crowddev-conventions.yml)
+- [Rate limits](rate-limits/crowddev-rate-limits.yml)
 - [Error catalog](errors/crowddev-problem-types.yml)
 - [Data model](data-model/crowddev-data-model.yml)
+- [Lifecycle](lifecycle/crowddev-lifecycle.yml)
+- [Conformance](conformance/crowddev-conformance.yml)
+- [Plans and pricing](plans/crowddev-plans-pricing.yml)
+- [Sandbox and environments](sandbox/crowddev-sandbox.yml)
+- [CLI (self-hosting)](cli/crowddev-cli.yml)
+- [Packages](packages/crowddev-packages.yml)
+- [Well-known probe](well-known/crowddev-well-known.yml)
 - [Agent skills](skills/_index.yml)
 
 ## Docs
-- [Documentation](https://docs.crowd.dev/docs/)
-- [Handbook](https://docs.crowd.dev/handbook/)
-- [Changelog](https://changelog.crowd.dev/)
+- [Community Data Platform docs](https://docs.linuxfoundation.org/lfx/community-management)
+- [Quick start guide](https://docs.linuxfoundation.org/lfx/community-management/quick-start-guide)
+- [Published llms.txt (LFX docs)](https://docs.linuxfoundation.org/lfx/llms.txt)
+- [Sign up (free)](https://cm.lfx.dev/project-groups)
+- [Support portal](https://jira.linuxfoundation.org/plugins/servlet/desk/portal/4)
 - [Source code](https://github.com/linuxfoundation/crowd.dev)
+- [Releases](https://github.com/linuxfoundation/crowd.dev/releases)
 - [Status](https://status.lfx.dev)
+- [Legacy docs hub (crowd.dev)](https://docs.crowd.dev/docs/)
+
+## What is not published
+- No SDK on any package registry — the monorepo root package.json is private and every workspace
+  package 404s on npm. Integrate over plain HTTPS.
+- No AsyncAPI and no consumer-subscribable events. The webhook_api service only ingests webhooks
+  from GitHub, GitLab, Discourse and Groups.io.
+- No MCP server over CDP operations. https://mcp.lfx.dev/mcp is the sibling LFX platform server
+  (projects, committees, meetings, LFX Lens) and exposes no CDP endpoint.
+- No A2A agent card, no security.txt, no vulnerability disclosure page, no trust center,
+  no published certifications, no deprecation/Sunset policy, no idempotency keys.
+- No self-serve API credentials — Auth0 M2M clients are provisioned by the Linux Foundation.
+- https://api.crowd.dev, still linked from the legacy docs hub, is dead (403).

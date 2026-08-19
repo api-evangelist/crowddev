@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Organizations API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Look up an organization by domain or name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/organizations",
+            "params": [
+              {
+                "name": "domain",
+                "value": "linuxfoundation.org",
+                "type": "query",
+                "description": "Primary domain of the organization."
+              },
+              {
+                "name": "name",
+                "value": "Linux Foundation",
+                "type": "query",
+                "description": "Exact display name of the organization."
+              }
+            ]
+          },
+          "docs": "Provide domain, name, or both. When both are provided, the domain and name must belong to the same organization. If multiple organizations match, the most active one is returned.\n"
+        },
+        {
+          "info": {
+            "name": "Create an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/organizations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new organization with a verified primary domain. If an organization with the same domain already exists, it returns the existing one.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

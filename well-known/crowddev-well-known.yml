@@ -1,0 +1,203 @@
+generated: '2026-08-14'
+method: probed
+source: live HTTP probes of every apis.yml + OpenAPI servers[] host
+note: >-
+  No crowd.dev / LFX Community Data Platform host serves a real /.well-known/ document.
+  crowd.dev now 301s to github.com/linuxfoundation/crowd.dev, so GitHub answers 200 with the
+  repository HTML for EVERY /.well-known/* path; cm.lfx.dev is an SPA that answers 200 with the
+  same 4.4 KB app shell for every path. Both are catch-all false positives, not documents.
+  docs.crowd.dev and lfx.dev return honest 404s; api.crowd.dev is dead (403 nginx).
+  No WellKnown or SecurityTxt pointer is emitted in apis.yml, because the provider serves
+  neither. The two REAL documents recorded below are saved for evidence but belong to adjacent
+  hosts, not to a CDP host - linuxfoundation.auth0.com is the Auth0 tenant the CDP OpenAPI names
+  as its tokenUrl (Auth0 serves that discovery document automatically for every tenant), and
+  mcp.lfx.dev is the LFX MCP Server, a sibling LFX product that exposes no CDP operations.
+
+checked: '2026-08-14'
+
+hosts:
+- host: crowd.dev
+  note: >-
+    301 redirect to https://github.com/linuxfoundation/crowd.dev. Every /.well-known/* path
+    returns HTTP 200 with ~322 KB of GitHub repository HTML. SPA/catch-all shell - treated as a miss.
+  paths:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    document: false
+
+- host: cm.lfx.dev
+  note: >-
+    Production CDP Public API host. Every /.well-known/* path returns HTTP 200 with the same
+    4,402-byte "LFX Community Data Platform | App" SPA shell. Catch-all - treated as a miss.
+    The API itself is live and answers under /api/v1 with the documented JSON error envelope.
+  paths:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    document: false
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    document: false
+
+- host: docs.crowd.dev
+  note: Legacy GitBook docs hub. Honest 404 on every well-known path.
+  paths:
+  - path: /.well-known/security.txt
+    status: 404
+    document: false
+  - path: /.well-known/openid-configuration
+    status: 404
+    document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    document: false
+  - path: /.well-known/api-catalog
+    status: 404
+    document: false
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 404
+    document: false
+  - path: /.well-known/agent.json
+    status: 404
+    document: false
+
+- host: lfx.dev
+  note: Redirects to lfx.linuxfoundation.org. Honest 404 on every well-known path.
+  paths:
+  - path: /.well-known/security.txt
+    status: 404
+    document: false
+  - path: /.well-known/openid-configuration
+    status: 404
+    document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    document: false
+  - path: /.well-known/api-catalog
+    status: 404
+    document: false
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 404
+    document: false
+  - path: /.well-known/agent.json
+    status: 404
+    document: false
+
+- host: api.crowd.dev
+  note: >-
+    Legacy crowd.dev API docs host, still linked from the docs hub. Dead - bare nginx
+    "403 Forbidden" on every path including the root.
+  paths:
+  - path: /
+    status: 403
+    document: false
+  - path: /openapi.json
+    status: 403
+    document: false
+  - path: /.well-known/security.txt
+    status: 403
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 403
+    document: false
+
+adjacent_hosts:
+- host: linuxfoundation.auth0.com
+  relationship: >-
+    Auth0 tenant named as tokenUrl by the CDP Public API OpenAPI
+    (https://linuxfoundation.auth0.com/oauth/token). Not a CDP-operated web host; Auth0 serves
+    these discovery documents automatically for every tenant, so this is not provider effort.
+  provider_effort: false
+  paths:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    document: true
+    file: crowddev-auth0-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    document: true
+    note: byte-identical to the openid-configuration response
+  - path: /.well-known/jwks.json
+    status: 200
+    document: true
+
+- host: mcp.lfx.dev
+  relationship: >-
+    LFX MCP Server (github.com/linuxfoundation/lfx-mcp) - a SIBLING Linux Foundation product.
+    Its 40+ tools cover LFX projects, committees, mailing lists, memberships, meetings, Discord,
+    email and LFX Lens; NONE of them map to a CDP Public API operation. Recorded here as
+    evidence only; it is not credited to this profile as an MCP surface.
+  provider_effort: true
+  paths:
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    document: true
+    file: crowddev-mcp-oauth-protected-resource.json
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    document: false
+  - path: /mcp
+    status: 401
+    document: false
+    note: 'POST tools/list returns "no bearer token" - live tool schemas are OAuth-gated'
+
+summary:
+  hosts_probed: 5
+  adjacent_hosts_probed: 2
+  provider_documents_found: 0
+  pointer_emitted: false

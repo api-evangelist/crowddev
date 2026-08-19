@@ -1,0 +1,476 @@
+{
+  "item": [
+    {
+      "id": "b1389f11-049e-4ece-96af-8a1320a66a50",
+      "name": "Member Affiliations API",
+      "description": {
+        "content": "API endpoints for managing project affiliations, including listing and bulk updating affiliation relationships within a profile.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "64d471ee-c068-4c93-93ab-61d24661011f",
+          "name": "List Project Affiliations",
+          "request": {
+            "name": "List Project Affiliations",
+            "description": {
+              "content": "Retrieve a list of project affiliations for a specific profile",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "member",
+                ":memberId",
+                "affiliation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "memberId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "8e2441ca-76b0-4a8c-b3c0-95d0144ce861",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "member",
+                    ":memberId",
+                    "affiliation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "memberId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"organizationLogo\": \"https://avatars.githubusercontent.com/u/1040002?v=4\",\n    \"organizationName\": \"The Linux Foundation\",\n    \"segmentId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"segmentName\": \"Kubernetes\",\n    \"segmentParentName\": \"Cloud Native Computing Foundation\",\n    \"segmentSlug\": \"kubernetes\",\n    \"dateStart\": \"2023-01-01T00:00:00.000Z\",\n    \"dateEnd\": \"2024-01-01T00:00:00.000Z\"\n  },\n  {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"organizationLogo\": \"https://avatars.githubusercontent.com/u/1040002?v=4\",\n    \"organizationName\": \"The Linux Foundation\",\n    \"segmentId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"segmentName\": \"Kubernetes\",\n    \"segmentParentName\": \"Cloud Native Computing Foundation\",\n    \"segmentSlug\": \"kubernetes\",\n    \"dateStart\": \"2023-01-01T00:00:00.000Z\",\n    \"dateEnd\": \"2024-01-01T00:00:00.000Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7ed3b90-8579-4d95-98e0-aa36de15c28d",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "member",
+                    ":memberId",
+                    "affiliation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "memberId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "22ee6f13-9ce2-48fd-a40a-40a904e86d5f",
+              "name": "Member not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "member",
+                    ":memberId",
+                    "affiliation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "memberId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c9f569aa-a85d-491b-a2d2-e830ac4f524a",
+          "name": "Update Multiple Project Affiliations",
+          "request": {
+            "name": "Update Multiple Project Affiliations",
+            "description": {
+              "content": "Bulk update project affiliations for a specific profile",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "member",
+                ":memberId",
+                "affiliation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "memberId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"<string>\",\n      \"segmentId\": \"<string>\",\n      \"dateEnd\": \"<dateTime>\",\n      \"dateStart\": \"<dateTime>\"\n    },\n    {\n      \"organizationId\": \"<string>\",\n      \"segmentId\": \"<string>\",\n      \"dateEnd\": \"<dateTime>\",\n      \"dateStart\": \"<dateTime>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "12d327bf-340f-4087-9f61-1da9d31d3e23",
+              "name": "Affiliations updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "member",
+                    ":memberId",
+                    "affiliation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "memberId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"<string>\",\n      \"segmentId\": \"<string>\",\n      \"dateEnd\": \"<dateTime>\",\n      \"dateStart\": \"<dateTime>\"\n    },\n    {\n      \"organizationId\": \"<string>\",\n      \"segmentId\": \"<string>\",\n      \"dateEnd\": \"<dateTime>\",\n      \"dateStart\": \"<dateTime>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"organizationLogo\": \"https://avatars.githubusercontent.com/u/1040002?v=4\",\n    \"organizationName\": \"The Linux Foundation\",\n    \"segmentId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"segmentName\": \"Kubernetes\",\n    \"segmentParentName\": \"Cloud Native Computing Foundation\",\n    \"segmentSlug\": \"kubernetes\",\n    \"dateStart\": \"2023-01-01T00:00:00.000Z\",\n    \"dateEnd\": \"2024-01-01T00:00:00.000Z\"\n  },\n  {\n    \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"organizationLogo\": \"https://avatars.githubusercontent.com/u/1040002?v=4\",\n    \"organizationName\": \"The Linux Foundation\",\n    \"segmentId\": \"550e8400-e29b-41d4-a716-446655440000\",\n    \"segmentName\": \"Kubernetes\",\n    \"segmentParentName\": \"Cloud Native Computing Foundation\",\n    \"segmentSlug\": \"kubernetes\",\n    \"dateStart\": \"2023-01-01T00:00:00.000Z\",\n    \"dateEnd\": \"2024-01-01T00:00:00.000Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75fa6f1e-f57a-449e-9bd2-43cc17afd511",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "member",
+                    ":memberId",
+                    "affiliation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "memberId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"<string>\",\n      \"segmentId\": \"<string>\",\n      \"dateEnd\": \"<dateTime>\",\n      \"dateStart\": \"<dateTime>\"\n    },\n    {\n      \"organizationId\": \"<string>\",\n      \"segmentId\": \"<string>\",\n      \"dateEnd\": \"<dateTime>\",\n      \"dateStart\": \"<dateTime>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9c887e1a-4ec5-40fb-82d2-953991cc8bbe",
+              "name": "Member not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "member",
+                    ":memberId",
+                    "affiliation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "memberId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"<string>\",\n      \"segmentId\": \"<string>\",\n      \"dateEnd\": \"<dateTime>\",\n      \"dateStart\": \"<dateTime>\"\n    },\n    {\n      \"organizationId\": \"<string>\",\n      \"segmentId\": \"<string>\",\n      \"dateEnd\": \"<dateTime>\",\n      \"dateStart\": \"<dateTime>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cm.lfx.dev/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "read:packages read:stewardships read:maintainer-roles"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://linuxfoundation.auth0.com/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "42810a9f-f4e4-4731-908a-255ebee33324",
+    "name": "CDP → Akrites External Advisories Member Affiliations API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.\n\nPackages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.\n\nTODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.\n",
+      "type": "text/plain"
+    }
+  }
+}

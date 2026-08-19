@@ -1,0 +1,305 @@
+{
+  "item": [
+    {
+      "id": "4eed6d6d-f3e1-4791-a820-f603bff692f2",
+      "name": "Maintainer Roles",
+      "description": {
+        "content": "Retrieve maintainer roles for a member.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8c12042b-d032-4767-8933-17f1051239c1",
+          "name": "List maintainer roles",
+          "request": {
+            "name": "List maintainer roles",
+            "description": {
+              "content": "Retrieve all maintainer roles for a member across projects.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "members",
+                ":memberId",
+                "maintainer-roles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "memberId",
+                  "description": "(Required) UUID of the member."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "f164aca5-b5e1-4357-b63a-3a93f43ac957",
+              "name": "Maintainer roles retrieved successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "maintainer-roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"maintainerRoles\": [\n    {\n      \"id\": \"c6756478-af58-7a18-8002-9045ec5389f3\",\n      \"memberId\": \"253b5c36-9cb7-045f-bce5-c00f2788e801\",\n      \"segmentId\": \"0fd31a3a-d3b4-3fec-d8a4-5211e57b5133\",\n      \"role\": \"string\",\n      \"url\": \"string\",\n      \"repoType\": \"gitlab\",\n      \"dateStart\": null,\n      \"dateEnd\": null,\n      \"maintainerFile\": null\n    },\n    {\n      \"id\": \"8025a11b-23c2-b750-8223-e76886330f62\",\n      \"memberId\": \"221e4555-d98b-0eb9-7616-aa685cc66b0b\",\n      \"segmentId\": \"fdedf20e-194e-2575-0864-202040e5ae82\",\n      \"role\": \"string\",\n      \"url\": \"string\",\n      \"repoType\": \"gerrit\",\n      \"dateStart\": null,\n      \"dateEnd\": null,\n      \"maintainerFile\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c91f0013-3a79-4274-999b-5f5223c1282a",
+              "name": "Missing or invalid authentication credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "maintainer-roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHORIZED\",\n    \"message\": \"Invalid or missing authentication\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34843e34-343a-4957-9e62-f582cda52b3b",
+              "name": "Authentication valid but insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "maintainer-roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INSUFFICIENT_SCOPE\",\n    \"message\": \"Insufficient scope for this operation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97ff77a1-506d-4773-8ddd-c6155cfe5cb6",
+              "name": "No member found with the given ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "maintainer-roles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Member not found\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cm.lfx.dev/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "read:packages read:stewardships read:maintainer-roles"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://linuxfoundation.auth0.com/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "feac0cee-ed65-45b3-8fb5-9f96c6b529c7",
+    "name": "CDP → Akrites External Advisories Maintainer Roles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.\n\nPackages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.\n\nTODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.\n",
+      "type": "text/plain"
+    }
+  }
+}

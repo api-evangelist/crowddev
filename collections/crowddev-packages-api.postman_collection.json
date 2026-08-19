@@ -1,0 +1,3750 @@
+{
+  "item": [
+    {
+      "id": "957229b7-6651-46b2-b40e-7669474d9237",
+      "name": "Packages",
+      "description": {
+        "content": "Package detail — requires read:packages and read:stewardships (see TODO above).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2cb9a085-cc3b-4eb1-a18f-d5e698ba7d23",
+          "name": "Get package detail by PURL",
+          "request": {
+            "name": "Get package detail by PURL",
+            "description": {},
+            "url": {
+              "path": [
+                "akrites-external",
+                "packages",
+                "detail"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "purl",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "read:packages read:stewardships read:maintainer-roles"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://linuxfoundation.auth0.com/oauth/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "222eba3d-71f7-4c33-8224-d9ddf39c1f8d",
+              "name": "Package detail.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites-external",
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"purl\": \"string\",\n  \"name\": \"string\",\n  \"ecosystem\": \"npm\",\n  \"latestVersion\": \"string\",\n  \"versionCount\": 9366,\n  \"health\": {\n    \"score\": 29,\n    \"band\": \"healthy\",\n    \"subScores\": {\n      \"maintainerHealth\": 1380.5191871243028,\n      \"securitySupplyChain\": 8616.425811820714,\n      \"developmentActivity\": 9041.399397314626\n    },\n    \"signalCoverageHealth\": {\n      \"key_0\": 8431,\n      \"key_1\": 7153.115376660184,\n      \"key_2\": \"string\"\n    }\n  },\n  \"impact\": {\n    \"score\": 12,\n    \"downloadsLast30Days\": \"string\",\n    \"dependentPackagesCount\": 1681,\n    \"dependentReposCount\": 8857,\n    \"transitiveReach\": 1775\n  },\n  \"riskSignals\": {\n    \"lifecycle\": null,\n    \"maintainerBusFactor\": 1122,\n    \"lastReleaseAt\": \"1996-01-17T11:36:12.923Z\",\n    \"hasSecurityFile\": true,\n    \"hasSecurityPolicy\": true,\n    \"branchProtectionEnabled\": false,\n    \"openssfScorecardScore\": 6.279134229846967\n  },\n  \"security\": {\n    \"securityPolicyUrl\": \"string\",\n    \"vulnerabilityReportingUrl\": \"string\",\n    \"bugBountyUrl\": \"string\",\n    \"pvrEnabled\": true,\n    \"criticalVulnerabilityFlag\": true\n  },\n  \"provenance\": {\n    \"resolvedRepositoryUrl\": \"string\",\n    \"declaredRepositoryUrl\": \"string\",\n    \"mappingConfidenceScore\": 0.8883446777298799,\n    \"mappingConfidenceLabel\": null,\n    \"lastCommitAt\": \"2023-08-04T09:12:04.751Z\"\n  },\n  \"supplyChainIntegrity\": {\n    \"buildProvenance\": \"string\",\n    \"signedReleases\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "76bef9e6-f8f4-46fb-a684-4f8a20d13e36",
+              "name": "Malformed purl.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites-external",
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ba2d959-9ec4-48e7-acd3-4c0036df9cc5",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites-external",
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "684d1fac-5f13-4b4e-a822-9f087100a283",
+              "name": "Token missing read:packages or read:stewardships scope.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites-external",
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02560a34-763d-4059-8f0d-9451bffad2e2",
+              "name": "Package not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites-external",
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1da0ec7a-67cd-46a7-a0cc-bcc60b76d10d",
+          "name": "Bulk package detail lookup",
+          "request": {
+            "name": "Bulk package detail lookup",
+            "description": {},
+            "url": {
+              "path": [
+                "akrites-external",
+                "packages",
+                "detail:batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "read:packages read:stewardships read:maintainer-roles"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://linuxfoundation.auth0.com/oauth/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"purls\": [\n    \"<string>\"\n  ],\n  \"page\": 1,\n  \"pageSize\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d7cc483e-a883-4f58-b0fe-86520285e137",
+              "name": "One page of results, in request order.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites-external",
+                    "packages",
+                    "detail:batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purls\": [\n    \"<string>\"\n  ],\n  \"page\": 1,\n  \"pageSize\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"page\": 8572,\n  \"pageSize\": 3209,\n  \"total\": 8266,\n  \"results\": [\n    {\n      \"requestedPurl\": \"string\",\n      \"found\": false,\n      \"package\": {\n        \"purl\": \"string\",\n        \"name\": \"string\",\n        \"ecosystem\": \"npm\",\n        \"latestVersion\": \"string\",\n        \"versionCount\": 7363,\n        \"health\": {\n          \"score\": 1,\n          \"band\": \"fair\",\n          \"subScores\": {\n            \"maintainerHealth\": 3771.217737491791,\n            \"securitySupplyChain\": 8812.932186194645,\n            \"developmentActivity\": 9153.389878255326\n          },\n          \"signalCoverageHealth\": {\n            \"key_0\": false\n          }\n        },\n        \"impact\": {\n          \"score\": 21,\n          \"downloadsLast30Days\": \"string\",\n          \"dependentPackagesCount\": 1967,\n          \"dependentReposCount\": 2693,\n          \"transitiveReach\": 4996\n        },\n        \"riskSignals\": {\n          \"lifecycle\": \"stable\",\n          \"maintainerBusFactor\": 1908,\n          \"lastReleaseAt\": \"1984-08-03T00:24:18.476Z\",\n          \"hasSecurityFile\": false,\n          \"hasSecurityPolicy\": false,\n          \"branchProtectionEnabled\": false,\n          \"openssfScorecardScore\": 9.40432189211036\n        },\n        \"security\": {\n          \"securityPolicyUrl\": \"string\",\n          \"vulnerabilityReportingUrl\": \"string\",\n          \"bugBountyUrl\": \"string\",\n          \"pvrEnabled\": false,\n          \"criticalVulnerabilityFlag\": false\n        },\n        \"provenance\": {\n          \"resolvedRepositoryUrl\": \"string\",\n          \"declaredRepositoryUrl\": \"string\",\n          \"mappingConfidenceScore\": 0.48564775128422033,\n          \"mappingConfidenceLabel\": null,\n          \"lastCommitAt\": \"1964-01-06T10:40:49.031Z\"\n        },\n        \"supplyChainIntegrity\": {\n          \"buildProvenance\": \"string\",\n          \"signedReleases\": \"string\"\n        }\n      }\n    },\n    {\n      \"requestedPurl\": \"string\",\n      \"found\": false,\n      \"package\": {\n        \"purl\": \"string\",\n        \"name\": \"string\",\n        \"ecosystem\": \"npm\",\n        \"latestVersion\": \"string\",\n        \"versionCount\": 6967,\n        \"health\": {\n          \"score\": 31,\n          \"band\": \"critical\",\n          \"subScores\": {\n            \"maintainerHealth\": 3008.8439308040915,\n            \"securitySupplyChain\": 5582.981273473385,\n            \"developmentActivity\": 695.8554847709963\n          },\n          \"signalCoverageHealth\": {\n            \"key_0\": 7312.383793902185,\n            \"key_1\": true\n          }\n        },\n        \"impact\": {\n          \"score\": 59,\n          \"downloadsLast30Days\": \"string\",\n          \"dependentPackagesCount\": 4747,\n          \"dependentReposCount\": 4882,\n          \"transitiveReach\": 4670\n        },\n        \"riskSignals\": {\n          \"lifecycle\": null,\n          \"maintainerBusFactor\": 9813,\n          \"lastReleaseAt\": \"1972-05-09T14:05:07.659Z\",\n          \"hasSecurityFile\": false,\n          \"hasSecurityPolicy\": true,\n          \"branchProtectionEnabled\": false,\n          \"openssfScorecardScore\": 2.001299274273199\n        },\n        \"security\": {\n          \"securityPolicyUrl\": \"string\",\n          \"vulnerabilityReportingUrl\": \"string\",\n          \"bugBountyUrl\": \"string\",\n          \"pvrEnabled\": false,\n          \"criticalVulnerabilityFlag\": true\n        },\n        \"provenance\": {\n          \"resolvedRepositoryUrl\": \"string\",\n          \"declaredRepositoryUrl\": \"string\",\n          \"mappingConfidenceScore\": 0.6356011814066537,\n          \"mappingConfidenceLabel\": \"Medium\",\n          \"lastCommitAt\": \"2018-12-02T00:05:58.657Z\"\n        },\n        \"supplyChainIntegrity\": {\n          \"buildProvenance\": \"string\",\n          \"signedReleases\": \"string\"\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "410be12e-07cc-423f-8a37-c5d1c4dd4a26",
+              "name": "Validation error (empty array, >100 items, malformed purl).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites-external",
+                    "packages",
+                    "detail:batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purls\": [\n    \"<string>\"\n  ],\n  \"page\": 1,\n  \"pageSize\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a20d9c0-4f69-49ad-89ad-4e87db6a0276",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites-external",
+                    "packages",
+                    "detail:batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purls\": [\n    \"<string>\"\n  ],\n  \"page\": 1,\n  \"pageSize\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67fc7ff1-2e07-4cee-b9bc-29e1601cdecd",
+              "name": "Token missing read:packages or read:stewardships scope.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites-external",
+                    "packages",
+                    "detail:batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purls\": [\n    \"<string>\"\n  ],\n  \"page\": 1,\n  \"pageSize\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d2bcdf01-1903-4e49-b4c9-7b04fe19ccd6",
+          "name": "List packages with stewardship data",
+          "request": {
+            "name": "List packages with stewardship data",
+            "description": {
+              "content": "Paginated list of critical packages enriched with stewardship status, vulnerability counts, health band, and the latest stewardship activity. Supports rich filtering and sorting.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "akrites",
+                "packages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "25"
+                },
+                {
+                  "disabled": false,
+                  "key": "ecosystem",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "lifecycle",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Substring match on package name."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "healthBand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "vulnSeverity",
+                  "value": "<string>",
+                  "description": "Filter by highest open vulnerability severity present on the package. `none` returns packages with zero vulnerabilities; `any` disables the filter.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "staleOnly",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "unstewardedOnly",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "busFactor1Only",
+                  "value": "false",
+                  "description": "Return only packages whose maintainer count is 1."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "risk"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortDir",
+                  "value": "desc"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b07fc3f1-03a3-475b-856f-f2f6731547ae",
+              "name": "Paginated package list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "healthBand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vulnSeverity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "risk"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"page\": 8040,\n  \"pageSize\": 2987,\n  \"rows\": [\n    {\n      \"purl\": \"pkg:npm/%40angular/core@17.0.0\",\n      \"name\": \"string\",\n      \"ecosystem\": \"string\",\n      \"openVulns\": 3100,\n      \"maintainerCount\": 2402,\n      \"healthBand\": \"<string>\",\n      \"stewards\": [\n        {\n          \"id\": \"string\",\n          \"stewardshipId\": \"string\",\n          \"userId\": \"string\",\n          \"role\": \"lead\",\n          \"assignedAt\": \"1967-12-04T00:19:09.814Z\",\n          \"name\": \"string\",\n          \"assignedBy\": \"string\"\n        },\n        {\n          \"id\": \"string\",\n          \"stewardshipId\": \"string\",\n          \"userId\": \"string\",\n          \"role\": \"co_steward\",\n          \"assignedAt\": \"1991-09-08T15:55:29.830Z\",\n          \"name\": \"string\",\n          \"assignedBy\": \"string\"\n        }\n      ],\n      \"criticalityScore\": 4515.316120463204,\n      \"stewardshipId\": \"string\",\n      \"stewardshipStatus\": \"<string>\",\n      \"maxVulnSeverity\": \"high\",\n      \"scorecardScore\": 4969.003318964587,\n      \"latestReleaseAt\": \"2013-02-10T19:22:17.902Z\",\n      \"lastActivity\": {\n        \"type\": \"string\",\n        \"content\": \"string\",\n        \"at\": \"1969-05-06T23:17:09.440Z\"\n      }\n    },\n    {\n      \"purl\": \"pkg:npm/%40angular/core@17.0.0\",\n      \"name\": \"string\",\n      \"ecosystem\": \"string\",\n      \"openVulns\": 5775,\n      \"maintainerCount\": 3225,\n      \"healthBand\": \"<string>\",\n      \"stewards\": [\n        {\n          \"id\": \"string\",\n          \"stewardshipId\": \"string\",\n          \"userId\": \"string\",\n          \"role\": \"lead\",\n          \"assignedAt\": \"1994-04-17T17:38:32.338Z\",\n          \"name\": \"string\",\n          \"assignedBy\": \"string\"\n        },\n        {\n          \"id\": \"string\",\n          \"stewardshipId\": \"string\",\n          \"userId\": \"string\",\n          \"role\": \"co_steward\",\n          \"assignedAt\": \"1979-06-01T12:03:08.185Z\",\n          \"name\": \"string\",\n          \"assignedBy\": \"string\"\n        }\n      ],\n      \"criticalityScore\": 6688.562413770162,\n      \"stewardshipId\": \"string\",\n      \"stewardshipStatus\": \"<string>\",\n      \"maxVulnSeverity\": \"medium\",\n      \"scorecardScore\": 1848.0323685875178,\n      \"latestReleaseAt\": \"2020-01-23T13:06:31.825Z\",\n      \"lastActivity\": {\n        \"type\": \"string\",\n        \"content\": \"string\",\n        \"at\": \"1981-11-02T17:38:00.625Z\"\n      }\n    }\n  ],\n  \"statusCounts\": {\n    \"all\": 95,\n    \"unassigned\": 42,\n    \"open\": 5,\n    \"assessing\": 12,\n    \"active\": 30,\n    \"needs_attention\": 3,\n    \"escalated\": 1,\n    \"blocked\": 0,\n    \"inactive\": 2\n  },\n  \"total\": 9794\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79af1a9e-063e-4f04-be65-41377ba6da98",
+              "name": "Validation error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "healthBand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vulnSeverity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "risk"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "24ebbebe-ef03-451a-b836-d772d1fc3441",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "healthBand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vulnSeverity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "risk"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "71057549-b7af-48dc-99ba-d60bd5e6af05",
+          "name": "Get risk matrix scatter data",
+          "request": {
+            "name": "Get risk matrix scatter data",
+            "description": {
+              "content": "Returns all critical packages as scatter-plot points with impact score (x-axis) and health score (y-axis). No pagination — the full dataset is returned.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "akrites",
+                "packages",
+                "scatter"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "181774a8-c2b7-475c-94c8-371426e9dff3",
+              "name": "Scatter plot dataset.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "scatter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"points\": [\n    {\n      \"purl\": \"string\",\n      \"name\": \"string\",\n      \"criticalityScore\": 3418,\n      \"healthScore\": 6906,\n      \"healthBand\": \"<string>\",\n      \"openVulns\": 4841,\n      \"advisoryCount\": 36,\n      \"stewardshipStatus\": \"<string>\",\n      \"stewardshipId\": \"string\"\n    },\n    {\n      \"purl\": \"string\",\n      \"name\": \"string\",\n      \"criticalityScore\": 8049,\n      \"healthScore\": 1325,\n      \"healthBand\": \"<string>\",\n      \"openVulns\": 9235,\n      \"advisoryCount\": 9672,\n      \"stewardshipStatus\": \"<string>\",\n      \"stewardshipId\": \"string\"\n    }\n  ],\n  \"total\": 2426\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5280147-54b2-49f2-b881-27470843999f",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "scatter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8423d526-5a46-48b4-b1c7-786987b3ee78",
+          "name": "Get package count metrics",
+          "request": {
+            "name": "Get package count metrics",
+            "description": {
+              "content": "Returns total and critical package counts. Lighter alternative to `/akrites/metrics` when only package-level counts are needed.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "akrites",
+                "packages",
+                "metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e3dfd722-47ea-451d-9243-e68b6f4d4019",
+              "name": "Package count metrics.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"criticalPackages\": 3314\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb6182c6-57fa-44d6-9cf3-8aa1e6615432",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cbdef87a-8f8f-4c03-9bb1-702c7db2dd4c",
+          "name": "Get package detail",
+          "request": {
+            "name": "Get package detail",
+            "description": {
+              "content": "Returns the full detail view for a single package identified by its PURL, including risk signals, security advisories, repository provenance, and current stewardship state.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "akrites",
+                "packages",
+                "detail"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "purl",
+                  "value": "<string>",
+                  "description": "(Required) Package URL (PURL) — must start with `pkg:`. Version qualifiers are normalised server-side.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c5a74c11-0741-4aa3-a568-69b6c9b66647",
+              "name": "Package detail.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"purl\": \"string\",\n  \"name\": \"string\",\n  \"ecosystem\": \"string\",\n  \"general\": {\n    \"healthScore\": 5016,\n    \"healthBand\": \"<string>\",\n    \"impact\": {\n      \"impactScore\": 713,\n      \"downloadsLastMonth\": \"string\",\n      \"dependentPackages\": 2001,\n      \"dependentRepos\": 5148,\n      \"transitiveReach\": 1470\n    },\n    \"riskSignals\": {\n      \"lifecycle\": \"string\",\n      \"maintainerBusFactor\": 208,\n      \"lastRelease\": \"2000-07-24T03:09:56.762Z\",\n      \"hasSecurityFile\": true,\n      \"hasSecurityPolicy\": true,\n      \"branchProtectionEnabled\": true,\n      \"openSSFScorecard\": 9655.690747274939\n    }\n  },\n  \"assessment\": {},\n  \"security\": {\n    \"securityContacts\": [\n      {\n        \"channel\": \"web-form\",\n        \"value\": \"security@expressjs.com\",\n        \"role\": \"maintainer\",\n        \"confidence\": \"FALLBACK\",\n        \"score\": 0.6910420082159506\n      },\n      {\n        \"channel\": \"email\",\n        \"value\": \"security@expressjs.com\",\n        \"role\": \"maintainer\",\n        \"confidence\": \"SECONDARY\",\n        \"score\": 0.27446578980874436\n      }\n    ],\n    \"packageConfidence\": \"FALLBACK\",\n    \"securityPolicies\": {\n      \"securityPolicyUrl\": \"string\",\n      \"vulnerabilityReportingUrl\": \"string\",\n      \"bugBountyUrl\": \"string\",\n      \"pvrEnabled\": false\n    },\n    \"advisories\": [\n      {\n        \"osvId\": \"GHSA-xxxx-xxxx-xxxx\",\n        \"severity\": \"critical\",\n        \"resolution\": \"patched\",\n        \"isCritical\": false\n      },\n      {\n        \"osvId\": \"GHSA-xxxx-xxxx-xxxx\",\n        \"severity\": \"low\",\n        \"resolution\": \"open\",\n        \"isCritical\": false\n      }\n    ],\n    \"cvd\": {\n      \"isPvrEnabled\": true,\n      \"tier0Steward\": \"string\",\n      \"criticalVulnerabilityFlag\": true\n    }\n  },\n  \"provenance\": {\n    \"repositoryMapping\": {\n      \"declaredRepo\": \"string\",\n      \"mappingConfidence\": 2754.4475930315916,\n      \"mappingLabel\": \"Low\",\n      \"lastCommitAt\": \"1978-03-07T18:50:41.005Z\"\n    },\n    \"supplyChainIntegrity\": {\n      \"buildProvenance\": \"string\",\n      \"signedReleases\": \"string\"\n    }\n  },\n  \"stewardship\": {\n    \"id\": \"string\",\n    \"status\": \"<string>\",\n    \"origin\": \"string\",\n    \"version\": 7381,\n    \"openedAt\": \"2023-10-25T09:18:28.937Z\",\n    \"lastStatusAt\": \"2019-09-03T21:55:30.202Z\",\n    \"resolutionPath\": \"namespace_takeover\",\n    \"statusNote\": \"string\",\n    \"stewards\": [\n      {\n        \"id\": \"string\",\n        \"stewardshipId\": \"string\",\n        \"userId\": \"string\",\n        \"role\": \"co_steward\",\n        \"assignedAt\": \"1957-01-14T16:59:18.608Z\",\n        \"name\": \"string\",\n        \"assignedBy\": \"string\"\n      },\n      {\n        \"id\": \"string\",\n        \"stewardshipId\": \"string\",\n        \"userId\": \"string\",\n        \"role\": \"lead\",\n        \"assignedAt\": \"1951-12-09T23:10:25.091Z\",\n        \"name\": \"string\",\n        \"assignedBy\": \"string\"\n      }\n    ],\n    \"lastActivityAt\": \"1957-07-06T17:18:50.277Z\"\n  },\n  \"history\": {},\n  \"latestVersion\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "876e0797-d594-4cb9-84ce-c40d427f3024",
+              "name": "Validation error (malformed purl).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4bfdd36c-e9b4-4f0f-be24-52efb9c5115b",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0912837a-8267-410f-b621-b7e8c5b2bcb2",
+              "name": "Package not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1104922d-10d3-4b93-9ab7-b6c1235d2c4b",
+          "name": "Get advisories for a package",
+          "request": {
+            "name": "Get advisories for a package",
+            "description": {
+              "content": "Returns a paginated list of security advisories for a single package identified by PURL. Intended for lazy-loading the Security tab in the package detail drawer.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "akrites",
+                "packages",
+                "advisories"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "purl",
+                  "value": "<string>",
+                  "description": "(Required) Package URL (PURL) — must start with `pkg:`."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (1-based)."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "20",
+                  "description": "Number of advisories per page (max 100)."
+                },
+                {
+                  "disabled": false,
+                  "key": "severity",
+                  "value": "<string>",
+                  "description": "Filter by severity. Accepts comma-separated values or multiple params."
+                },
+                {
+                  "disabled": false,
+                  "key": "severity",
+                  "value": "<string>",
+                  "description": "Filter by severity. Accepts comma-separated values or multiple params."
+                },
+                {
+                  "disabled": false,
+                  "key": "resolution",
+                  "value": "<string>",
+                  "description": "Filter by resolution status. Accepts comma-separated values or multiple params."
+                },
+                {
+                  "disabled": false,
+                  "key": "resolution",
+                  "value": "<string>",
+                  "description": "Filter by resolution status. Accepts comma-separated values or multiple params."
+                },
+                {
+                  "disabled": false,
+                  "key": "critical",
+                  "value": "<boolean>",
+                  "description": "Filter by criticality flag (CVSS >= 7.0)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ea34f2d6-71de-4f38-955f-ba2087798c89",
+              "name": "Paginated advisory list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "advisories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resolution",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resolution",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "critical",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"page\": 7368,\n  \"pageSize\": 9044,\n  \"total\": 35,\n  \"advisories\": [\n    {\n      \"osvId\": \"GHSA-xxxx-xxxx-xxxx\",\n      \"severity\": \"low\",\n      \"resolution\": \"open\",\n      \"isCritical\": true\n    },\n    {\n      \"osvId\": \"GHSA-xxxx-xxxx-xxxx\",\n      \"severity\": \"critical\",\n      \"resolution\": \"patched\",\n      \"isCritical\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b89bfa6f-3ddd-4bf4-aae2-1015e37eca43",
+              "name": "Validation error (malformed purl).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "advisories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resolution",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resolution",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "critical",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9f2e0f2-4669-4fad-8129-3600ee58a85f",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "advisories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resolution",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resolution",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "critical",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "941d207e-985c-47e0-97a2-f786a00854a7",
+              "name": "Package not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "advisories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "severity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resolution",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "resolution",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "critical",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36e6620e-8932-4a46-8d47-048ec9ad6001",
+          "name": "Get stewardship history for a package",
+          "request": {
+            "name": "Get stewardship history for a package",
+            "description": {
+              "content": "Returns the full activity log for the stewardship associated with the given PURL, ordered newest-first. Returns an empty list if no stewardship exists. Intended for lazy-loading the History tab in the package detail drawer.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "akrites",
+                "packages",
+                "history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "purl",
+                  "value": "<string>",
+                  "description": "(Required) Package URL (PURL) — must start with `pkg:`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "417d4513-b95b-49d0-895b-5523cbe7499b",
+              "name": "Stewardship activity history.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"events\": [\n    {\n      \"id\": \"string\",\n      \"actorType\": \"user\",\n      \"activityType\": \"state_changed\",\n      \"createdAt\": \"1963-08-02T22:27:29.326Z\",\n      \"actorUserId\": \"string\",\n      \"content\": \"string\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": true\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"actorType\": \"user\",\n      \"activityType\": \"state_changed\",\n      \"createdAt\": \"1971-03-01T20:31:22.625Z\",\n      \"actorUserId\": \"string\",\n      \"content\": \"string\",\n      \"metadata\": {\n        \"key_0\": 98,\n        \"key_1\": 1052.1344405393818\n      }\n    }\n  ],\n  \"total\": 58\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "afe159aa-bddf-4542-80b0-2a0ef7012831",
+              "name": "Validation error (malformed purl).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c4965bb-b075-4cda-a514-966947fc01ea",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0ddb513a-814f-4b9b-8029-4dc1454e91b6",
+              "name": "Package not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/%40angular/core@17.0.0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1a81d933-872f-40c0-b629-e1f2a00d97a8",
+          "name": "Batch stewardship lookup by PURL",
+          "request": {
+            "name": "Batch stewardship lookup by PURL",
+            "description": {
+              "content": "Given up to 100 PURLs, returns a map of `purl → stewardship summary` for each. Missing packages are returned as `null`. Useful for enriching external package listings with CDP stewardship state.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "akrites",
+                "packages:batch-stewardship"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"purls\": [\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d03064c0-4ba4-4fd0-8c6d-f4175bcb1432",
+              "name": "Per-purl stewardship map.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages:batch-stewardship"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purls\": [\n    \"pkg:npm/%40angular/core@17.0.0\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"packages\": {\n    \"key_0\": {\n      \"name\": \"string\",\n      \"ecosystem\": \"string\",\n      \"lifecycle\": \"stable\",\n      \"health\": 2787.383913352219,\n      \"impact\": 1524,\n      \"openVulns\": {\n        \"low\": 5657,\n        \"medium\": 8218,\n        \"high\": 1466,\n        \"critical\": 762\n      },\n      \"stewardship\": \"<string>\",\n      \"stewards\": [\n        {\n          \"userId\": \"auth0|abc123\",\n          \"role\": \"co_steward\",\n          \"assignedAt\": \"1953-03-29T06:57:02.898Z\"\n        },\n        {\n          \"userId\": \"auth0|abc123\",\n          \"role\": \"co_steward\",\n          \"assignedAt\": \"1962-10-26T05:35:19.534Z\"\n        }\n      ],\n      \"lastActivityAt\": \"1970-03-16T04:38:59.719Z\",\n      \"lastActivityDescription\": \"string\"\n    },\n    \"key_1\": {\n      \"name\": \"string\",\n      \"ecosystem\": \"string\",\n      \"lifecycle\": \"active\",\n      \"health\": 763.1592037054525,\n      \"impact\": 2509,\n      \"openVulns\": {\n        \"low\": 851,\n        \"medium\": 5010,\n        \"high\": 7627,\n        \"critical\": 9462\n      },\n      \"stewardship\": \"<string>\",\n      \"stewards\": [\n        {\n          \"userId\": \"auth0|abc123\",\n          \"role\": \"lead\",\n          \"assignedAt\": \"2013-07-07T03:25:25.669Z\"\n        },\n        {\n          \"userId\": \"auth0|abc123\",\n          \"role\": \"co_steward\",\n          \"assignedAt\": \"1972-01-02T07:35:29.211Z\"\n        }\n      ],\n      \"lastActivityAt\": \"2008-12-20T15:52:09.655Z\",\n      \"lastActivityDescription\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e04bb4ed-8968-4259-90a3-0d63f439207b",
+              "name": "Validation error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages:batch-stewardship"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purls\": [\n    \"pkg:npm/%40angular/core@17.0.0\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63eaefdb-c7fe-4de3-a748-d294b53ce6ca",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "packages:batch-stewardship"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purls\": [\n    \"pkg:npm/%40angular/core@17.0.0\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f335a830-e427-4bfc-b75d-54a8f66b3074",
+          "name": "Filtered paginated package list",
+          "request": {
+            "name": "Filtered paginated package list",
+            "description": {
+              "content": "Returns a paginated, filtered, sorted list of critical packages with their stewardship state and risk signals.\n\nUsed by three tabs:\n- **Queue tab** — full table with all filters\n- **Triage Board** — one request per status column, fired in parallel\n  (`?status=X&pageSize=50`)\n\n- **Summary panel** — click-through navigates to Queue with pre-filled filter\n\nThe response always includes `statusCounts` — per-status counts computed without the active `status` filter, used to drive the tab bar badge numbers.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ossprey",
+                "packages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "25"
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Case-insensitive substring search on package name."
+                },
+                {
+                  "disabled": false,
+                  "key": "ecosystem",
+                  "value": "<string>",
+                  "description": "Filter by package ecosystem. Not validated server-side — any ecosystem stored in the DB is accepted."
+                },
+                {
+                  "disabled": false,
+                  "key": "lifecycle",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by stewardship status. `unassigned` includes packages with no stewardship row (s.id IS NULL).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "healthBand",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "vulnSeverity",
+                  "value": "<string>",
+                  "description": "`any` = at least one open advisory · `high` = worst rank ≥ HIGH · `critical` = worst rank = CRITICAL · `none` = zero advisories.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "staleOnly",
+                  "value": "false",
+                  "description": "Return only packages with no release in ≥ 18 months."
+                },
+                {
+                  "disabled": false,
+                  "key": "unstewardedOnly",
+                  "value": "false",
+                  "description": "Return only packages with status = unassigned or no stewardship row."
+                },
+                {
+                  "disabled": false,
+                  "key": "busFactor1Only",
+                  "value": "false",
+                  "description": "Return only packages with exactly one maintainer."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "risk"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortDir",
+                  "value": "desc"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "fa21e665-74f4-4342-abde-263516e5becf",
+              "name": "Paginated package list.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "healthBand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vulnSeverity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "risk"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"rows\": [\n    {\n      \"purl\": \"pkg:maven/org.slf4j/slf4j-api\",\n      \"name\": \"slf4j-api\",\n      \"ecosystem\": \"maven\",\n      \"criticalityScore\": 0.998,\n      \"impact\": 100,\n      \"stewardshipId\": \"101\",\n      \"stewardshipStatus\": \"active\",\n      \"openVulns\": 0,\n      \"maxVulnSeverity\": null,\n      \"maintainerCount\": 2,\n      \"scorecardScore\": 7.5,\n      \"health\": {\n        \"score\": 75,\n        \"label\": \"healthy\"\n      },\n      \"lifecycle\": \"active\",\n      \"latestReleaseAt\": \"2026-04-10T00:00:00Z\",\n      \"lastActivity\": {\n        \"type\": \"state_changed\",\n        \"content\": \"Assessment complete, moving to active\",\n        \"at\": \"2026-06-01T10:00:00Z\"\n      },\n      \"stewards\": [\n        {\n          \"userId\": \"auth0|mock-user-alice\",\n          \"role\": \"lead\",\n          \"assignedAt\": \"2026-01-15T09:00:00Z\"\n        }\n      ]\n    }\n  ],\n  \"total\": 9,\n  \"page\": 1,\n  \"pageSize\": 25,\n  \"statusCounts\": {\n    \"all\": 9,\n    \"unassigned\": 1,\n    \"open\": 1,\n    \"assessing\": 1,\n    \"active\": 2,\n    \"needs_attention\": 1,\n    \"escalated\": 1,\n    \"blocked\": 1,\n    \"inactive\": 1\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c90b11cc-a08f-4bc0-9e8a-b605d53d8202",
+              "name": "Validation error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "healthBand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vulnSeverity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "risk"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e8279c2-fb19-4bc0-8447-ad9c15856058",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    },
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "healthBand",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "vulnSeverity",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "risk"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "desc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a3af8c64-2a9d-4521-bcb6-355085a4720c",
+          "name": "Scatter plot data for the Risk Matrix tab",
+          "request": {
+            "name": "Scatter plot data for the Risk Matrix tab",
+            "description": {
+              "content": "Returns all packages where `is_critical = true AND has_critical_vulnerability = true` as lightweight data points for the health-vs-impact scatter plot. No pagination — this filter set is expected to stay around 2 000 packages. Ordered by `impact DESC`.\n\nDot color is determined by `stewardshipStatus`. Legend checkboxes toggle visibility client-side — no additional API calls needed.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ossprey",
+                "packages",
+                "scatter"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "aa511110-72c5-4b60-8c19-68cc3cb07a4c",
+              "name": "Scatter plot data points.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "packages",
+                    "scatter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"points\": [\n    {\n      \"purl\": \"pkg:maven/org.slf4j/slf4j-api\",\n      \"name\": \"slf4j-api\",\n      \"criticalityScore\": 100,\n      \"healthScore\": 75,\n      \"healthBand\": \"healthy\",\n      \"stewardshipStatus\": \"active\",\n      \"stewardshipId\": \"101\",\n      \"openVulns\": 0,\n      \"advisoryCount\": 0\n    },\n    {\n      \"purl\": \"pkg:maven/com.fasterxml.jackson.core/jackson-databind\",\n      \"name\": \"jackson-databind\",\n      \"criticalityScore\": 99,\n      \"healthScore\": 0,\n      \"healthBand\": \"critical\",\n      \"stewardshipStatus\": \"needs_attention\",\n      \"stewardshipId\": \"102\",\n      \"openVulns\": 2,\n      \"advisoryCount\": 2\n    }\n  ],\n  \"total\": 2000\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7b19e61a-def3-4bfb-a5f0-53412bb4f311",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "packages",
+                    "scatter"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bbb16871-964b-47b6-9ca3-4c9da0a3865a",
+          "name": "List packages",
+          "request": {
+            "name": "List packages",
+            "description": {},
+            "url": {
+              "path": [
+                "packages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "20"
+                },
+                {
+                  "disabled": false,
+                  "key": "ecosystem",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "lifecycle",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "busFactor1Only",
+                  "value": "false",
+                  "description": "Return only packages with bus factor = 1."
+                },
+                {
+                  "disabled": false,
+                  "key": "staleOnly",
+                  "value": "false",
+                  "description": "Return only packages with no release in >= 18 months."
+                },
+                {
+                  "disabled": false,
+                  "key": "unstewardedOnly",
+                  "value": "false",
+                  "description": "Return only packages with stewardship = unassigned."
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "name"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortDir",
+                  "value": "asc"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "read:packages read:stewardships read:maintainer-roles"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://linuxfoundation.auth0.com/oauth/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "39592493-44b4-4f04-aeb5-3d7a74830df6",
+              "name": "Paginated list of packages.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "name"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "asc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"page\": 9829,\n  \"pageSize\": 2879,\n  \"total\": 4635,\n  \"filters\": {\n    \"ecosystem\": null,\n    \"lifecycle\": null,\n    \"busFactor1Only\": true,\n    \"staleOnly\": true,\n    \"unstewardedOnly\": false\n  },\n  \"sort\": {\n    \"by\": \"string\",\n    \"dir\": \"string\"\n  },\n  \"packages\": [\n    {\n      \"purl\": \"pkg:npm/lodash\",\n      \"name\": \"lodash\",\n      \"ecosystem\": \"npm\",\n      \"health\": {\n        \"score\": 18,\n        \"label\": \"critical\"\n      },\n      \"impact\": 71,\n      \"lifecycle\": \"stable\",\n      \"maintainerBusFactor\": 1,\n      \"openVulns\": {\n        \"low\": 0,\n        \"medium\": 0,\n        \"high\": 1,\n        \"critical\": 0\n      },\n      \"stewardshipId\": \"42\",\n      \"stewardship\": \"<string>\",\n      \"stewards\": [\n        {\n          \"userId\": \"abc123\",\n          \"role\": \"lead\",\n          \"assignedAt\": \"2001-05-11T15:36:09.518Z\",\n          \"username\": \"jrodriguez\",\n          \"displayName\": \"Jonathan R.\"\n        },\n        {\n          \"userId\": \"abc123\",\n          \"role\": \"co_steward\",\n          \"assignedAt\": \"2023-04-21T03:36:27.705Z\",\n          \"username\": \"jrodriguez\",\n          \"displayName\": \"Jonathan R.\"\n        }\n      ]\n    },\n    {\n      \"purl\": \"pkg:npm/lodash\",\n      \"name\": \"lodash\",\n      \"ecosystem\": \"npm\",\n      \"health\": {\n        \"score\": 18,\n        \"label\": \"critical\"\n      },\n      \"impact\": 71,\n      \"lifecycle\": \"archived\",\n      \"maintainerBusFactor\": 1,\n      \"openVulns\": {\n        \"low\": 0,\n        \"medium\": 0,\n        \"high\": 1,\n        \"critical\": 0\n      },\n      \"stewardshipId\": \"42\",\n      \"stewardship\": \"<string>\",\n      \"stewards\": [\n        {\n          \"userId\": \"abc123\",\n          \"role\": \"lead\",\n          \"assignedAt\": \"1960-03-23T06:00:28.720Z\",\n          \"username\": \"jrodriguez\",\n          \"displayName\": \"Jonathan R.\"\n        },\n        {\n          \"userId\": \"abc123\",\n          \"role\": \"lead\",\n          \"assignedAt\": \"2020-01-28T02:59:02.526Z\",\n          \"username\": \"jrodriguez\",\n          \"displayName\": \"Jonathan R.\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "598ad617-cc27-4273-a4c0-fe559baa40cf",
+              "name": "Validation error (e.g. invalid query parameters).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "name"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "asc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Package not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b985a85-4aba-415f-89c1-3731852f3e9d",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "name"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "asc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Package not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fa0b68c2-64f1-4174-8aa6-7a0cedd181a1",
+              "name": "Insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "20"
+                    },
+                    {
+                      "key": "ecosystem",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lifecycle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "busFactor1Only",
+                      "value": "false"
+                    },
+                    {
+                      "key": "staleOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "unstewardedOnly",
+                      "value": "false"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "name"
+                    },
+                    {
+                      "key": "sortDir",
+                      "value": "asc"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Package not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f1e6718c-7d28-4534-8449-f8a380fc2b8f",
+          "name": "Overview metrics for the list page header",
+          "request": {
+            "name": "Overview metrics for the list page header",
+            "description": {},
+            "url": {
+              "path": [
+                "packages",
+                "metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "read:packages read:stewardships read:maintainer-roles"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://linuxfoundation.auth0.com/oauth/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "825e8153-8543-4379-b48f-93c58cddff1a",
+              "name": "Aggregate package metrics.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalPackages\": 0,\n  \"criticalPackages\": 0\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea05596a-ddc5-42c7-a0c5-8dd62eb0dfe6",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Package not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59e9767c-b71e-409e-b66d-2f31f5c7776e",
+              "name": "Insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Package not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b741209-29bd-4609-9a9e-1a9a7db42540",
+          "name": "Get full package detail",
+          "request": {
+            "name": "Get full package detail",
+            "description": {
+              "content": "Returns data for the drawer's Overview, Security, and Provenance tabs. Pass the canonical purl as a query parameter — no URL-encoding needed. Example: `?purl=pkg:npm/lodash@4.17.21`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "packages",
+                "detail"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "purl",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "read:packages read:stewardships read:maintainer-roles"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://linuxfoundation.auth0.com/oauth/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e1c818a5-c65a-4f19-a865-f7f9c4226ad0",
+              "name": "Package found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/lodash@4.17.21"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"purl\": \"pkg:npm/lodash\",\n  \"name\": \"lodash\",\n  \"ecosystem\": \"npm\",\n  \"general\": {\n    \"healthScore\": 18,\n    \"healthScoreDetails\": {\n      \"total\": 18,\n      \"label\": \"critical\",\n      \"maintainerHealth\": 4,\n      \"securitySupplyChain\": 8,\n      \"developmentActivity\": 6\n    },\n    \"healthBand\": \"critical\",\n    \"impact\": {\n      \"impactScore\": 71,\n      \"downloadsLastMonth\": 52142891,\n      \"dependentPackages\": 142312,\n      \"dependentRepos\": 39104,\n      \"transitiveReach\": \"Top 0.4%\"\n    },\n    \"riskSignals\": {\n      \"lifecycle\": \"declining\",\n      \"maintainerBusFactor\": 1,\n      \"lastRelease\": \"2021-02-20T00:00:00Z\",\n      \"hasSecurityFile\": null,\n      \"openSSFScorecard\": 5.2\n    }\n  },\n  \"assessment\": {},\n  \"security\": {\n    \"securityContacts\": null,\n    \"advisories\": [\n      {\n        \"osvId\": \"CVE-2021-44906\",\n        \"severity\": \"high\",\n        \"resolution\": null\n      }\n    ],\n    \"cvd\": {\n      \"isPvrEnabled\": null,\n      \"hasSecurityPolicyEnabled\": null,\n      \"tier0Steward\": null,\n      \"criticalVulnerabilityFlag\": true\n    }\n  },\n  \"provenance\": {\n    \"repositoryMapping\": {\n      \"declaredRepo\": \"https://github.com/lodash/lodash\",\n      \"mappingConfidence\": 0.98,\n      \"lastCommitAt\": \"2024-09-14T00:00:00Z\"\n    },\n    \"supplyChainIntegrity\": {\n      \"buildProvenance\": null,\n      \"signedReleases\": null\n    }\n  },\n  \"stewardship\": {\n    \"status\": \"unassigned\",\n    \"stewards\": null,\n    \"lastActivityAt\": null\n  },\n  \"history\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "872bc4f1-d5a6-4381-bb47-dab8ec361ffb",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/lodash@4.17.21"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Package not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "563df675-c818-49b8-ad50-9595d63f43da",
+              "name": "Insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/lodash@4.17.21"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Package not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a207f204-1d99-4fb7-9864-b6ea7b84dfc5",
+              "name": "Package not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "packages",
+                    "detail"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "purl",
+                      "value": "pkg:npm/lodash@4.17.21"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Package not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cm.lfx.dev/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "read:packages read:stewardships read:maintainer-roles"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://linuxfoundation.auth0.com/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "289b1724-15bd-438f-83a9-9145f753e01f",
+    "name": "CDP → Akrites External Advisories Packages API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.\n\nPackages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.\n\nTODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.\n",
+      "type": "text/plain"
+    }
+  }
+}

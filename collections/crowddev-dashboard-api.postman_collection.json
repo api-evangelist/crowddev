@@ -1,0 +1,707 @@
+{
+  "item": [
+    {
+      "id": "4c24eacb-c535-4324-803b-5483e3f59a1c",
+      "name": "Dashboard",
+      "description": {
+        "content": "KPI bar metrics and activity feed.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "01014c74-7509-4a3a-b0d5-ba750a60b106",
+          "name": "Get KPI bar metrics",
+          "request": {
+            "name": "Get KPI bar metrics",
+            "description": {
+              "content": "Returns aggregate counts that power the global KPI bar on the OSSPREY dashboard (total packages, coverage %, active stewards, unassigned critical, needs-attention, escalated).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "akrites",
+                "metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1827710b-110f-4be5-8289-550cfacaf50d",
+              "name": "Metrics snapshot.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"criticalPackages\": 3391,\n  \"coveragePercent\": 4118.875676515516,\n  \"coverageTrend\": 2777.09574857981,\n  \"activeStewards\": 2497,\n  \"unassignedCritical\": 8417,\n  \"needsAttention\": 7699,\n  \"escalated\": 9516\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7a76c90-7f13-4b4b-bed0-24562a31298a",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2d40046e-b028-4153-86ba-4625acef8197",
+          "name": "Get stewardship activity feed",
+          "request": {
+            "name": "Get stewardship activity feed",
+            "description": {
+              "content": "Returns a paginated, reverse-chronological list of stewardship activity events across all packages (status changes, assignments, escalations, etc.).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "akrites",
+                "activity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "25"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9bc708c6-f680-40c2-8d2b-e95272d8d7f4",
+              "name": "Paginated activity feed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"page\": 5453,\n  \"pageSize\": 5044,\n  \"rows\": [\n    {\n      \"id\": \"string\",\n      \"stewardshipId\": \"string\",\n      \"packagePurl\": \"string\",\n      \"packageName\": \"string\",\n      \"packageEcosystem\": \"string\",\n      \"actorUserId\": \"string\",\n      \"actorName\": \"string\",\n      \"actorType\": \"user\",\n      \"activityType\": \"status_change\",\n      \"stewardshipStatus\": \"active\",\n      \"createdAt\": \"1981-08-28T18:32:49.776Z\",\n      \"content\": \"string\",\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": 5734\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"stewardshipId\": \"string\",\n      \"packagePurl\": \"string\",\n      \"packageName\": \"string\",\n      \"packageEcosystem\": \"string\",\n      \"actorUserId\": \"string\",\n      \"actorName\": \"string\",\n      \"actorType\": \"user\",\n      \"activityType\": \"status_change\",\n      \"stewardshipStatus\": \"open\",\n      \"createdAt\": \"1981-09-15T00:31:44.168Z\",\n      \"content\": \"string\",\n      \"metadata\": {\n        \"key_0\": false\n      }\n    }\n  ],\n  \"total\": 5581\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2f69fe7-d9b7-4399-836a-58e398587a92",
+              "name": "Validation error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cda485a9-2af7-4a06-99ba-5be72aa5377e",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "akrites",
+                    "activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b3f447a5-dc44-450c-9a00-929310a447c3",
+          "name": "Global KPI bar metrics",
+          "request": {
+            "name": "Global KPI bar metrics",
+            "description": {
+              "content": "Returns the seven aggregate metrics shown in the sticky KPI bar across all four dashboard tabs. Fetch once on page load; refresh after any write action.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ossprey",
+                "metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "723ed81f-8a21-4972-938d-6a89a16c7cdf",
+              "name": "KPI metrics.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalPackages\": 1842,\n  \"criticalPackages\": 312,\n  \"coveragePercent\": 33.2,\n  \"coverageTrend\": null,\n  \"activeStewards\": 42,\n  \"unassignedCritical\": 1230,\n  \"needsAttention\": 47,\n  \"escalated\": 8\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db2d5086-385d-4f88-8c69-b72d95c93634",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce3d2910-4b31-4a98-99e5-f3de323d2852",
+          "name": "Paginated stewardship activity feed",
+          "request": {
+            "name": "Paginated stewardship activity feed",
+            "description": {
+              "content": "Returns recent stewardship events across all packages, ordered by most recent first. Used to populate the activity feed on the Overview tab. The frontend groups items by day using `createdAt`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ossprey",
+                "activity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "25"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "d6483ea0-321d-4a7b-8dba-eb852a4f2ca2",
+              "name": "Paginated activity feed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"rows\": [\n    {\n      \"id\": \"9182736\",\n      \"stewardshipId\": \"4501\",\n      \"packagePurl\": \"pkg:maven/org.slf4j/slf4j-api\",\n      \"packageName\": \"slf4j-api\",\n      \"packageEcosystem\": \"maven\",\n      \"actorUserId\": \"auth0|mock-user-alice\",\n      \"actorType\": \"user\",\n      \"activityType\": \"state_changed\",\n      \"content\": \"Assessment complete, moving to active\",\n      \"metadata\": {\n        \"from\": \"assessing\",\n        \"to\": \"active\"\n      },\n      \"stewardshipStatus\": \"active\",\n      \"createdAt\": \"2026-06-14T10:23:00Z\"\n    }\n  ],\n  \"total\": 11,\n  \"page\": 1,\n  \"pageSize\": 25\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "616f2b1d-56d8-4c95-a82a-c173ca50dba1",
+              "name": "Validation error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "020d22c6-6f90-4e29-8506-c3a439116be9",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ossprey",
+                    "activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Invalid query parameter.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cm.lfx.dev/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "read:packages read:stewardships read:maintainer-roles"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://linuxfoundation.auth0.com/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a1033222-d2f0-4fb5-baf6-62591e95d39a",
+    "name": "CDP → Akrites External Advisories Dashboard API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.\n\nPackages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.\n\nTODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.\n",
+      "type": "text/plain"
+    }
+  }
+}

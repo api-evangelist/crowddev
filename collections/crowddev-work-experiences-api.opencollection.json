@@ -1,0 +1,154 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Work Experiences API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Work Experiences",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List work experiences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/work-experiences",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              }
+            ]
+          },
+          "docs": "Retrieve all work experiences for a member."
+        },
+        {
+          "info": {
+            "name": "Add a work experience",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/work-experiences",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a new work experience to a member profile. Returns 409 if a work experience with the same dates already exists.\n"
+        },
+        {
+          "info": {
+            "name": "Update a work experience",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/work-experiences/:workExperienceId",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              },
+              {
+                "name": "workExperienceId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the work experience."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace all fields of an existing work experience."
+        },
+        {
+          "info": {
+            "name": "Verify or reject a work experience",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/work-experiences/:workExperienceId",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              },
+              {
+                "name": "workExperienceId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the work experience."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set a work experience as verified or rejected. When rejected (`verified: false`), the work experience is soft-deleted and affiliations are recalculated.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a work experience",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/work-experiences/:workExperienceId",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              },
+              {
+                "name": "workExperienceId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the work experience."
+              }
+            ]
+          },
+          "docs": "Soft-delete a work experience from a member profile. Affiliations are automatically recalculated.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

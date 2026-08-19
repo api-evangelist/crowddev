@@ -1,0 +1,149 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Stewardship Actions API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Stewardship Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Open a package for stewardship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/stewardships/open",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Transitions the stewardship status to `open`, marking the package as available for claiming. If a stewardship row does not exist yet, one is created. If the stewardship is already `open`, this is a no-op (idempotent).\n"
+        },
+        {
+          "info": {
+            "name": "Assign a steward to a stewardship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/stewardships/:id/assign",
+            "params": [
+              {
+                "name": "id",
+                "value": "42",
+                "type": "path",
+                "description": "Stewardship ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Assigns a user as a steward with the given role. If the user is already an active steward, the role is updated (soft-delete + re-insert). Returns the unchanged stewardship record and the full active stewards list after the operation.\n"
+        },
+        {
+          "info": {
+            "name": "Escalate a stewardship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/stewardships/:id/escalate",
+            "params": [
+              {
+                "name": "id",
+                "value": "42",
+                "type": "path",
+                "description": "Stewardship ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Transitions the stewardship to `escalated` status and logs the chosen resolution path in the activity log. Optional free-text notes can be included.\n"
+        },
+        {
+          "info": {
+            "name": "Update stewardship status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cm.lfx.dev/api/v1/stewardships/:id/status",
+            "params": [
+              {
+                "name": "id",
+                "value": "42",
+                "type": "path",
+                "description": "Stewardship ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates the stewardship status and logs a `state_changed` activity entry. Valid target statuses: `assessing`, `active`, `needs_attention`, `blocked`, `inactive`. When transitioning to `inactive`, `inactiveReason` is required.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

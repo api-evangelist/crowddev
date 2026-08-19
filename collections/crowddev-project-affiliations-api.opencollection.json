@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Project Affiliations API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Project Affiliations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List project affiliations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/project-affiliations",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              }
+            ]
+          },
+          "docs": "Retrieve per-project affiliation data for a member, including maintainer roles and resolved affiliations. Affiliations come from project-level overrides when available, otherwise from work experiences.\n"
+        },
+        {
+          "info": {
+            "name": "Override project affiliations",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/project-affiliations/:projectId",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              },
+              {
+                "name": "projectId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the project (segment ID)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace all project-level affiliation overrides for a member on a specific project. Pass an empty `affiliations` array to clear overrides (falling back to work experience-based affiliations).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

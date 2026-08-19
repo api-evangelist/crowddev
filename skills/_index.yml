@@ -1,5 +1,6 @@
-generated: '2026-07-18'
+generated: '2026-08-14'
 method: generated
+source: openapi/crowddev-cdp-public-openapi.yml
 skills:
 - file: crowddev-resolve-and-verify-identity.md
   name: Resolve and verify a member identity
@@ -9,3 +10,32 @@ skills:
   name: Look up contributor affiliations by GitHub handle
   api: openapi/crowddev-cdp-public-openapi.yml
   operations: [getBulkAffiliations, getAffiliationByHandle]
+
+provider_published:
+  found: true
+  method: searched
+  checked: '2026-08-14'
+  source: https://github.com/linuxfoundation/crowd.dev/tree/main/.claude/skills
+  applies_to: contributors-to-the-codebase
+  counted_as_api_skills: false
+  note: >-
+    crowd.dev publishes ten Claude Agent Skills, a subagent and a rules directory in its
+    Apache-2.0 repo under .claude/. They are CONTRIBUTOR-workflow skills - write an ADR, write a
+    commit, sign off DCO, run preflight, review a PR, write unit tests, write API e2e tests,
+    scaffold a Snowflake connector, set up and extend the packages worker. None of them drive the
+    CDP Public API, so they are not counted as API consumption skills; recorded because they are
+    genuine provider-authored agent artifacts and a real agent-readiness signal for the codebase.
+  skills:
+  - adr
+  - commit
+  - dco
+  - packages-worker-add-entrypoint
+  - packages-worker-setup
+  - preflight
+  - review-pr
+  - scaffold-snowflake-connector
+  - write-api-e2e-tests
+  - write-unit-tests
+  agents:
+  - code-standards-enforcer
+  agent_instructions_file: https://github.com/linuxfoundation/crowd.dev/blob/main/CLAUDE.md

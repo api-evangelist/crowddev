@@ -1,0 +1,51 @@
+generated: '2026-08-14'
+method: searched
+source: https://github.com/linuxfoundation/crowd.dev/blob/main/backend/src/api/public/openapi.yaml
+docs:
+- https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+- https://github.com/linuxfoundation/crowd.dev/blob/main/scripts/cli
+note: >-
+  There is no public sandbox. CDP publishes a named non-production environment in the OpenAPI
+  servers[] block - https://lf-staging.crowd.dev/api/v1 - and ADR-0016 confirms it carries its own
+  Auth0 audience, but it is an internal Linux Foundation staging tier, not a self-serve test
+  environment: no test credentials, no test fixtures, no seeded data and no test-mode key prefix are
+  published anywhere. The only environment an outside developer can actually exercise is a full
+  local stack brought up from the Apache-2.0 monorepo with `./scripts/cli scaffold up && ./scripts/cli start`.
+  No test values are recorded below because the provider publishes none; nothing here is invented.
+
+public_sandbox: false
+
+environments:
+- name: Production
+  base_url: https://cm.lfx.dev/api/v1
+  audience: https://cm.lfx.dev/api/
+  self_serve: false
+  source: backend/src/api/public/openapi.yaml servers[0]
+- name: Staging
+  base_url: https://lf-staging.crowd.dev/api/v1
+  audience: https://lf-staging.crowd.dev/api/
+  self_serve: false
+  internal: true
+  source: backend/src/api/public/openapi.yaml servers[1]; ADR-0016 (shared AUTH0_CONFIG audience)
+  note: >-
+    Declared in the akrites, ossprey, packages, public and stewardships specs. Not declared in
+    akrites-external (production only) or in backend/id-openapi.yaml.
+
+key_modes: []
+test_credentials: []
+test_fixtures: []
+time_simulation: null
+
+local_stack:
+  supported: true
+  license: Apache-2.0
+  repo: https://github.com/linuxfoundation/crowd.dev
+  bring_up:
+  - ./scripts/cli scaffold up
+  - ./scripts/cli start
+  test_profile:
+  - ./scripts/cli scaffold up-test
+  - ./scripts/cli start-e2e
+  e2e_design_docs:
+  - https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0012-api-e2e-test-architecture.md
+  - https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0013-api-e2e-test-suite-design.md

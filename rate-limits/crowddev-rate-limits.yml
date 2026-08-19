@@ -1,0 +1,88 @@
+generated: '2026-08-14'
+method: searched
+source: https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0018-per-client-rate-limiting-members-resolve.md
+docs:
+- https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0018-per-client-rate-limiting-members-resolve.md
+- https://github.com/linuxfoundation/crowd.dev/blob/main/backend/src/api/public/openapi.yaml
+- https://github.com/linuxfoundation/crowd.dev/blob/main/backend/src/api/public/v1/akrites/openapi.yaml
+note: >-
+  CDP publishes no rate-limit page in its product documentation. The limits below are published
+  first-party but in the Apache-2.0 source repository - in ADR-0018 (accepted 2026-08-12) and in
+  the `description` text of the OpenAPI documents themselves. This is real, dated, provider-authored
+  documentation; it is just not where an integrator would look for it.
+
+limit_count: 4
+
+status_code_on_exhaustion: 429
+error_code_on_exhaustion: RATE_LIMITED
+error_envelope: '{ "error": { "code": "RATE_LIMITED", "message": "Too many requests, please try again later" } }'
+
+response_headers:
+- name: RateLimit-*
+  emitted: true
+  source: ADR-0018 Consequences
+  note: >-
+    "`Retry-After` and `RateLimit-*` headers are emitted on 429, giving callers actionable backoff
+    signals." Express `express-rate-limit` standard headers; the exact field set
+    (RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset) is not enumerated in the ADR and is
+    not declared in the OpenAPI `TooManyRequests` response component.
+- name: Retry-After
+  emitted: true
+  source: ADR-0018 Consequences
+
+limits:
+- id: global-ip
+  scope: per-ip
+  applies_to: every CDP public API route except POST /v1/members/resolve
+  limit: 200
+  window: 1m
+  burst: null
+  evidence: >-
+    ADR-0018 Context - "The existing global rate limiter (200 req/min, IP-keyed) collapses to a
+    single bucket behind the ingress". ADR-0018 Decision configures the global limiter to skip
+    POST /v1/members/resolve via an exact method + path check.
+- id: members-resolve-per-client
+  scope: per-client
+  key: 'req.actor.id - the M2M client `sub` claim from the verified Auth0 JWT'
+  applies_to: POST /v1/members/resolve
+  operation_id: resolveMember
+  limit: 200
+  window: 1m
+  burst: null
+  distributed: false
+  evidence: >-
+    ADR-0018 Decision - dedicated `express-rate-limit` middleware keyed by `req.actor.id`,
+    200 req/min per client, default in-memory MemoryStore.
+  caveat: >-
+    ADR-0018 Consequences (Negative) - "Effective per-client limit is 200 x replica_count under
+    HPA scale-out - not a hard ceiling." A Redis-backed distributed store is explicitly deferred.
+- id: cdp-public-documented
+  scope: per-ip
+  applies_to: CDP Public API operations declaring the TooManyRequests response
+  limit: 60
+  window: 60s
+  evidence: >-
+    backend/src/api/public/openapi.yaml, components.responses.TooManyRequests -
+    "Rate limit exceeded (60 requests per 60 seconds)."
+  caveat: >-
+    Disagrees with the 200 req/min global limiter described in ADR-0018 (2026-08-12); the OpenAPI
+    text is the older of the two. Recorded as published, not reconciled.
+- id: akrites-subgroups
+  scope: per-ip
+  applies_to: /akrites/packages/* and /akrites/stewardships/* sub-groups
+  limit: 60
+  window: 1m
+  independent_buckets: true
+  evidence: >-
+    backend/src/api/public/v1/akrites/openapi.yaml info.description - "packages and stewardships
+    sub-groups each have an independent 60 requests/min per-IP bucket."
+
+client_side_pacing:
+  consumer: Auth0 `cdp_uuid` Action
+  window_limit: 60
+  window: 1m
+  evidence: ADR-0018 Context - "PACER_WINDOW_LIMIT = 60/min" on the Auth0 side.
+
+related:
+  errors: errors/crowddev-problem-types.yml
+  conventions: conventions/crowddev-conventions.yml

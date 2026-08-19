@@ -1,0 +1,200 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Stewardships API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Stewardships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List packages stewarded by the authenticated user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/stewardships/me/packages",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by stewardship status."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring match on package name or PURL."
+              },
+              {
+                "name": "ecosystem",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "healthBand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "vulnSeverity",
+                "value": "",
+                "type": "query",
+                "description": "Filter to packages with at least one vulnerability of this severity or worse."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortDir",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of packages where the authenticated user (`req.actor.id`) is an active steward (`lead` or `co_steward`). Includes package metadata, health, open vulnerabilities, last activity, and the user's role and stewardship status. The `meta.statusCounts` object always reflects counts across **all** of the user's stewardships, regardless of the active `status` filter, so the tab bar can render all buckets at once.\n"
+        },
+        {
+          "info": {
+            "name": "Latest activity feed for the authenticated user's stewardships",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/stewardships/me/activity",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of stewardship statuses to filter. Example: `needs_attention,blocked,escalated,assessing`\n"
+              }
+            ]
+          },
+          "docs": "Returns the most recent stewardship activity events scoped to packages where the authenticated user is an active steward. Results are **deduplicated by stewardship** — only the single most recent event per package is returned — and sorted newest-first. Designed to power the \"Latest activity\" strip on the My Stewardships page. Default `pageSize` is 3 (one card per attention-needed status); increase for a \"load more\" experience.\n"
+        },
+        {
+          "info": {
+            "name": "Open a stewardship for a package",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/akrites/stewardships/open",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new stewardship record for the package identified by the given PURL, setting its status to `open`. The authenticated user is recorded as the actor who opened it.\n"
+        },
+        {
+          "info": {
+            "name": "Assign a steward to a stewardship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/akrites/stewardships/:id/assign",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assigns a user as a steward (lead or co-steward) for the given stewardship. Optionally transitions the stewardship status to `assessing` in the same operation.\n"
+        },
+        {
+          "info": {
+            "name": "Escalate a stewardship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/akrites/stewardships/:id/escalate",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Transitions the stewardship to `escalated` status and records the chosen resolution path. Optionally attaches a free-text note.\n"
+        },
+        {
+          "info": {
+            "name": "Update stewardship status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cm.lfx.dev/api/v1/akrites/stewardships/:id/status",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the stewardship status. Valid target statuses are: `assessing`, `active`, `needs_attention`, `blocked`, `inactive`. When setting `inactive`, `inactiveReason` is required.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

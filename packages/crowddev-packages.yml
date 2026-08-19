@@ -1,0 +1,91 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org, github.com/linuxfoundation/crowd.dev (root package.json,
+  pnpm-workspace.yaml), github.com/CrowdDotDev
+note: >-
+  crowd.dev / LFX Community Data Platform publishes NO client SDK on any package registry.
+  The monorepo root package.json is `"private": true` and every pnpm workspace package under
+  services/libs (@crowd/types, @crowd/common, @crowd/redis, @crowd/database, ...) is an internal
+  workspace dependency that is never published - each of those names 404s on registry.npmjs.org.
+  The only distribution channel is the Apache-2.0 source repository itself plus the container
+  images the in-repo `./scripts/cli build-and-push` flow builds. Consumers of the CDP Public API
+  integrate over plain HTTPS with an Auth0 bearer token; there is no generated or hand-written
+  client library to depend on. No `SDKs` pointer is emitted in apis.yml, because there is no SDK.
+
+package_count: 0
+official_sdk_count: 0
+packages: []
+
+registries_probed:
+- registry: npm
+  endpoint: https://registry.npmjs.org/<pkg>
+  queries:
+  - name: '@crowd/sdk'
+    status: 404
+    version: null
+    published: null
+  - name: '@crowd/types'
+    status: 404
+    version: null
+    published: null
+  - name: '@crowd/common'
+    status: 404
+    version: null
+    published: null
+  - name: '@crowddotdev/sdk'
+    status: 404
+    version: null
+    published: null
+  - name: crowd.dev
+    status: 404
+    version: null
+    published: null
+  - name: '@linuxfoundation/lfx-sdk'
+    status: 404
+    version: null
+    published: null
+- registry: pypi
+  endpoint: https://pypi.org/pypi/<pkg>/json
+  queries:
+  - name: crowd-dev
+    status: 404
+    version: null
+    published: null
+  - name: crowddev
+    status: 404
+    version: null
+    published: null
+  - name: lfx-cdp
+    status: 404
+    version: null
+    published: null
+
+source_distribution:
+- name: linuxfoundation/crowd.dev
+  kind: source-repository
+  url: https://github.com/linuxfoundation/crowd.dev
+  license: Apache-2.0
+  official: true
+  version: null
+  published: null
+  note: >-
+    Monorepo, actively developed (last push 2026-08-14, 3,367 stars). No git tags have been cut
+    since v0.49.0 (2023-11-21), so there is no released, dated version to record - deployment is
+    continuous into cm.lfx.dev rather than tagged. Recorded as null with this note, not guessed.
+- name: CrowdDotDev/git-integration
+  kind: source-repository
+  url: https://github.com/CrowdDotDev/git-integration
+  official: true
+  archived: true
+  version: null
+  published: null
+  note: Pre-acquisition org; archived.
+- name: CrowdDotDev/sidekick
+  kind: source-repository
+  url: https://github.com/CrowdDotDev/sidekick
+  official: true
+  archived: true
+  version: null
+  published: null
+  note: Pre-acquisition org; archived 2023.

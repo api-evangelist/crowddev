@@ -1,26 +1,87 @@
-generated: '2026-07-18'
-method: derived
-source: openapi/*.yml
+generated: '2026-08-14'
+method: searched
+source: https://github.com/linuxfoundation/crowd.dev/tree/main/docs/adr
+derived_from: openapi/*.yml
+note: >-
+  Upgraded from derived to searched on 2026-08-14 against the first-party ADR set in
+  docs/adr/ and live probes of cm.lfx.dev. No compliance program, certification or attestation
+  (SOC 2, ISO 27001, PCI, HIPAA, FedRAMP) is published for the Community Data Platform, so no
+  Compliance pointer is emitted in apis.yml. No security.txt, bug bounty or vulnerability
+  disclosure page was found on any crowd.dev, cm.lfx.dev, lfx.dev or linuxfoundation.org host
+  (probe-security-programs.py, 2026-08-14: vdp=none trust=none), so no Security pointer either.
+
 standards:
 - id: oauth2
   conforms: true
-  evidence: openapi securitySchemes type oauth2 (clientCredentials) — OAuth2Bearer, M2MBearer
+  evidence: >-
+    OpenAPI securitySchemes type oauth2 (clientCredentials) on OAuth2Bearer and M2MBearer;
+    ADR-0016 documents the Auth0 `cdp_public_api` audience and per-endpoint requireScopes enforcement.
 - id: oauth2-client-credentials
   conforms: true
-  evidence: machine-to-machine client-credentials flow used across CDP modules
+  evidence: Machine-to-machine client-credentials flow used across every CDP module.
+- id: oauth2-private-key-jwt
+  conforms: true
+  evidence: >-
+    ADR-0016 - the Akrites Enclave client authenticates to Auth0 with an RSA-signed
+    `client_assertion` (RFC 7523 private_key_jwt); lfx_one uses client_secret_post.
 - id: bearer-token-auth
   conforms: true
-  evidence: http bearer securitySchemes (StaticApiKey, BearerAuth)
-- id: rfc9457-problem-details
-  conforms: false
-  evidence: errors returned as application/json { error{code,message} }, not application/problem+json
+  evidence: http bearer securitySchemes (StaticApiKey, BearerAuth) with bearerFormat JWT.
 - id: openidconnect
   conforms: false
+  evidence: >-
+    No openIdConnect securityScheme is declared. The Auth0 tenant does serve a valid OIDC
+    discovery document (well-known/crowddev-auth0-openid-configuration.json), but the API
+    consumes machine tokens, not ID tokens.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors are application/json `{ "error": { "code", "message" } }`, not
+    application/problem+json. Confirmed live 2026-08-14 against cm.lfx.dev/api/v1.
+- id: rfc6750-bearer-token-usage
+  conforms: true
+  evidence: 'Authorization: Bearer <token> on every authenticated route.'
+- id: ratelimit-headers
+  conforms: partial
+  evidence: >-
+    ADR-0018 states `RateLimit-*` and `Retry-After` are emitted on 429. The headers are not
+    declared on the OpenAPI TooManyRequests response component, so the contract does not expose
+    them to a spec-driven client.
 - id: pagination
   conforms: true
-  evidence: page/pageSize/sortBy/sortDir query parameters
+  evidence: page / pageSize / sortBy / sortDir query parameters.
 - id: idempotency
   conforms: false
-  evidence: no Idempotency-Key header/param declared
+  evidence: No Idempotency-Key header or parameter declared in any of the seven specs.
 - id: json-api
   conforms: false
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    No AsyncAPI document and no consumer-subscribable event surface. The webhook_api service only
+    ingests third-party webhooks (GITHUB, GITLAB, DISCOURSE, GROUPSIO).
+- id: openapi
+  conforms: true
+  evidence: >-
+    Seven first-party OpenAPI documents published in the Apache-2.0 repo under
+    backend/src/api/public/ and backend/id-openapi.yaml - six at 3.1.0 / 3.0.3, one at 3.0.0.
+- id: semver
+  conforms: partial
+  evidence: >-
+    Tagged releases followed semver up to v0.49.0 (2023-11-21); tagging stopped at the Linux
+    Foundation consolidation and the API is versioned only by URI path (v1).
+- id: mcp
+  conforms: false
+  evidence: >-
+    No MCP server exposes CDP Public API operations. The sibling LFX MCP Server at
+    https://mcp.lfx.dev/mcp covers LFX projects, committees, mailing lists, memberships, meetings
+    and LFX Lens - none of them CDP operations.
+- id: a2a
+  conforms: false
+  evidence: >-
+    No A2A agent card. /.well-known/agent-card.json and /.well-known/agent.json return SPA/GitHub
+    catch-all HTML on crowd.dev and cm.lfx.dev, 404 on docs.crowd.dev and lfx.dev, 403 on
+    api.crowd.dev. See well-known/crowddev-well-known.yml.
+
+compliance_programs: []
+certifications: []

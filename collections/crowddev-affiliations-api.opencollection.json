@@ -1,0 +1,77 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Affiliations API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Affiliations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Bulk contributor lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/affiliations",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of contributors to return per page."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Look up affiliation data for up to 100 GitHub handles in a single request. Handles that have no matching LFX profile are returned in the `notFound` array.\n"
+        },
+        {
+          "info": {
+            "name": "Single contributor lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/affiliations/:githubHandle",
+            "params": [
+              {
+                "name": "githubHandle",
+                "value": "torvalds",
+                "type": "path",
+                "description": "GitHub login handle (case-insensitive)."
+              }
+            ]
+          },
+          "docs": "Look up affiliation data for one developer by GitHub handle. Useful for debugging and ad-hoc queries.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

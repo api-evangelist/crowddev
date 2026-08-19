@@ -1,0 +1,498 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Packages API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Packages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get package detail by PURL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites-external/packages/detail",
+            "params": [
+              {
+                "name": "purl",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get package detail by PURL"
+        },
+        {
+          "info": {
+            "name": "Bulk package detail lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/akrites-external/packages/detail:batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Bulk package detail lookup"
+        },
+        {
+          "info": {
+            "name": "List packages with stewardship data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/packages",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ecosystem",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Substring match on package name."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "healthBand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "vulnSeverity",
+                "value": "",
+                "type": "query",
+                "description": "Filter by highest open vulnerability severity present on the package. `none` returns packages with zero vulnerabilities; `any` disables the filter.\n"
+              },
+              {
+                "name": "staleOnly",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "unstewardedOnly",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "busFactor1Only",
+                "value": "",
+                "type": "query",
+                "description": "Return only packages whose maintainer count is 1."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortDir",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Paginated list of critical packages enriched with stewardship status, vulnerability counts, health band, and the latest stewardship activity. Supports rich filtering and sorting.\n"
+        },
+        {
+          "info": {
+            "name": "Get risk matrix scatter data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/packages/scatter"
+          },
+          "docs": "Returns all critical packages as scatter-plot points with impact score (x-axis) and health score (y-axis). No pagination — the full dataset is returned.\n"
+        },
+        {
+          "info": {
+            "name": "Get package count metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/packages/metrics"
+          },
+          "docs": "Returns total and critical package counts. Lighter alternative to `/akrites/metrics` when only package-level counts are needed.\n"
+        },
+        {
+          "info": {
+            "name": "Get package detail",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/packages/detail",
+            "params": [
+              {
+                "name": "purl",
+                "value": "",
+                "type": "query",
+                "description": "Package URL (PURL) — must start with `pkg:`. Version qualifiers are normalised server-side.\n"
+              }
+            ]
+          },
+          "docs": "Returns the full detail view for a single package identified by its PURL, including risk signals, security advisories, repository provenance, and current stewardship state.\n"
+        },
+        {
+          "info": {
+            "name": "Get advisories for a package",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/packages/advisories",
+            "params": [
+              {
+                "name": "purl",
+                "value": "",
+                "type": "query",
+                "description": "Package URL (PURL) — must start with `pkg:`."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-based)."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "Number of advisories per page (max 100)."
+              },
+              {
+                "name": "severity",
+                "value": "",
+                "type": "query",
+                "description": "Filter by severity. Accepts comma-separated values or multiple params."
+              },
+              {
+                "name": "resolution",
+                "value": "",
+                "type": "query",
+                "description": "Filter by resolution status. Accepts comma-separated values or multiple params."
+              },
+              {
+                "name": "critical",
+                "value": "",
+                "type": "query",
+                "description": "Filter by criticality flag (CVSS >= 7.0)."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of security advisories for a single package identified by PURL. Intended for lazy-loading the Security tab in the package detail drawer.\n"
+        },
+        {
+          "info": {
+            "name": "Get stewardship history for a package",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/packages/history",
+            "params": [
+              {
+                "name": "purl",
+                "value": "",
+                "type": "query",
+                "description": "Package URL (PURL) — must start with `pkg:`."
+              }
+            ]
+          },
+          "docs": "Returns the full activity log for the stewardship associated with the given PURL, ordered newest-first. Returns an empty list if no stewardship exists. Intended for lazy-loading the History tab in the package detail drawer.\n"
+        },
+        {
+          "info": {
+            "name": "Batch stewardship lookup by PURL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/akrites/packages:batch-stewardship",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Given up to 100 PURLs, returns a map of `purl → stewardship summary` for each. Missing packages are returned as `null`. Useful for enriching external package listings with CDP stewardship state.\n"
+        },
+        {
+          "info": {
+            "name": "Filtered paginated package list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/ossprey/packages",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Case-insensitive substring search on package name."
+              },
+              {
+                "name": "ecosystem",
+                "value": "",
+                "type": "query",
+                "description": "Filter by package ecosystem. Not validated server-side — any ecosystem stored in the DB is accepted."
+              },
+              {
+                "name": "lifecycle",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by stewardship status. `unassigned` includes packages with no stewardship row (s.id IS NULL).\n"
+              },
+              {
+                "name": "healthBand",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "vulnSeverity",
+                "value": "",
+                "type": "query",
+                "description": "`any` = at least one open advisory · `high` = worst rank ≥ HIGH · `critical` = worst rank = CRITICAL · `none` = zero advisories.\n"
+              },
+              {
+                "name": "staleOnly",
+                "value": "",
+                "type": "query",
+                "description": "Return only packages with no release in ≥ 18 months."
+              },
+              {
+                "name": "unstewardedOnly",
+                "value": "",
+                "type": "query",
+                "description": "Return only packages with status = unassigned or no stewardship row."
+              },
+              {
+                "name": "busFactor1Only",
+                "value": "",
+                "type": "query",
+                "description": "Return only packages with exactly one maintainer."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortDir",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a paginated, filtered, sorted list of critical packages with their stewardship state and risk signals.\n\nUsed by three tabs:\n- **Queue tab** — full table with all filters\n- **Triage Board** — one request per status column, fired in parallel\n  (`?status=X&pageSize=50`)\n\n- **Summary panel** — click-through navigates to Queue with pre-filled filter\n\nThe response always includes `statusCounts` — per-status counts computed without the active `status` filter, used to drive the tab bar badge num"
+        },
+        {
+          "info": {
+            "name": "Scatter plot data for the Risk Matrix tab",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/ossprey/packages/scatter"
+          },
+          "docs": "Returns all packages where `is_critical = true AND has_critical_vulnerability = true` as lightweight data points for the health-vs-impact scatter plot. No pagination — this filter set is expected to stay around 2 000 packages. Ordered by `impact DESC`.\n\nDot color is determined by `stewardshipStatus`. Legend checkboxes toggle visibility client-side — no additional API calls needed.\n"
+        },
+        {
+          "info": {
+            "name": "List packages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/packages",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ecosystem",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "lifecycle",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "busFactor1Only",
+                "value": "",
+                "type": "query",
+                "description": "Return only packages with bus factor = 1."
+              },
+              {
+                "name": "staleOnly",
+                "value": "",
+                "type": "query",
+                "description": "Return only packages with no release in >= 18 months."
+              },
+              {
+                "name": "unstewardedOnly",
+                "value": "",
+                "type": "query",
+                "description": "Return only packages with stewardship = unassigned."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sortDir",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "List packages"
+        },
+        {
+          "info": {
+            "name": "Overview metrics for the list page header",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/packages/metrics",
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Overview metrics for the list page header"
+        },
+        {
+          "info": {
+            "name": "Get full package detail",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/packages/detail",
+            "params": [
+              {
+                "name": "purl",
+                "value": "pkg:npm/lodash@4.17.21",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "client_credentials",
+              "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns data for the drawer's Overview, Security, and Provenance tabs. Pass the canonical purl as a query parameter — no URL-encoding needed. Example: `?purl=pkg:npm/lodash@4.17.21`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

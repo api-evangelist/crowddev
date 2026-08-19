@@ -1,19 +1,56 @@
-generated: '2026-07-18'
+generated: '2026-08-14'
 method: searched
-source: https://cm.lfx.dev/api/v1
+source: https://github.com/linuxfoundation/crowd.dev
+docs:
+- https://github.com/linuxfoundation/crowd.dev/releases
+- https://github.com/linuxfoundation/crowd.dev/tree/main/docs/adr
+- https://docs.linuxfoundation.org/lfx/community-management
 versioning:
   scheme: uri-path
   current: v1
   base: https://cm.lfx.dev/api/v1
+  staging_base: https://lf-staging.crowd.dev/api/v1
 deprecation:
   policy_url: null
   sunset_header: false
-  note: No documented deprecation/Sunset policy; no operations marked deprecated in the OpenAPI.
+  rfc8594: false
+  note: >-
+    No documented deprecation or Sunset policy, and no operation in any of the seven specs is
+    marked `deprecated`. No Deprecation pointer is emitted in apis.yml.
 sla:
   url: null
 status_page: https://status.lfx.dev
+support: https://jira.linuxfoundation.org/plugins/servlet/desk/portal/4
+release_cadence:
+  tagged_releases: false
+  last_tag: v0.49.0
+  last_tag_date: '2023-11-21'
+  note: >-
+    Git tagging stopped at v0.49.0 around the Linux Foundation acquisition; the platform now ships
+    continuously into cm.lfx.dev. The repository itself is very active - last push 2026-08-14.
+decision_record:
+  published: true
+  url: https://github.com/linuxfoundation/crowd.dev/tree/main/docs/adr
+  count: 18
+  note: >-
+    An 18-entry Architecture Decision Record set with a template and README, each dated and
+    carrying an explicit status (accepted / proposed). ADRs 0012, 0013, 0015, 0016, 0017 and 0018
+    document the API's authentication, identity storage, e2e test architecture and rate limiting.
+    This is where the CDP Public API's runtime semantics are actually published.
+domain_history:
+  crowd_dev_site: >-
+    https://crowd.dev now 301s to https://github.com/linuxfoundation/crowd.dev - the marketing
+    site, pricing page and hosted signup are all retired.
+  api_crowd_dev: >-
+    https://api.crowd.dev (still linked from docs.crowd.dev and from the legacy APIReference
+    pointer) is dead - bare nginx 403 on every path, probed 2026-08-14.
+  changelog_crowd_dev: >-
+    https://changelog.crowd.dev 301s to the GitHub repository; GitHub Releases is the changelog.
 open_source:
   license: Apache-2.0
   repo: https://github.com/linuxfoundation/crowd.dev
+  stars: 3367
+  archived: false
   acquired_by: Linux Foundation (April 2024)
+  renamed_to: LFX Community Data Platform (CDP)
 deprecated_operations: []

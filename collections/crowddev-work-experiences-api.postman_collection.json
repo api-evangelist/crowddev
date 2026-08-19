@@ -1,0 +1,1771 @@
+{
+  "item": [
+    {
+      "id": "b5ed1aaf-73a1-40c7-a647-800ead548c8d",
+      "name": "Work Experiences",
+      "description": {
+        "content": "Manage and verify member work experiences (organization affiliations).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "687dd261-3c06-4370-bc32-6acf5249ace8",
+          "name": "List work experiences",
+          "request": {
+            "name": "List work experiences",
+            "description": {
+              "content": "Retrieve all work experiences for a member.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "members",
+                ":memberId",
+                "work-experiences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "memberId",
+                  "description": "(Required) UUID of the member."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "7ba600d0-c7b8-4046-b744-a0ab1b19af4c",
+              "name": "Work experiences retrieved successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"memberId\": \"fdd57ba5-ee33-0d03-18b9-bae4f66cf04d\",\n  \"workExperiences\": [\n    {\n      \"id\": \"f41c96b4-d002-474b-2cd3-6af07cda673c\",\n      \"organizationId\": \"76f156c7-eaba-6c24-1585-a129836ea7b8\",\n      \"organizationName\": null,\n      \"organizationDomains\": [\n        \"string\",\n        \"string\"\n      ],\n      \"jobTitle\": null,\n      \"verified\": true,\n      \"verifiedBy\": null,\n      \"source\": null,\n      \"startDate\": null,\n      \"endDate\": null,\n      \"createdAt\": \"1966-03-20T01:22:52.748Z\",\n      \"updatedAt\": \"1966-09-13T23:53:03.867Z\",\n      \"organizationLogo\": null\n    },\n    {\n      \"id\": \"b03056c7-adf0-d416-72cb-528fe0769f06\",\n      \"organizationId\": \"f8a6e7d6-3d95-6488-be29-ce29c6c94656\",\n      \"organizationName\": \"string\",\n      \"organizationDomains\": [\n        \"string\",\n        \"string\"\n      ],\n      \"jobTitle\": \"string\",\n      \"verified\": true,\n      \"verifiedBy\": null,\n      \"source\": null,\n      \"startDate\": null,\n      \"endDate\": null,\n      \"createdAt\": \"1973-07-05T07:46:49.339Z\",\n      \"updatedAt\": \"2009-01-26T05:57:30.590Z\",\n      \"organizationLogo\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aebac0dd-1431-4e3c-a306-25a1ba2c09dc",
+              "name": "Missing or invalid authentication credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHORIZED\",\n    \"message\": \"Invalid or missing authentication\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a41405cc-c3cd-42e4-9f6a-3a5b36b39c29",
+              "name": "Authentication valid but insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INSUFFICIENT_SCOPE\",\n    \"message\": \"Insufficient scope for this operation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "204e36d2-0b5b-4d6b-8c91-b791a9ee4d59",
+              "name": "No member found with the given ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Member not found\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff3eb609-71b9-4944-bf0c-e616ab9bbaff",
+          "name": "Add a work experience",
+          "request": {
+            "name": "Add a work experience",
+            "description": {
+              "content": "Add a new work experience to a member profile. Returns 409 if a work experience with the same dates already exists.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "members",
+                ":memberId",
+                "work-experiences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "memberId",
+                  "description": "(Required) UUID of the member."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"jobTitle\": \"<string>\",\n  \"verified\": \"<boolean>\",\n  \"verifiedBy\": \"<string>\",\n  \"source\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<string,null-date-time>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "27367e42-179b-49ee-83a8-fe3af7952af1",
+              "name": "Work experience created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"jobTitle\": \"Senior Engineer\",\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\",\n  \"source\": \"lfxOne\",\n  \"startDate\": \"2020-01-01T00:00:00.000Z\",\n  \"endDate\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"0d783fac-5dbf-d989-a4b3-00a6cfd37b79\",\n  \"organizationId\": \"71d7b8aa-aac1-2c8a-2f56-47a8f3d4b851\",\n  \"organizationName\": \"string\",\n  \"organizationDomains\": [\n    \"string\",\n    \"string\"\n  ],\n  \"jobTitle\": null,\n  \"verified\": true,\n  \"verifiedBy\": \"string\",\n  \"source\": null,\n  \"startDate\": null,\n  \"endDate\": \"1970-07-26T19:27:51.746Z\",\n  \"createdAt\": \"1947-01-07T20:49:23.192Z\",\n  \"updatedAt\": null,\n  \"organizationLogo\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "410acf03-c086-4c0a-8b1c-1d4eaf33b797",
+              "name": "Invalid request body or query parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"jobTitle\": \"Senior Engineer\",\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\",\n  \"source\": \"lfxOne\",\n  \"startDate\": \"2020-01-01T00:00:00.000Z\",\n  \"endDate\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"Validation failed\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1efb7e26-cf45-4848-90c5-2cc0eb4a9a74",
+              "name": "Missing or invalid authentication credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"jobTitle\": \"Senior Engineer\",\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\",\n  \"source\": \"lfxOne\",\n  \"startDate\": \"2020-01-01T00:00:00.000Z\",\n  \"endDate\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHORIZED\",\n    \"message\": \"Invalid or missing authentication\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93363d26-0883-4e0f-bc21-0aa87db96a54",
+              "name": "Authentication valid but insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"jobTitle\": \"Senior Engineer\",\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\",\n  \"source\": \"lfxOne\",\n  \"startDate\": \"2020-01-01T00:00:00.000Z\",\n  \"endDate\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INSUFFICIENT_SCOPE\",\n    \"message\": \"Insufficient scope for this operation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ee92ed8-530e-4264-af00-bc136d46412e",
+              "name": "No member found with the given ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"jobTitle\": \"Senior Engineer\",\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\",\n  \"source\": \"lfxOne\",\n  \"startDate\": \"2020-01-01T00:00:00.000Z\",\n  \"endDate\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Member not found\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d11fbfb-4a26-4edb-864f-e522ba83c7e7",
+              "name": "A work experience with the same dates already exists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"jobTitle\": \"Senior Engineer\",\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\",\n  \"source\": \"lfxOne\",\n  \"startDate\": \"2020-01-01T00:00:00.000Z\",\n  \"endDate\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"CONFLICT\",\n    \"message\": \"A work experience with the same dates already exists\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83698153-d75d-41e6-a3d2-9ae8328b5111",
+          "name": "Update a work experience",
+          "request": {
+            "name": "Update a work experience",
+            "description": {
+              "content": "Replace all fields of an existing work experience.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "members",
+                ":memberId",
+                "work-experiences",
+                ":workExperienceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "memberId",
+                  "description": "(Required) UUID of the member."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "workExperienceId",
+                  "description": "(Required) UUID of the work experience."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"jobTitle\": \"<string>\",\n  \"verified\": \"<boolean>\",\n  \"verifiedBy\": \"<string>\",\n  \"source\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<string,null-date-time>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "756ed9a3-74ca-4729-9bbc-2d47e744d777",
+              "name": "Work experience updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"jobTitle\": \"<string>\",\n  \"verified\": \"<boolean>\",\n  \"verifiedBy\": \"<string>\",\n  \"source\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<string,null-date-time>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"0d783fac-5dbf-d989-a4b3-00a6cfd37b79\",\n  \"organizationId\": \"71d7b8aa-aac1-2c8a-2f56-47a8f3d4b851\",\n  \"organizationName\": \"string\",\n  \"organizationDomains\": [\n    \"string\",\n    \"string\"\n  ],\n  \"jobTitle\": null,\n  \"verified\": true,\n  \"verifiedBy\": \"string\",\n  \"source\": null,\n  \"startDate\": null,\n  \"endDate\": \"1970-07-26T19:27:51.746Z\",\n  \"createdAt\": \"1947-01-07T20:49:23.192Z\",\n  \"updatedAt\": null,\n  \"organizationLogo\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac8a3ae8-1957-4253-b2e0-dcf4a2c5214a",
+              "name": "Invalid request body or query parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"jobTitle\": \"<string>\",\n  \"verified\": \"<boolean>\",\n  \"verifiedBy\": \"<string>\",\n  \"source\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<string,null-date-time>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"Validation failed\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99f6104e-43d9-4562-a4e4-4c1f9b85832f",
+              "name": "Missing or invalid authentication credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"jobTitle\": \"<string>\",\n  \"verified\": \"<boolean>\",\n  \"verifiedBy\": \"<string>\",\n  \"source\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<string,null-date-time>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHORIZED\",\n    \"message\": \"Invalid or missing authentication\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bfcff324-ec6a-4a51-ba32-b7ab63d722af",
+              "name": "Authentication valid but insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"jobTitle\": \"<string>\",\n  \"verified\": \"<boolean>\",\n  \"verifiedBy\": \"<string>\",\n  \"source\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<string,null-date-time>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INSUFFICIENT_SCOPE\",\n    \"message\": \"Insufficient scope for this operation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79ff3c95-4131-4bf0-b64a-0a34a773007d",
+              "name": "Member or work experience not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"organizationId\": \"<uuid>\",\n  \"jobTitle\": \"<string>\",\n  \"verified\": \"<boolean>\",\n  \"verifiedBy\": \"<string>\",\n  \"source\": \"<string>\",\n  \"startDate\": \"<dateTime>\",\n  \"endDate\": \"<string,null-date-time>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2959c87a-7080-4340-9446-feab8302c375",
+          "name": "Verify or reject a work experience",
+          "request": {
+            "name": "Verify or reject a work experience",
+            "description": {
+              "content": "Set a work experience as verified or rejected. When rejected (`verified: false`), the work experience is soft-deleted and affiliations are recalculated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "members",
+                ":memberId",
+                "work-experiences",
+                ":workExperienceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "memberId",
+                  "description": "(Required) UUID of the member."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "workExperienceId",
+                  "description": "(Required) UUID of the work experience."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"verified\": \"<boolean>\",\n  \"verifiedBy\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "39690b14-f7fe-4ff9-adef-535bdee280fd",
+              "name": "Work experience updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"0d783fac-5dbf-d989-a4b3-00a6cfd37b79\",\n  \"organizationId\": \"71d7b8aa-aac1-2c8a-2f56-47a8f3d4b851\",\n  \"organizationName\": \"string\",\n  \"organizationDomains\": [\n    \"string\",\n    \"string\"\n  ],\n  \"jobTitle\": null,\n  \"verified\": true,\n  \"verifiedBy\": \"string\",\n  \"source\": null,\n  \"startDate\": null,\n  \"endDate\": \"1970-07-26T19:27:51.746Z\",\n  \"createdAt\": \"1947-01-07T20:49:23.192Z\",\n  \"updatedAt\": null,\n  \"organizationLogo\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ad8a08c6-451d-493f-9057-b674886f3d28",
+              "name": "Missing or invalid authentication credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHORIZED\",\n    \"message\": \"Invalid or missing authentication\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd668f1c-ab24-4ff1-a7a9-885e16ec44d1",
+              "name": "Authentication valid but insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INSUFFICIENT_SCOPE\",\n    \"message\": \"Insufficient scope for this operation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4cc4ec1-1427-4dbd-8052-ab85356c907a",
+              "name": "Member or work experience not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"verified\": true,\n  \"verifiedBy\": \"admin@lfx.dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3595372b-0511-4112-8cc0-55c6df0e4f74",
+          "name": "Delete a work experience",
+          "request": {
+            "name": "Delete a work experience",
+            "description": {
+              "content": "Soft-delete a work experience from a member profile. Affiliations are automatically recalculated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "members",
+                ":memberId",
+                "work-experiences",
+                ":workExperienceId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "memberId",
+                  "description": "(Required) UUID of the member."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "workExperienceId",
+                  "description": "(Required) UUID of the work experience."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "0eb3c939-1242-4701-9e43-f93746443158",
+              "name": "Work experience deleted. No response body.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3cbd3d9f-aefe-480d-8bc5-3ef73ee3dc9c",
+              "name": "Missing or invalid authentication credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHORIZED\",\n    \"message\": \"Invalid or missing authentication\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e54ca78-ba04-44ca-a78b-133e128071d9",
+              "name": "Authentication valid but insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INSUFFICIENT_SCOPE\",\n    \"message\": \"Insufficient scope for this operation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9fafed16-883e-4f3c-ba24-1ae6e99cf872",
+              "name": "Member or work experience not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "work-experiences",
+                    ":workExperienceId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "workExperienceId",
+                      "description": "(Required) UUID of the work experience."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cm.lfx.dev/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "read:packages read:stewardships read:maintainer-roles"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://linuxfoundation.auth0.com/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "eee58ed6-3c5a-46fb-a998-6a18a239810a",
+    "name": "CDP → Akrites External Advisories Work Experiences API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.\n\nPackages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.\n\nTODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.\n",
+      "type": "text/plain"
+    }
+  }
+}

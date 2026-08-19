@@ -1,0 +1,100 @@
+generated: '2026-08-14'
+method: searched
+source: https://github.com/linuxfoundation/crowd.dev/blob/main/scripts/cli
+note: >-
+  crowd.dev ships a first-party CLI, but it is a SELF-HOSTING AND LOCAL-DEVELOPMENT tool, not an
+  API client. `./scripts/cli` is a 1,282-line bash script in the Apache-2.0 monorepo that stands up
+  the whole platform under Docker Compose, drives migrations, builds and pushes service images, and
+  runs the staging/production deploy workflows. It issues no calls against the CDP Public API and
+  offers no auth/token/resource commands. Anyone integrating with cm.lfx.dev gets no CLI - only the
+  raw HTTPS surface. Recorded so the distinction is explicit rather than inferred from its presence.
+
+name: crowd CLI
+kind: self-hosting-and-development
+distribution: in-repository
+binary: ./scripts/cli
+language: bash
+lines: 1282
+license: Apache-2.0
+
+install:
+- method: git
+  command: git clone https://github.com/linuxfoundation/crowd.dev.git
+  then: ./scripts/cli <command>
+  requires:
+  - docker
+  - docker compose
+  - node >= 20
+  - pnpm 9.11.0
+  note: >-
+    No npm/pypi/homebrew/curl-installer distribution exists; the script is only usable from a
+    checkout of the monorepo. See packages/crowddev-packages.yml.
+
+usage: './scripts/cli <command>'
+
+command_groups:
+- group: Scaffold
+  description: Local infrastructure (Docker network, databases, Tinybird) and schema migrations.
+  commands:
+  - scaffold up
+  - scaffold down
+  - scaffold destroy
+  - scaffold reset
+  - scaffold create-migration
+  - scaffold create-product-migration
+  - scaffold create-packages-migration
+  - scaffold migrate-up
+  - scaffold up-test
+  - scaffold down-test
+- group: Services
+  description: Start, stop and inspect the ~40 platform service containers, individually or in sets.
+  commands:
+  - service <name> [up|down|restart|status|logs|id]
+  - service list
+  - service up-all
+  - start
+  - start-dev
+  - start-be
+  - start-e2e
+  - clean-start
+  - clean-start-dev
+  - clean-start-backend
+  - clean-start-backend-dev
+  - clean-start-fe-dev
+  - service-restart
+  - service-restart-be
+  - service-restart-dev
+  - service-restart-fe-dev
+  - reset-selected-services
+  - reset-selected-services-dev
+  - reset-and-restart
+- group: Build & Deploy
+  description: Build and publish service container images; drive the staging and production deploys.
+  commands:
+  - build <name>
+  - build-and-push <name>
+  - build-and-push-multiple <names...>
+  - push <name>
+  - deploy-staging
+  - deploy-production
+- group: Database
+  description: Backup, restore and environment migration helpers.
+  commands:
+  - db-backup <name>
+  - db-restore <name>
+  - migrate-env
+- group: Lint
+  description: Repository lint/format/typecheck gates.
+  commands:
+  - lint-backend
+  - lint-services
+
+environment_variables:
+- CROWD_NETWORK_SUBNET
+- CROWD_NETWORK_GATEWAY
+- CROWD_TEST_NETWORK_SUBNET
+- CROWD_TEST_NETWORK_GATEWAY
+- WITH_NGINX
+- WITH_INSIGHTS
+
+api_client_commands: []

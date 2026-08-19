@@ -1,12 +1,30 @@
-generated: '2026-07-18'
-method: derived
-source: openapi/crowddev-cdp-public-openapi.yml
+generated: '2026-08-14'
+method: searched
+source: https://github.com/linuxfoundation/crowd.dev/tree/main/docs/adr
+derived_from: openapi/crowddev-cdp-public-openapi.yml
+docs:
+- https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+- https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0018-per-client-rate-limiting-members-resolve.md
+- https://docs.linuxfoundation.org/lfx/community-management
+note: >-
+  Upgraded from derived to searched on 2026-08-14. The cross-cutting semantics are published
+  first-party, but split across two places an integrator would not think to look: the OpenAPI
+  documents in backend/src/api/public/ and the 18-file Architecture Decision Record set in
+  docs/adr/. The product documentation at docs.linuxfoundation.org/lfx/community-management is
+  UI-only and contains no API reference.
+
 authentication:
   styles:
-  - OAuth 2.0 client-credentials bearer (Auth0) — OAuth2Bearer / M2MBearer
-  - Static API key as HTTP bearer token — StaticApiKey / BearerAuth
+  - OAuth 2.0 client-credentials bearer via Auth0 - OAuth2Bearer / M2MBearer
+  - Static API key as HTTP bearer token, scopes held in the CDP database - StaticApiKey
+  client_auth_methods:
+  - client_secret_post
+  - private_key_jwt
+  issuer: https://linuxfoundation.auth0.com/
+  self_serve: false
   scopes_artifact: scopes/crowddev-scopes.yml
   authentication_artifact: authentication/crowddev-authentication.yml
+
 pagination:
   style: page-number
   params:
@@ -15,18 +33,77 @@ pagination:
     sortBy: field to sort by
     sortDir: sort direction (asc/desc)
     search: free-text filter
+
 idempotency:
   supported: false
-  note: No Idempotency-Key header or parameter is declared in the OpenAPI.
+  header: null
+  note: >-
+    No Idempotency-Key header or parameter is declared anywhere in the seven OpenAPI documents.
+    The only idempotency in the surface is semantic, not protocol-level: openStewardship documents
+    that "if the stewardship is already `open`, this is a no-op (idempotent)". A retried
+    createMember or createMemberIdentity is not deduplicated. No Idempotency pointer is emitted in
+    apis.yml because there is no idempotency mechanism to point at.
+
 versioning:
   scheme: uri-path
   current: v1
   base: https://cm.lfx.dev/api/v1
+  staging_base: https://lf-staging.crowd.dev/api/v1
+
 error_envelope:
   shape: '{ "error": { "code": string, "message": string } }'
   format: application/json
+  rfc9457: false
   artifact: errors/crowddev-problem-types.yml
+  verified: >-
+    Probed live 2026-08-14 - GET https://cm.lfx.dev/api/v1/openapi.json returned HTTP 404 with
+    {"error":{"code":"NOT_FOUND","message":"Not found"}}, matching the documented envelope.
+
 rate_limiting:
   signaled: true
-  evidence: 429 Too Many Requests responses declared on operations
+  status: 429
+  code: RATE_LIMITED
+  headers:
+  - RateLimit-*
+  - Retry-After
+  evidence: >-
+    ADR-0018 - "`Retry-After` and `RateLimit-*` headers are emitted on 429". Note the headers are
+    NOT declared on the OpenAPI TooManyRequests response component, so a spec-driven client will
+    not know to read them.
+  artifact: rate-limits/crowddev-rate-limits.yml
+
+request_tracing:
+  header: null
+  note: No request-id / correlation-id header is declared in any spec or ADR.
+
+field_expansion:
+  supported: false
+metadata:
+  supported: false
+
+events:
+  outbound_webhooks: false
+  asyncapi: false
+  note: >-
+    The platform runs a webhook_api service, but it RECEIVES webhooks from integrated platforms
+    (GITHUB, GITLAB, DISCOURSE, GROUPSIO, CROWD_GENERATED - services/libs/types/src/enums/webhooks.ts).
+    There is no consumer-subscribable event surface, no event catalog and no AsyncAPI document
+    anywhere in the repo. No AsyncAPI or Webhooks pointer is emitted; this is an honest absence,
+    not an unfound artifact.
+
+documentation_conventions:
+  agent_readable_docs: true
+  note: >-
+    docs.linuxfoundation.org is GitBook and serves a markdown twin of every page by appending
+    `.md`, plus a 63 KB published index at https://docs.linuxfoundation.org/lfx/llms.txt and a
+    documented `?ask=` query parameter for natural-language retrieval. This applies to the product
+    documentation only - not to the API contract, which is repo-only.
+
 content_type: application/json
+
+cross_links:
+  errors: errors/crowddev-problem-types.yml
+  lifecycle: lifecycle/crowddev-lifecycle.yml
+  authentication: authentication/crowddev-authentication.yml
+  rate_limits: rate-limits/crowddev-rate-limits.yml
+  scopes: scopes/crowddev-scopes.yml

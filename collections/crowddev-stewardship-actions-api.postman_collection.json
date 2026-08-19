@@ -1,0 +1,1511 @@
+{
+  "item": [
+    {
+      "id": "0c29ff30-d4b7-49ae-aa94-718e4933f18a",
+      "name": "Stewardship Actions",
+      "description": {
+        "content": "Admin-initiated stewardship mutations.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0ec2fdff-651e-4e7d-954c-96f94289315d",
+          "name": "Open a package for stewardship",
+          "request": {
+            "name": "Open a package for stewardship",
+            "description": {
+              "content": "Transitions the stewardship status to `open`, marking the package as available for claiming. If a stewardship row does not exist yet, one is created. If the stewardship is already `open`, this is a no-op (idempotent).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "stewardships",
+                "open"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "read:packages read:stewardships read:maintainer-roles"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://linuxfoundation.auth0.com/oauth/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"purl\": \"<string>\",\n  \"actor\": {\n    \"userId\": \"<string>\",\n    \"username\": \"<string,null>\",\n    \"displayName\": \"<string,null>\",\n    \"avatarUrl\": \"<string,null-uri>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c2142ae2-e408-434a-9501-cb22b2dc2ff6",
+              "name": "Stewardship opened (or already open).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    "open"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purl\": \"pkg:npm/lodash\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"stewardship\": {\n    \"id\": \"42\",\n    \"packageId\": \"1234\",\n    \"status\": \"open\",\n    \"origin\": \"opened_for_claim\",\n    \"version\": 1,\n    \"openedAt\": \"2026-06-15T10:00:00Z\",\n    \"lastStatusAt\": \"2026-06-15T10:00:00Z\",\n    \"inactiveReason\": null,\n    \"createdAt\": \"2026-06-15T10:00:00Z\",\n    \"updatedAt\": \"2026-06-15T10:00:00Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ceb89345-6f1c-45f1-8f05-47cb2982484a",
+              "name": "Validation error (e.g. missing or invalid purl).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    "open"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purl\": \"pkg:npm/lodash\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "787f58da-7db4-4037-b5b5-a74773a9b82c",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    "open"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purl\": \"pkg:npm/lodash\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8686950-5309-4156-ac42-dd786192ea92",
+              "name": "Insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    "open"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purl\": \"pkg:npm/lodash\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d19cf066-9a4f-49cf-9cc6-1e3f8f747da8",
+              "name": "Package not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    "open"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"purl\": \"pkg:npm/lodash\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "17754f39-b01d-447a-9888-a070c66a4fa5",
+          "name": "Assign a steward to a stewardship",
+          "request": {
+            "name": "Assign a steward to a stewardship",
+            "description": {
+              "content": "Assigns a user as a steward with the given role. If the user is already an active steward, the role is updated (soft-delete + re-insert). Returns the unchanged stewardship record and the full active stewards list after the operation.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "stewardships",
+                ":id",
+                "assign"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Stewardship ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "read:packages read:stewardships read:maintainer-roles"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://linuxfoundation.auth0.com/oauth/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"steward\": {\n    \"userId\": \"<string>\",\n    \"role\": \"<string>\",\n    \"username\": \"<string,null>\",\n    \"displayName\": \"<string,null>\"\n  },\n  \"actor\": {\n    \"userId\": \"<string>\",\n    \"username\": \"<string,null>\",\n    \"displayName\": \"<string,null>\",\n    \"avatarUrl\": \"<string,null-uri>\"\n  },\n  \"note\": \"<string>\",\n  \"moveToAssessing\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ac6d3f9a-41e7-46d2-a027-5e571d8e4501",
+              "name": "Steward assigned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "assign"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"steward\": {\n    \"userId\": \"abc123\",\n    \"role\": \"lead\"\n  },\n  \"moveToAssessing\": true,\n  \"actor\": {\n    \"userId\": \"auth0|xyz\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"stewardship\": {\n    \"id\": \"42\",\n    \"packageId\": \"1234\",\n    \"status\": \"open\",\n    \"origin\": \"opened_for_claim\",\n    \"version\": 1,\n    \"openedAt\": \"2026-06-15T10:00:00Z\",\n    \"lastStatusAt\": \"2026-06-15T10:00:00Z\",\n    \"inactiveReason\": null,\n    \"createdAt\": \"2026-06-15T10:00:00Z\",\n    \"updatedAt\": \"2026-06-15T10:00:00Z\"\n  },\n  \"stewards\": [\n    {\n      \"id\": \"7\",\n      \"stewardshipId\": \"42\",\n      \"userId\": \"abc123\",\n      \"role\": \"lead\",\n      \"assignedAt\": \"2026-06-15T10:05:00Z\",\n      \"assignedBy\": \"xyz789\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5debf49a-d6a1-4b0d-a4be-6f0784c357f6",
+              "name": "Validation error (e.g. invalid role).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "assign"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"steward\": {\n    \"userId\": \"abc123\",\n    \"role\": \"lead\"\n  },\n  \"moveToAssessing\": true,\n  \"actor\": {\n    \"userId\": \"auth0|xyz\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "22469eae-0fad-465a-af1d-713e052e4806",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "assign"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"steward\": {\n    \"userId\": \"abc123\",\n    \"role\": \"lead\"\n  },\n  \"moveToAssessing\": true,\n  \"actor\": {\n    \"userId\": \"auth0|xyz\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04f6fc6d-2963-4ec0-ab88-1688e74806ef",
+              "name": "Insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "assign"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"steward\": {\n    \"userId\": \"abc123\",\n    \"role\": \"lead\"\n  },\n  \"moveToAssessing\": true,\n  \"actor\": {\n    \"userId\": \"auth0|xyz\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1de431ef-bef2-464f-9e39-7b678400097f",
+              "name": "Stewardship not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "assign"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"steward\": {\n    \"userId\": \"abc123\",\n    \"role\": \"lead\"\n  },\n  \"moveToAssessing\": true,\n  \"actor\": {\n    \"userId\": \"auth0|xyz\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f804ed41-c926-4deb-b93b-5f81fdc09594",
+          "name": "Escalate a stewardship",
+          "request": {
+            "name": "Escalate a stewardship",
+            "description": {
+              "content": "Transitions the stewardship to `escalated` status and logs the chosen resolution path in the activity log. Optional free-text notes can be included.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "stewardships",
+                ":id",
+                "escalate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Stewardship ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "read:packages read:stewardships read:maintainer-roles"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://linuxfoundation.auth0.com/oauth/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"resolutionPath\": \"<string>\",\n  \"actor\": {\n    \"userId\": \"<string>\",\n    \"username\": \"<string,null>\",\n    \"displayName\": \"<string,null>\",\n    \"avatarUrl\": \"<string,null-uri>\"\n  },\n  \"notes\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e5af25fb-d110-455c-a7b1-ed01449ba98e",
+              "name": "Stewardship escalated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "escalate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"resolutionPath\": \"right_of_first_refusal\",\n  \"notes\": \"Contacted maintainer, no response after 30 days.\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"stewardship\": {\n    \"id\": \"42\",\n    \"packageId\": \"1234\",\n    \"status\": \"escalated\",\n    \"origin\": \"opened_for_claim\",\n    \"version\": 1,\n    \"openedAt\": \"2026-06-15T10:00:00Z\",\n    \"lastStatusAt\": \"2026-06-15T11:00:00Z\",\n    \"inactiveReason\": null,\n    \"createdAt\": \"2026-06-15T10:00:00Z\",\n    \"updatedAt\": \"2026-06-15T11:00:00Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "94d7beb0-812a-4a93-8c8a-4f397bb97845",
+              "name": "Validation error (e.g. invalid resolutionPath).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "escalate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"resolutionPath\": \"right_of_first_refusal\",\n  \"notes\": \"Contacted maintainer, no response after 30 days.\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fb64193-5e76-4ef0-b45a-b5b9bd3fb206",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "escalate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"resolutionPath\": \"right_of_first_refusal\",\n  \"notes\": \"Contacted maintainer, no response after 30 days.\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75124dc0-3e2b-450c-aa20-ee095340b25c",
+              "name": "Insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "escalate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"resolutionPath\": \"right_of_first_refusal\",\n  \"notes\": \"Contacted maintainer, no response after 30 days.\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9229ed7-3ad6-4c6e-8405-95e1a374a673",
+              "name": "Stewardship not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "escalate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"resolutionPath\": \"right_of_first_refusal\",\n  \"notes\": \"Contacted maintainer, no response after 30 days.\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e6ce0331-d911-4ccf-9772-9f9419fa525f",
+          "name": "Update stewardship status",
+          "request": {
+            "name": "Update stewardship status",
+            "description": {
+              "content": "Updates the stewardship status and logs a `state_changed` activity entry. Valid target statuses: `assessing`, `active`, `needs_attention`, `blocked`, `inactive`. When transitioning to `inactive`, `inactiveReason` is required.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "stewardships",
+                ":id",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Stewardship ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "read:packages read:stewardships read:maintainer-roles"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://linuxfoundation.auth0.com/oauth/token"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"<string>\",\n  \"actor\": {\n    \"userId\": \"<string>\",\n    \"username\": \"<string,null>\",\n    \"displayName\": \"<string,null>\",\n    \"avatarUrl\": \"<string,null-uri>\"\n  },\n  \"inactiveReason\": \"<string>\",\n  \"notes\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1b228db6-f670-44a2-94c0-8b060a7c4e30",
+              "name": "Status updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"active\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"stewardship\": {\n    \"id\": \"42\",\n    \"packageId\": \"1234\",\n    \"status\": \"active\",\n    \"origin\": \"opened_for_claim\",\n    \"version\": 1,\n    \"openedAt\": \"2026-06-15T10:00:00Z\",\n    \"lastStatusAt\": \"2026-06-15T12:00:00Z\",\n    \"inactiveReason\": null,\n    \"createdAt\": \"2026-06-15T10:00:00Z\",\n    \"updatedAt\": \"2026-06-15T12:00:00Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1370618d-2184-4d1c-822d-e1ac09c8c725",
+              "name": "Validation error. Includes the case where `status` is `inactive` but `inactiveReason` is missing.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"active\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d8edde4-0352-4174-a15d-071824f6d71f",
+              "name": "Missing or invalid bearer token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"active\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "084a7eef-3da9-49b7-9fa2-60d39ea6b8dc",
+              "name": "Insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"active\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67783e66-ccc9-452c-af8e-7d7f0b0e4d27",
+              "name": "Stewardship not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "stewardships",
+                    ":id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Stewardship ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"active\",\n  \"actor\": {\n    \"userId\": \"auth0|abc123\",\n    \"username\": \"gaspergrom\",\n    \"displayName\": \"Gašper Grom\",\n    \"avatarUrl\": \"https://avatars.githubusercontent.com/u/12345\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Stewardship not found.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cm.lfx.dev/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "read:packages read:stewardships read:maintainer-roles"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://linuxfoundation.auth0.com/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "cd68d22b-1c35-4f2a-98f8-a167b3989627",
+    "name": "CDP → Akrites External Advisories Stewardship Actions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.\n\nPackages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.\n\nTODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.\n",
+      "type": "text/plain"
+    }
+  }
+}

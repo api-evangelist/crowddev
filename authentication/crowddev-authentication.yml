@@ -1,31 +1,116 @@
-generated: '2026-07-18'
-method: derived
-source: openapi/crowddev-cdp-akrites-external-openapi.yml, openapi/crowddev-cdp-akrites-openapi.yml,
-  openapi/crowddev-cdp-ossprey-openapi.yml, openapi/crowddev-cdp-packages-openapi.yml, openapi/crowddev-cdp-public-openapi.yml,
-  openapi/crowddev-cdp-stewardships-openapi.yml, openapi/crowddev-cm-id-openapi.yml
+generated: '2026-08-14'
+method: searched
+source: https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+docs:
+- https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+- https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
+derived_from:
+- openapi/crowddev-cdp-akrites-external-openapi.yml
+- openapi/crowddev-cdp-akrites-openapi.yml
+- openapi/crowddev-cdp-ossprey-openapi.yml
+- openapi/crowddev-cdp-packages-openapi.yml
+- openapi/crowddev-cdp-public-openapi.yml
+- openapi/crowddev-cdp-stewardships-openapi.yml
+- openapi/crowddev-cm-id-openapi.yml
+note: >-
+  Upgraded from derived to searched on 2026-08-14 against ADR-0016 (proposed, 2026-07-22), the
+  first-party design record for CDP Public API authentication published in the Apache-2.0
+  monorepo. It supplies what the OpenAPI alone could not: the identity provider, the audience
+  values, the client authentication methods, the enforcement point, and how credentials are
+  actually delivered.
+
 summary:
   types:
   - http
   - oauth2
   oauth2_flows:
   - clientCredentials
+  identity_provider: Auth0 (Linux Foundation tenant)
+  issuer: https://linuxfoundation.auth0.com/
+  token_endpoint: https://linuxfoundation.auth0.com/oauth/token
+  discovery: well-known/crowddev-auth0-openid-configuration.json
+  self_serve_credentials: false
+
+audiences:
+- environment: production
+  audience: https://cm.lfx.dev/api/
+  source: ADR-0016
+- environment: staging-and-dev
+  audience: https://lf-staging.crowd.dev/api/
+  source: ADR-0016
+
+auth0_api: cdp_public_api
+
+client_auth_methods:
+- method: client_secret_post
+  client: lfx_one
+  used_by: LFX One / Self Serve
+  source: ADR-0016
+- method: private_key_jwt
+  client: Akrites Enclave
+  used_by: Akrites (external consumer, hosted on GCP)
+  source: ADR-0016
+  note: >-
+    Akrites signs an RSA `client_assertion` JWT and exchanges it at Auth0 for a short-lived bearer
+    token. CDP never sees the client_id or secret - it verifies only the Auth0-signed token, so
+    from CDP's side both client auth methods produce shape-identical tokens.
+
+enforcement:
+  middleware: oauth2Middleware (verifies exactly one audience) + per-endpoint requireScopes
+  client_allowlist: false
+  note: >-
+    ADR-0016 - "CDP's per-endpoint `requireScopes` middleware is the sole enforcement point at the
+    API layer - no `azp` allowlist or other client-identity inspection in CDP source." Consumer
+    isolation is claim-based: Auth0 grants the Akrites-namespaced scopes only to the
+    `Akrites Enclave` client.
+
+credential_delivery:
+  automated: false
+  owner: lfx-secrets-management
+  channel: 1Password vault item (RSA private key, client_id, credential kid)
+  rotation: coordinated manually between LF and the consumer
+  reason: >-
+    ADR-0016 - lfx-secrets-management delivers to AWS destinations and 1Password only; the Akrites
+    service runs on GCP, which is not a supported destination. LF CloudOps has GCP support as a
+    backlog item.
+
 schemes:
+- name: OAuth2Bearer
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://linuxfoundation.auth0.com/oauth/token
+    scopes: 12
+  description: >-
+    OAuth 2.0 client credentials flow via Auth0. Used by LFX One for member, organization and
+    affiliation management endpoints.
+  sources:
+  - openapi/crowddev-cdp-public-openapi.yml
 - name: M2MBearer
   type: oauth2
   flows:
   - flow: clientCredentials
     tokenUrl: https://linuxfoundation.auth0.com/oauth/token
     scopes: 3
-  description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client
-    ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only
-    verifies the resulting token.'
+  description: >-
+    Auth0 machine-to-machine client-credentials flow for the Akrites external consumer. Modeled as
+    oauth2/clientCredentials rather than http/bearer because OpenAPI only permits non-empty scope
+    arrays on oauth2 / openIdConnect schemes.
   sources:
   - openapi/crowddev-cdp-akrites-external-openapi.yml
+- name: StaticApiKey
+  type: http
+  scheme: bearer
+  description: >-
+    Static API key presented as an HTTP bearer token, with scopes managed in the CDP database
+    rather than in Auth0. Declared on the Affiliations endpoints.
+  sources:
   - openapi/crowddev-cdp-public-openapi.yml
 - name: BearerAuth
   type: http
   scheme: bearer
   bearerFormat: JWT
+  description: Auth0 M2M or user-session JWT presented as a bearer token.
   sources:
   - openapi/crowddev-cdp-akrites-openapi.yml
   - openapi/crowddev-cdp-ossprey-openapi.yml
@@ -33,3 +118,7 @@ schemes:
   - openapi/crowddev-cdp-public-openapi.yml
   - openapi/crowddev-cdp-stewardships-openapi.yml
   - openapi/crowddev-cm-id-openapi.yml
+
+related:
+  scopes: scopes/crowddev-scopes.yml
+  rate_limits: rate-limits/crowddev-rate-limits.yml

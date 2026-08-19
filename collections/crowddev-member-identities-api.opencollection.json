@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Member Identities API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Member Identities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List member identities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/identities",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              }
+            ]
+          },
+          "docs": "Retrieve all identities for a member profile."
+        },
+        {
+          "info": {
+            "name": "Add a new identity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/identities",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a new identity to a member profile. Returns 409 if the identity already exists on this member or is verified on another member.\n"
+        },
+        {
+          "info": {
+            "name": "Verify or reject an identity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://cm.lfx.dev/api/v1/members/:memberId/identities/:identityId",
+            "params": [
+              {
+                "name": "memberId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the member."
+              },
+              {
+                "name": "identityId",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the identity to verify or reject."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set an identity as verified or rejected. When rejected (`verified: false`), the identity is either soft-deleted (no linked activities) or unmerged to a new profile (has linked activities).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

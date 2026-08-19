@@ -1,0 +1,715 @@
+{
+  "item": [
+    {
+      "id": "9d05229d-9f2a-45c9-a8c4-86c1abfdcac0",
+      "name": "Project Affiliations",
+      "description": {
+        "content": "View and override per-project affiliation data for a member.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "32539133-394d-493e-b24c-dd245b46fef1",
+          "name": "List project affiliations",
+          "request": {
+            "name": "List project affiliations",
+            "description": {
+              "content": "Retrieve per-project affiliation data for a member, including maintainer roles and resolved affiliations. Affiliations come from project-level overrides when available, otherwise from work experiences.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "members",
+                ":memberId",
+                "project-affiliations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "memberId",
+                  "description": "(Required) UUID of the member."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "472efc14-8206-4ab7-8764-85365391470c",
+              "name": "Project affiliations retrieved successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "project-affiliations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"projectAffiliations\": [\n    {\n      \"id\": \"625862ca-853e-06c6-0934-7778976bf89c\",\n      \"projectSlug\": \"string\",\n      \"projectName\": \"string\",\n      \"projectLogo\": \"string\",\n      \"contributionCount\": 5795,\n      \"roles\": [\n        {\n          \"id\": \"ce8dc97a-fe5c-146b-3819-66b22f4cc0a9\",\n          \"role\": \"string\",\n          \"startDate\": null,\n          \"endDate\": \"1961-11-19T08:39:38.747Z\",\n          \"repoUrl\": null,\n          \"repoFileUrl\": null\n        },\n        {\n          \"id\": \"c4f10304-5f01-aeb1-0d4d-46a57c452896\",\n          \"role\": \"string\",\n          \"startDate\": null,\n          \"endDate\": \"2004-08-03T05:43:51.060Z\",\n          \"repoUrl\": null,\n          \"repoFileUrl\": null\n        }\n      ],\n      \"affiliations\": [\n        {\n          \"id\": \"c89e70ab-2d21-f879-af8e-2edd5806e337\",\n          \"organizationId\": \"c2bea02e-032d-8f79-3946-e27837024525\",\n          \"organizationName\": \"string\",\n          \"organizationLogo\": \"string\",\n          \"verified\": true,\n          \"verifiedBy\": \"string\",\n          \"startDate\": null,\n          \"endDate\": null,\n          \"type\": \"work-history\",\n          \"source\": null\n        },\n        {\n          \"id\": \"471da650-64d5-cac2-d9eb-437b3d979804\",\n          \"organizationId\": \"d13c47aa-753b-e7e4-0b4a-0734d52d1898\",\n          \"organizationName\": \"string\",\n          \"organizationLogo\": \"string\",\n          \"verified\": true,\n          \"verifiedBy\": null,\n          \"startDate\": null,\n          \"endDate\": \"1979-03-05T23:14:43.904Z\",\n          \"type\": \"project\",\n          \"source\": null\n        }\n      ]\n    },\n    {\n      \"id\": \"24dd249f-d9b3-aea4-6ab6-6079d991ad32\",\n      \"projectSlug\": \"string\",\n      \"projectName\": \"string\",\n      \"projectLogo\": \"string\",\n      \"contributionCount\": 7138,\n      \"roles\": [\n        {\n          \"id\": \"54ed147d-159e-b684-4f01-423919250152\",\n          \"role\": \"string\",\n          \"startDate\": null,\n          \"endDate\": null,\n          \"repoUrl\": null,\n          \"repoFileUrl\": \"string\"\n        },\n        {\n          \"id\": \"f62bd17e-451d-1d23-6f3e-90eeaf86ee1d\",\n          \"role\": \"string\",\n          \"startDate\": null,\n          \"endDate\": null,\n          \"repoUrl\": null,\n          \"repoFileUrl\": null\n        }\n      ],\n      \"affiliations\": [\n        {\n          \"id\": \"611c1734-0521-49ae-5c57-7c2887c09561\",\n          \"organizationId\": \"75b64502-867b-577a-0c87-d083d96309c8\",\n          \"organizationName\": \"string\",\n          \"organizationLogo\": \"string\",\n          \"verified\": false,\n          \"verifiedBy\": \"string\",\n          \"startDate\": null,\n          \"endDate\": null,\n          \"type\": \"work-history\",\n          \"source\": null\n        },\n        {\n          \"id\": \"0df72e68-ee4f-8751-ae71-a61949d3b3e3\",\n          \"organizationId\": \"15e32afd-b2a7-7fa0-2d7b-18a741dbf93b\",\n          \"organizationName\": \"string\",\n          \"organizationLogo\": null,\n          \"verified\": true,\n          \"verifiedBy\": null,\n          \"startDate\": null,\n          \"endDate\": \"2011-07-09T03:51:36.207Z\",\n          \"type\": \"project\",\n          \"source\": \"string\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "259d7815-5e13-42d1-9c77-fc1f0c75f236",
+              "name": "Missing or invalid authentication credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "project-affiliations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHORIZED\",\n    \"message\": \"Invalid or missing authentication\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8158b401-2b1c-4d3e-a730-451abe8bc994",
+              "name": "Authentication valid but insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "project-affiliations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INSUFFICIENT_SCOPE\",\n    \"message\": \"Insufficient scope for this operation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7db8bad5-180d-4f50-bddd-4b9ff4d6dc20",
+              "name": "No member found with the given ID.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "project-affiliations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"NOT_FOUND\",\n    \"message\": \"Member not found\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "887177ad-9d34-439c-8f25-db393ef43a09",
+          "name": "Override project affiliations",
+          "request": {
+            "name": "Override project affiliations",
+            "description": {
+              "content": "Replace all project-level affiliation overrides for a member on a specific project. Pass an empty `affiliations` array to clear overrides (falling back to work experience-based affiliations).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "members",
+                ":memberId",
+                "project-affiliations",
+                ":projectId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "memberId",
+                  "description": "(Required) UUID of the member."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "projectId",
+                  "description": "(Required) UUID of the project (segment ID)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"<uuid>\",\n      \"dateStart\": \"<dateTime>\",\n      \"dateEnd\": \"<string,null-date-time>\"\n    },\n    {\n      \"organizationId\": \"<uuid>\",\n      \"dateStart\": \"<dateTime>\",\n      \"dateEnd\": \"<string,null-date-time>\"\n    }\n  ],\n  \"verifiedBy\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "022ed0a2-43b4-4f08-ae38-6197a2957c07",
+              "name": "Project affiliations updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "project-affiliations",
+                    ":projectId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "projectId",
+                      "description": "(Required) UUID of the project (segment ID)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"dateStart\": \"2020-01-01T00:00:00.000Z\",\n      \"dateEnd\": null\n    }\n  ],\n  \"verifiedBy\": \"admin@lfx.dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"767c386d-4574-9e13-a750-85ea05da6ae0\",\n  \"projectSlug\": \"string\",\n  \"projectName\": \"string\",\n  \"projectLogo\": null,\n  \"contributionCount\": 5182,\n  \"roles\": [\n    {\n      \"id\": \"848ae401-ddf2-b5a2-8ef8-85e3d47d4f78\",\n      \"role\": \"string\",\n      \"startDate\": \"2005-07-20T14:21:26.764Z\",\n      \"endDate\": \"1956-01-03T19:07:51.191Z\",\n      \"repoUrl\": \"string\",\n      \"repoFileUrl\": \"string\"\n    },\n    {\n      \"id\": \"7341195d-6d95-f1f2-975b-f384d42a6cca\",\n      \"role\": \"string\",\n      \"startDate\": \"1966-08-17T11:41:35.217Z\",\n      \"endDate\": \"2020-04-19T07:51:17.553Z\",\n      \"repoUrl\": \"string\",\n      \"repoFileUrl\": \"string\"\n    }\n  ],\n  \"affiliations\": [\n    {\n      \"id\": \"4e86d4cb-f9bf-9a34-dd0e-ba195d10c39f\",\n      \"organizationId\": \"7795924e-eb83-c899-98fa-ec8cbfecea81\",\n      \"organizationName\": \"string\",\n      \"organizationLogo\": null,\n      \"verified\": false,\n      \"verifiedBy\": null,\n      \"startDate\": null,\n      \"endDate\": \"2006-06-14T19:17:09.069Z\",\n      \"type\": \"work-history\",\n      \"source\": null\n    },\n    {\n      \"id\": \"2b608a37-1832-d3cf-4cf6-bb0e7edc5de7\",\n      \"organizationId\": \"6962bdd6-7540-19c3-f816-5731c4c73ef3\",\n      \"organizationName\": \"string\",\n      \"organizationLogo\": \"string\",\n      \"verified\": true,\n      \"verifiedBy\": null,\n      \"startDate\": \"1981-06-25T02:11:34.750Z\",\n      \"endDate\": \"2001-12-22T17:57:57.517Z\",\n      \"type\": \"project\",\n      \"source\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7847d8c-59f1-43b5-b66a-3d6d5008988e",
+              "name": "Invalid request body or query parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "project-affiliations",
+                    ":projectId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "projectId",
+                      "description": "(Required) UUID of the project (segment ID)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"dateStart\": \"2020-01-01T00:00:00.000Z\",\n      \"dateEnd\": null\n    }\n  ],\n  \"verifiedBy\": \"admin@lfx.dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"BAD_REQUEST\",\n    \"message\": \"Validation failed\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0ad47a0-2b74-47aa-be52-db6b529c7130",
+              "name": "Missing or invalid authentication credentials.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "project-affiliations",
+                    ":projectId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "projectId",
+                      "description": "(Required) UUID of the project (segment ID)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"dateStart\": \"2020-01-01T00:00:00.000Z\",\n      \"dateEnd\": null\n    }\n  ],\n  \"verifiedBy\": \"admin@lfx.dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"UNAUTHORIZED\",\n    \"message\": \"Invalid or missing authentication\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91ad4821-f482-44bc-9162-8c0ea2ee3d0a",
+              "name": "Authentication valid but insufficient scopes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "project-affiliations",
+                    ":projectId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "projectId",
+                      "description": "(Required) UUID of the project (segment ID)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"dateStart\": \"2020-01-01T00:00:00.000Z\",\n      \"dateEnd\": null\n    }\n  ],\n  \"verifiedBy\": \"admin@lfx.dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"INSUFFICIENT_SCOPE\",\n    \"message\": \"Insufficient scope for this operation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efcaa10a-9521-4e17-b81c-15e9d2f86456",
+              "name": "Member or project not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "members",
+                    ":memberId",
+                    "project-affiliations",
+                    ":projectId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "memberId",
+                      "description": "(Required) UUID of the member."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "projectId",
+                      "description": "(Required) UUID of the project (segment ID)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"affiliations\": [\n    {\n      \"organizationId\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"dateStart\": \"2020-01-01T00:00:00.000Z\",\n      \"dateEnd\": null\n    }\n  ],\n  \"verifiedBy\": \"admin@lfx.dev\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://cm.lfx.dev/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "scope",
+        "value": "read:packages read:stewardships read:maintainer-roles"
+      },
+      {
+        "key": "accessTokenUrl",
+        "value": "https://linuxfoundation.auth0.com/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "74d4c24d-fb72-41d5-8156-6da7eb318abb",
+    "name": "CDP → Akrites External Advisories Project Affiliations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.\n\nPackages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.\n\nTODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.\n",
+      "type": "text/plain"
+    }
+  }
+}

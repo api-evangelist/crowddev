@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDP → Akrites External Advisories Dashboard API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://linuxfoundation.auth0.com/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Dashboard",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get KPI bar metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/metrics"
+          },
+          "docs": "Returns aggregate counts that power the global KPI bar on the OSSPREY dashboard (total packages, coverage %, active stewards, unassigned critical, needs-attention, escalated).\n"
+        },
+        {
+          "info": {
+            "name": "Get stewardship activity feed",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/akrites/activity",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a paginated, reverse-chronological list of stewardship activity events across all packages (status changes, assignments, escalations, etc.).\n"
+        },
+        {
+          "info": {
+            "name": "Global KPI bar metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/ossprey/metrics"
+          },
+          "docs": "Returns the seven aggregate metrics shown in the sticky KPI bar across all four dashboard tabs. Fetch once on page load; refresh after any write action.\n"
+        },
+        {
+          "info": {
+            "name": "Paginated stewardship activity feed",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cm.lfx.dev/api/v1/ossprey/activity",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns recent stewardship events across all packages, ordered by most recent first. Used to populate the activity feed on the Overview tab. The frontend groups items by day using `createdAt`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
