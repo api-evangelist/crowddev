@@ -49,6 +49,15 @@ tags:
 - Developer Relations
 - Developer Data Platform
 - Identity Resolution
+- Open-Source
+- Community Data Platform
+- Open Source Intelligence
+tags_raw:
+- Company
+- Community
+- Developer Relations
+- Developer Data Platform
+- Identity Resolution
 - Open Source
 - Community Data Platform
 - Open Source Intelligence
@@ -162,6 +171,8 @@ apis:
   humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
