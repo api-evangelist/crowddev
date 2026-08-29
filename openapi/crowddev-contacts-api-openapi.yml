@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: CDP → Akrites External Advisories Contacts API
+  title: CDP → Akrites External Contacts API
   version: 0.1.0
   description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
 
@@ -151,9 +151,51 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ReportingMethod:
+    ContactConfidenceBand:
+      type: string
+      enum:
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
+    Error:
       type: object
-      nullable: true
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: BAD_REQUEST
+            message:
+              type: string
+    ContactDetailBulkEntry:
+      type: object
+      required:
+      - requestedPurl
+      - found
+      - contact
+      properties:
+        requestedPurl:
+          type: string
+        found:
+          type: boolean
+        contact:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/ContactDetail'
+    ReportingMethod:
+      type:
+      - object
+      - 'null'
       description: Reserved shape — always null until SECURITY.md parsing ships.
       required:
       - methodId
@@ -172,82 +214,48 @@ components:
           - preferred
           - fallback
         recipient:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         description:
           type: string
         actionRequired:
           type: string
-    ContactConfidenceBand:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
-      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
-    ContactDetail:
-      type: object
-      description: 'NOTE: shape not final — still under discussion upstream, in particular how reportingMethods / reportingGuidelines / integrationHints will be derived from SECURITY.md parsing. Those three, plus targetOrganizationName and bugBountyProgramFlag, are always null today (not stored). Expect this schema to change before the contract is frozen.
-
-        '
+    ReportingGuidelines:
+      type:
+      - object
+      - 'null'
+      description: Reserved shape — always null until SECURITY.md parsing ships.
       required:
-      - purl
-      - name
-      - ecosystem
-      - overallConfidenceBand
-      - contacts
-      - securityPolicyUrl
-      - vulnerabilityReportingUrl
-      - bugBountyUrl
-      - pvrEnabled
-      - targetOrganizationName
-      - bugBountyProgramFlag
-      - reportingMethods
-      - reportingGuidelines
-      - integrationHints
+      - generalPrinciples
+      - qualityRequirements
       properties:
-        purl:
-          type: string
-        name:
-          type: string
-        ecosystem:
-          $ref: '#/components/schemas/Ecosystem'
-        overallConfidenceBand:
-          $ref: '#/components/schemas/OverallConfidenceBand'
-        contacts:
+        generalPrinciples:
           type: array
           items:
-            $ref: '#/components/schemas/SecurityContact'
-        securityPolicyUrl:
-          type: string
-          nullable: true
-        vulnerabilityReportingUrl:
-          type: string
-          nullable: true
-        bugBountyUrl:
-          type: string
-          nullable: true
-        pvrEnabled:
-          type: boolean
-          nullable: true
-        targetOrganizationName:
-          type: string
-          nullable: true
-          description: Reserved — not stored today, always null.
-        bugBountyProgramFlag:
-          type: boolean
-          nullable: true
-          description: Reserved — not stored today, always null.
-        reportingMethods:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/ReportingMethod'
-        reportingGuidelines:
-          $ref: '#/components/schemas/ReportingGuidelines'
-        integrationHints:
-          $ref: '#/components/schemas/IntegrationHints'
+            type: string
+        qualityRequirements:
+          type: object
+          required:
+          - avoid
+          - recommend
+          properties:
+            avoid:
+              type: array
+              items:
+                type: string
+            recommend:
+              type: array
+              items:
+                type: object
+                required:
+                - scenario
+                - action
+                properties:
+                  scenario:
+                    type: string
+                  action:
+                    type: string
     SecurityContact:
       type: object
       required:
@@ -285,72 +293,78 @@ components:
           format: float
           minimum: 0
           maximum: 1
-    ReportingGuidelines:
+    ContactDetail:
       type: object
-      nullable: true
-      description: Reserved shape — always null until SECURITY.md parsing ships.
+      description: 'NOTE: shape not final — still under discussion upstream, in particular how reportingMethods / reportingGuidelines / integrationHints will be derived from SECURITY.md parsing. Those three, plus targetOrganizationName and bugBountyProgramFlag, are always null today (not stored). Expect this schema to change before the contract is frozen.
+
+        '
       required:
-      - generalPrinciples
-      - qualityRequirements
+      - purl
+      - name
+      - ecosystem
+      - overallConfidenceBand
+      - contacts
+      - securityPolicyUrl
+      - vulnerabilityReportingUrl
+      - bugBountyUrl
+      - pvrEnabled
+      - targetOrganizationName
+      - bugBountyProgramFlag
+      - reportingMethods
+      - reportingGuidelines
+      - integrationHints
       properties:
-        generalPrinciples:
+        purl:
+          type: string
+        name:
+          type: string
+        ecosystem:
+          $ref: '#/components/schemas/Ecosystem'
+        overallConfidenceBand:
+          $ref: '#/components/schemas/OverallConfidenceBand'
+        contacts:
           type: array
           items:
-            type: string
-        qualityRequirements:
-          type: object
-          required:
-          - avoid
-          - recommend
-          properties:
-            avoid:
-              type: array
-              items:
-                type: string
-            recommend:
-              type: array
-              items:
-                type: object
-                required:
-                - scenario
-                - action
-                properties:
-                  scenario:
-                    type: string
-                  action:
-                    type: string
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: BAD_REQUEST
-            message:
-              type: string
-    ContactDetailBulkEntry:
-      type: object
-      required:
-      - requestedPurl
-      - found
-      - contact
-      properties:
-        requestedPurl:
-          type: string
-        found:
-          type: boolean
-        contact:
-          type: object
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/ContactDetail'
+            $ref: '#/components/schemas/SecurityContact'
+        securityPolicyUrl:
+          type:
+          - string
+          - 'null'
+        vulnerabilityReportingUrl:
+          type:
+          - string
+          - 'null'
+        bugBountyUrl:
+          type:
+          - string
+          - 'null'
+        pvrEnabled:
+          type:
+          - boolean
+          - 'null'
+        targetOrganizationName:
+          type:
+          - string
+          - 'null'
+          description: Reserved — not stored today, always null.
+        bugBountyProgramFlag:
+          type:
+          - boolean
+          - 'null'
+          description: Reserved — not stored today, always null.
+        reportingMethods:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ReportingMethod'
+        reportingGuidelines:
+          $ref: '#/components/schemas/ReportingGuidelines'
+        integrationHints:
+          $ref: '#/components/schemas/IntegrationHints'
+    Ecosystem:
+      type: string
+      example: npm
     OverallConfidenceBand:
       type: string
       enum:
@@ -361,12 +375,10 @@ components:
       description: 'Aggregate confidence, derived from the highest-scoring contact. Uses the internal SecurityContact confidence scale, returned verbatim — same scale as ContactConfidenceBand, no external crosswalk. NONE when there are no contacts.
 
         '
-    Ecosystem:
-      type: string
-      example: npm
     IntegrationHints:
-      type: object
-      nullable: true
+      type:
+      - object
+      - 'null'
       description: Reserved shape — always null until computed.
       required:
       - primaryEndpoint
@@ -374,8 +386,9 @@ components:
       - validationHints
       properties:
         primaryEndpoint:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           required:
           - type
           - target
@@ -385,8 +398,9 @@ components:
             target:
               type: string
         fallbackEndpoint:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           required:
           - type
           - target
@@ -396,8 +410,9 @@ components:
             target:
               type: string
         validationHints:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           required:
           - falsePositiveRules
           - requirePocForSeverity
@@ -412,8 +427,9 @@ components:
               items:
                 type: string
             debounce:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
   securitySchemes:
     M2MBearer:
       type: oauth2

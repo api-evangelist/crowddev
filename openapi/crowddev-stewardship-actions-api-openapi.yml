@@ -1,23 +1,21 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: CDP → Akrites External Advisories Stewardship Actions API
-  version: 0.1.0
-  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+  title: CDP Public API — Stewardship Admin Actions Stewardship Actions API
+  version: 1.0.0
+  description: 'Write endpoints for OSSPREY Program admin stewardship actions.
 
 
-    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+    **Authentication:** OAuth 2.0 M2M bearer token. All endpoints require `write:stewardships`.
 
 
-    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+    **V1 note:** Scope `write:stewardships` is not yet added to the Auth0 staging tenant — scope enforcement is temporarily disabled. See CM-1235.
 
     '
 servers:
-- url: https://cm.lfx.dev/api/v1
+- url: https://cm.lfx.dev/api/v1/akrites
   description: Production
-security:
-- M2MBearer:
-  - read:packages
-  - read:stewardships
+- url: https://lf-staging.crowd.dev/api/v1/akrites
+  description: Staging
 tags:
 - name: Stewardship Actions
   description: Admin-initiated stewardship mutations.
@@ -477,40 +475,34 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ActorInput:
+    Error:
       type: object
       required:
-      - userId
-      description: 'Profile of the actor performing this action. Stored as a snapshot on the activity log. `userId` is required. All other fields are optional and can be null.
-
-        '
+      - error
       properties:
-        userId:
-          type: string
-          minLength: 1
-          description: Auth0 sub of the actor. Must match the authenticated user's token sub.
-          example: auth0|abc123
-        username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: LFX username of the actor.
-          example: gaspergrom
-        displayName:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Full display name of the actor.
-          example: Gašper Grom
-        avatarUrl:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Avatar URL of the actor.
-          example: https://avatars.githubusercontent.com/u/12345
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Stewardship not found.
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
     StewardRecord:
       type: object
       required:
@@ -556,32 +548,6 @@ components:
           - 'null'
           description: Auth0 sub of the admin who assigned this steward.
           example: xyz789
-    EscalationResolutionPath:
-      type: string
-      enum:
-      - right_of_first_refusal
-      - replace_the_dependency
-      - find_vendor_for_lts
-      - consortium_adopts_maintainership
-      - compensating_controls_monitor
-      - namespace_takeover
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: NOT_FOUND
-            message:
-              type: string
-              example: Stewardship not found.
     StewardshipRecord:
       type: object
       required:
@@ -647,27 +613,51 @@ components:
         updatedAt:
           type: string
           format: date-time
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
-  securitySchemes:
-    M2MBearer:
-      type: oauth2
-      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+    ActorInput:
+      type: object
+      required:
+      - userId
+      description: 'Profile of the actor performing this action. Stored as a snapshot on the activity log. `userId` is required. All other fields are optional and can be null.
 
         '
-      flows:
-        clientCredentials:
-          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
-          scopes:
-            read:packages: Read package detail
-            read:stewardships: Read package stewardship data
-            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          description: Auth0 sub of the actor. Must match the authenticated user's token sub.
+          example: auth0|abc123
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: LFX username of the actor.
+          example: gaspergrom
+        displayName:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Full display name of the actor.
+          example: Gašper Grom
+        avatarUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Avatar URL of the actor.
+          example: https://avatars.githubusercontent.com/u/12345
+    EscalationResolutionPath:
+      type: string
+      enum:
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
+  securitySchemes:
+    M2MBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

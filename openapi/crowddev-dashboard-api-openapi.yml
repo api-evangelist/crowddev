@@ -1,23 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: CDP → Akrites External Advisories Dashboard API
-  version: 0.1.0
-  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
-
-
-    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
-
-
-    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
-
-    '
+  title: Crowddev Dashboard API
+  version: 1.0.0
+  description: 'Operations tagged Dashboard across 2 of this provider''s published API definitions: crowddev-cdp-akrites-openapi.yml, crowddev-cdp-ossprey-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
-security:
-- M2MBearer:
-  - read:packages
-  - read:stewardships
+- url: https://lf-staging.crowd.dev/api/v1
+  description: Staging
 tags:
 - name: Dashboard
   description: KPI bar metrics and activity feed.
@@ -44,6 +34,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /akrites/activity:
     get:
       operationId: getAkritesActivity
@@ -95,6 +92,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /ossprey/metrics:
     get:
       operationId: getOsspreyMetrics
@@ -178,6 +182,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /ossprey/activity:
     get:
       operationId: listStewardshipActivity
@@ -260,8 +269,91 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
 components:
   schemas:
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+    ActivityEntry:
+      type: object
+      required:
+      - id
+      - stewardshipId
+      - packagePurl
+      - packageName
+      - packageEcosystem
+      - actorUserId
+      - actorName
+      - actorType
+      - activityType
+      - stewardshipStatus
+      - createdAt
+      properties:
+        id:
+          type: string
+        stewardshipId:
+          type: string
+        packagePurl:
+          type: string
+        packageName:
+          type: string
+        packageEcosystem:
+          type: string
+        actorUserId:
+          type: string
+          nullable: true
+        actorName:
+          type: string
+          nullable: true
+          description: Display name (currently same as actorUserId; resolution from members table is pending).
+        actorType:
+          type: string
+          example: user
+        activityType:
+          type: string
+          example: status_change
+        content:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties: true
+        stewardshipStatus:
+          $ref: '#/components/schemas/StewardshipStatus'
+        createdAt:
+          type: string
+          format: date-time
     PaginationMeta:
       type: object
       required:
@@ -275,6 +367,41 @@ components:
           type: integer
         pageSize:
           type: integer
+    OsspreyMetrics:
+      type: object
+      required:
+      - criticalPackages
+      - coveragePercent
+      - coverageTrend
+      - activeStewards
+      - unassignedCritical
+      - needsAttention
+      - escalated
+      properties:
+        criticalPackages:
+          type: integer
+          description: Total number of packages marked as critical (is_critical = true).
+        coveragePercent:
+          type: number
+          format: float
+          description: Percentage of critical packages with an active stewardship (assessing, active, or needs_attention).
+        coverageTrend:
+          type: number
+          format: float
+          nullable: true
+          description: Coverage delta vs. previous period. Currently always null (requires snapshot mechanism).
+        activeStewards:
+          type: integer
+          description: Distinct stewards assigned to a non-inactive stewardship.
+        unassignedCritical:
+          type: integer
+          description: Critical packages with no stewardship or status = unassigned.
+        needsAttention:
+          type: integer
+          description: Critical packages whose stewardship status is needs_attention.
+        escalated:
+          type: integer
+          description: Critical packages whose stewardship status is escalated.
     ActivityFeedItem:
       type: object
       required:
@@ -351,129 +478,11 @@ components:
         createdAt:
           type: string
           format: date-time
-    OsspreyMetrics:
-      type: object
-      required:
-      - criticalPackages
-      - coveragePercent
-      - coverageTrend
-      - activeStewards
-      - unassignedCritical
-      - needsAttention
-      - escalated
-      properties:
-        criticalPackages:
-          type: integer
-          description: Total number of packages marked as critical (is_critical = true).
-        coveragePercent:
-          type: number
-          format: float
-          description: Percentage of critical packages with an active stewardship (assessing, active, or needs_attention).
-        coverageTrend:
-          type: number
-          format: float
-          nullable: true
-          description: Coverage delta vs. previous period. Currently always null (requires snapshot mechanism).
-        activeStewards:
-          type: integer
-          description: Distinct stewards assigned to a non-inactive stewardship.
-        unassignedCritical:
-          type: integer
-          description: Critical packages with no stewardship or status = unassigned.
-        needsAttention:
-          type: integer
-          description: Critical packages whose stewardship status is needs_attention.
-        escalated:
-          type: integer
-          description: Critical packages whose stewardship status is escalated.
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Invalid query parameter.
-    ActivityEntry:
-      type: object
-      required:
-      - id
-      - stewardshipId
-      - packagePurl
-      - packageName
-      - packageEcosystem
-      - actorUserId
-      - actorName
-      - actorType
-      - activityType
-      - stewardshipStatus
-      - createdAt
-      properties:
-        id:
-          type: string
-        stewardshipId:
-          type: string
-        packagePurl:
-          type: string
-        packageName:
-          type: string
-        packageEcosystem:
-          type: string
-        actorUserId:
-          type: string
-          nullable: true
-        actorName:
-          type: string
-          nullable: true
-          description: Display name (currently same as actorUserId; resolution from members table is pending).
-        actorType:
-          type: string
-          example: user
-        activityType:
-          type: string
-          example: status_change
-        content:
-          type: string
-          nullable: true
-        metadata:
-          type: object
-          nullable: true
-          additionalProperties: true
-        stewardshipStatus:
-          $ref: '#/components/schemas/StewardshipStatus'
-        createdAt:
-          type: string
-          format: date-time
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
   securitySchemes:
-    M2MBearer:
-      type: oauth2
-      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
-
-        '
-      flows:
-        clientCredentials:
-          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
-          scopes:
-            read:packages: Read package detail
-            read:stewardships: Read package stewardship data
-            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- crowddev-cdp-akrites-openapi.yml
+- crowddev-cdp-ossprey-openapi.yml

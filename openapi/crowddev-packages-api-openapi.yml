@@ -1,23 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: CDP → Akrites External Advisories Packages API
-  version: 0.1.0
-  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
-
-
-    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
-
-
-    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
-
-    '
+  title: Crowddev Packages API
+  version: '1.0'
+  description: 'Operations tagged Packages across 4 of this provider''s published API definitions: crowddev-cdp-akrites-external-openapi.yml, crowddev-cdp-akrites-openapi.yml, crowddev-cdp-ossprey-openapi.yml, crowddev-cdp-packages-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
-security:
-- M2MBearer:
-  - read:packages
-  - read:stewardships
+- url: https://lf-staging.crowd.dev/api/v1
+  description: Staging
 tags:
 - name: Packages
   description: Package detail — requires read:packages and read:stewardships (see TODO above).
@@ -70,6 +60,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
   /akrites-external/packages/detail:batch:
     post:
       operationId: getPackageDetailBatch
@@ -146,6 +139,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
   /akrites/packages:
     get:
       operationId: listAkritesPackages
@@ -273,6 +269,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_2'
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /akrites/packages/scatter:
     get:
       operationId: getAkritesPackagesScatter
@@ -305,6 +308,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_2'
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /akrites/packages/metrics:
     get:
       operationId: getAkritesPackagesMetrics
@@ -327,6 +337,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_2'
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /akrites/packages/detail:
     get:
       operationId: getAkritesPackageDetail
@@ -371,6 +388,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_2'
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /akrites/packages/advisories:
     get:
       operationId: getAkritesPackageAdvisories
@@ -476,6 +500,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_2'
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /akrites/packages/history:
     get:
       operationId: getAkritesPackageHistory
@@ -528,6 +559,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_2'
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /akrites/packages:batch-stewardship:
     post:
       operationId: batchGetStewardship
@@ -585,6 +623,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_2'
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /ossprey/packages:
     get:
       operationId: listOsspreyPackages
@@ -768,6 +813,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_3'
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /ossprey/packages/scatter:
     get:
       operationId: getOsspreyPackagesScatter
@@ -830,6 +880,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_3'
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /packages:
     get:
       operationId: listPackages
@@ -971,6 +1026,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_4'
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /packages/metrics:
     get:
       operationId: getPackagesMetrics
@@ -1000,6 +1060,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_4'
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
   /packages/detail:
     get:
       operationId: getPackage
@@ -1095,29 +1160,676 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error_4'
+    servers:
+    - url: https://cm.lfx.dev/api/v1
+      description: Production
+    - url: https://lf-staging.crowd.dev/api/v1
+      description: Staging
 components:
   schemas:
-    OpenVulns:
-      type: object
-      description: Open vulnerability counts by severity from advisory_packages + advisories.
-      required:
-      - low
-      - medium
-      - high
+    HealthBand:
+      type: string
+      enum:
+      - excellent
+      - healthy
+      - fair
+      - concerning
       - critical
+      description: 'Health band on the internal scale (best→worst), returned verbatim — no external crosswalk.
+
+        '
+    Error:
+      type: object
+      required:
+      - error
       properties:
-        low:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: BAD_REQUEST
+            message:
+              type: string
+    PackageDetailBulkEntry:
+      type: object
+      required:
+      - requestedPurl
+      - found
+      - package
+      properties:
+        requestedPurl:
+          type: string
+        found:
+          type: boolean
+        package:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/PackageDetail'
+    PackageDetail:
+      type: object
+      required:
+      - purl
+      - name
+      - ecosystem
+      - latestVersion
+      - versionCount
+      - health
+      - impact
+      - riskSignals
+      - security
+      - provenance
+      - supplyChainIntegrity
+      properties:
+        purl:
+          type: string
+        name:
+          type: string
+        ecosystem:
+          $ref: '#/components/schemas/Ecosystem'
+        latestVersion:
+          type:
+          - string
+          - 'null'
+        versionCount:
+          type:
+          - integer
+          - 'null'
+        health:
+          type: object
+          required:
+          - score
+          - band
+          - subScores
+          - signalCoverageHealth
+          properties:
+            score:
+              type:
+              - integer
+              - 'null'
+              minimum: 0
+              maximum: 100
+            band:
+              $ref: '#/components/schemas/HealthBand'
+            subScores:
+              type: object
+              required:
+              - maintainerHealth
+              - securitySupplyChain
+              - developmentActivity
+              properties:
+                maintainerHealth:
+                  type:
+                  - number
+                  - 'null'
+                securitySupplyChain:
+                  type:
+                  - number
+                  - 'null'
+                developmentActivity:
+                  type:
+                  - number
+                  - 'null'
+            signalCoverageHealth:
+              type:
+              - object
+              - 'null'
+              additionalProperties: true
+        impact:
+          type: object
+          required:
+          - score
+          - downloadsLast30Days
+          - dependentPackagesCount
+          - dependentReposCount
+          - transitiveReach
+          properties:
+            score:
+              type:
+              - integer
+              - 'null'
+              minimum: 0
+              maximum: 100
+            downloadsLast30Days:
+              type:
+              - string
+              - 'null'
+              description: Raw registry count string, not normalized.
+            dependentPackagesCount:
+              type:
+              - integer
+              - 'null'
+            dependentReposCount:
+              type:
+              - integer
+              - 'null'
+            transitiveReach:
+              type:
+              - integer
+              - 'null'
+              description: Always null for now — reserved for future computation.
+        riskSignals:
+          type: object
+          required:
+          - lifecycle
+          - maintainerBusFactor
+          - lastReleaseAt
+          - hasSecurityFile
+          - hasSecurityPolicy
+          - branchProtectionEnabled
+          - openssfScorecardScore
+          properties:
+            lifecycle:
+              type:
+              - string
+              - 'null'
+              enum:
+              - active
+              - stable
+              - declining
+              - abandoned
+              - archived
+              - null
+              description: 'Lifecycle stage on the internal scale, returned verbatim — no external crosswalk. Null when unknown or unrecognized.
+
+                '
+            maintainerBusFactor:
+              type:
+              - integer
+              - 'null'
+            lastReleaseAt:
+              type:
+              - string
+              - 'null'
+              format: date-time
+            hasSecurityFile:
+              type:
+              - boolean
+              - 'null'
+            hasSecurityPolicy:
+              type:
+              - boolean
+              - 'null'
+            branchProtectionEnabled:
+              type:
+              - boolean
+              - 'null'
+            openssfScorecardScore:
+              type:
+              - number
+              - 'null'
+              format: float
+              minimum: 0
+              maximum: 10
+        security:
+          type: object
+          required:
+          - securityPolicyUrl
+          - vulnerabilityReportingUrl
+          - bugBountyUrl
+          - pvrEnabled
+          - criticalVulnerabilityFlag
+          properties:
+            securityPolicyUrl:
+              type:
+              - string
+              - 'null'
+            vulnerabilityReportingUrl:
+              type:
+              - string
+              - 'null'
+            bugBountyUrl:
+              type:
+              - string
+              - 'null'
+            pvrEnabled:
+              type:
+              - boolean
+              - 'null'
+            criticalVulnerabilityFlag:
+              type:
+              - boolean
+              - 'null'
+        provenance:
+          type: object
+          required:
+          - resolvedRepositoryUrl
+          - declaredRepositoryUrl
+          - mappingConfidenceScore
+          - mappingConfidenceLabel
+          - lastCommitAt
+          properties:
+            resolvedRepositoryUrl:
+              type:
+              - string
+              - 'null'
+              description: 'Best available repository URL. Preferred source is the confidence-ranked package_repos → repos join — the repo CDP has actually resolved and enriched (scorecard, branch protection, etc.). When the package has no package_repos link yet, this falls back to the canonical repository_url on the package row, which is NOT confidence-resolved or enriched. Use mappingConfidenceScore / mappingConfidenceLabel to tell the two apart: both are null when the fallback URL is returned.
+
+                '
+            declaredRepositoryUrl:
+              type:
+              - string
+              - 'null'
+              description: Raw repository URL as declared in the package's own metadata.
+            mappingConfidenceScore:
+              type:
+              - number
+              - 'null'
+              format: float
+              minimum: 0
+              maximum: 1
+            mappingConfidenceLabel:
+              type:
+              - string
+              - 'null'
+              enum:
+              - High
+              - Medium
+              - Low
+              - null
+            lastCommitAt:
+              type:
+              - string
+              - 'null'
+              format: date-time
+        supplyChainIntegrity:
+          type: object
+          required:
+          - buildProvenance
+          - signedReleases
+          properties:
+            buildProvenance:
+              type:
+              - string
+              - 'null'
+              description: Always null for now — reserved.
+            signedReleases:
+              type:
+              - string
+              - 'null'
+              description: Always null for now — reserved.
+    Ecosystem:
+      type: string
+      example: npm
+    StewardEntry:
+      type: object
+      required:
+      - id
+      - stewardshipId
+      - userId
+      - role
+      - assignedAt
+      properties:
+        id:
+          type: string
+        stewardshipId:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+        assignedBy:
+          type: string
+          nullable: true
+    HealthBand_2:
+      type: string
+      enum:
+      - healthy
+      - fair
+      - concerning
+      - critical
+      description: 'Derived from `scorecardScore`: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy
+
+        '
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+    SecurityContactConfidence:
+      type: string
+      enum:
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+    PackageMetrics:
+      type: object
+      required:
+      - criticalPackages
+      properties:
+        criticalPackages:
           type: integer
-          example: 0
-        medium:
+          description: Total packages marked as critical (is_critical = true).
+    Advisory:
+      type: object
+      required:
+      - osvId
+      - severity
+      - resolution
+      - isCritical
+      properties:
+        osvId:
+          type: string
+          example: GHSA-xxxx-xxxx-xxxx
+        severity:
+          type: string
+          enum:
+          - critical
+          - high
+          - moderate
+          - low
+          nullable: true
+        resolution:
+          type: string
+          enum:
+          - open
+          - patched
+          nullable: true
+        isCritical:
+          type: boolean
+          description: True when CVSS score >= 7.0.
+    Error_2:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
+    StatusCounts:
+      type: object
+      description: Count of packages per stewardship status (used to drive filter pill badges).
+      required:
+      - all
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+      properties:
+        all:
           type: integer
-          example: 0
-        high:
+          description: Total count across all statuses (matches total from the package list without status filter).
+        unassigned:
           type: integer
-          example: 1
-        critical:
+        open:
           type: integer
-          example: 0
+        assessing:
+          type: integer
+        active:
+          type: integer
+        needs_attention:
+          type: integer
+        escalated:
+          type: integer
+        blocked:
+          type: integer
+        inactive:
+          type: integer
+      example:
+        all: 95
+        unassigned: 42
+        open: 5
+        assessing: 12
+        active: 30
+        needs_attention: 3
+        escalated: 1
+        blocked: 0
+        inactive: 2
+    PackageHistoryEvent:
+      type: object
+      required:
+      - id
+      - actorType
+      - activityType
+      - createdAt
+      properties:
+        id:
+          type: string
+        actorUserId:
+          type: string
+          nullable: true
+        actorType:
+          type: string
+          example: user
+        activityType:
+          type: string
+          example: state_changed
+        content:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+    SecurityContact:
+      type: object
+      required:
+      - channel
+      - value
+      - role
+      - confidence
+      - score
+      properties:
+        channel:
+          type: string
+          enum:
+          - email
+          - github-pvr
+          - url
+          - github-handle
+          - web-form
+        value:
+          type: string
+          example: security@expressjs.com
+        role:
+          type: string
+          enum:
+          - security-team
+          - maintainer
+          - admin
+          - committer
+          - org-owner
+        confidence:
+          $ref: '#/components/schemas/SecurityContactConfidence'
+        score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+    Steward:
+      type: object
+      required:
+      - userId
+      - role
+      - assignedAt
+      properties:
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: auth0|abc123
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+    PackageStewardshipSummary:
+      type: object
+      description: Slim stewardship summary returned per-purl by the batch endpoint.
+      nullable: true
+      required:
+      - name
+      - ecosystem
+      properties:
+        name:
+          type: string
+        ecosystem:
+          type: string
+        lifecycle:
+          type: string
+          enum:
+          - active
+          - stable
+          - declining
+          - abandoned
+          nullable: true
+        health:
+          type: number
+          format: float
+          nullable: true
+        impact:
+          type: integer
+          nullable: true
+          description: Criticality score scaled to 0–100.
+        openVulns:
+          type: object
+          nullable: true
+          properties:
+            low:
+              type: integer
+            medium:
+              type: integer
+            high:
+              type: integer
+            critical:
+              type: integer
+        stewardship:
+          $ref: '#/components/schemas/StewardshipStatus'
+          nullable: true
+        stewards:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Steward'
+        lastActivityAt:
+          type: string
+          format: date-time
+          nullable: true
+        lastActivityDescription:
+          type: string
+          nullable: true
+    PaginationMeta:
+      type: object
+      required:
+      - total
+      - page
+      - pageSize
+      properties:
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+    PackageListRow:
+      type: object
+      required:
+      - purl
+      - name
+      - ecosystem
+      - openVulns
+      - maintainerCount
+      - healthBand
+      - stewards
+      properties:
+        purl:
+          type: string
+          example: pkg:npm/%40angular/core@17.0.0
+        name:
+          type: string
+        ecosystem:
+          type: string
+        criticalityScore:
+          type: number
+          format: float
+          nullable: true
+        stewardshipId:
+          type: string
+          nullable: true
+        stewardshipStatus:
+          $ref: '#/components/schemas/StewardshipStatus'
+          nullable: true
+        openVulns:
+          type: integer
+        maxVulnSeverity:
+          type: string
+          enum:
+          - critical
+          - high
+          - medium
+          - low
+          nullable: true
+        maintainerCount:
+          type: integer
+        scorecardScore:
+          type: number
+          format: float
+          nullable: true
+        healthBand:
+          $ref: '#/components/schemas/HealthBand_2'
+        latestReleaseAt:
+          type: string
+          format: date-time
+          nullable: true
+        lastActivity:
+          type: object
+          nullable: true
+          required:
+          - type
+          - content
+          - at
+          properties:
+            type:
+              type: string
+            content:
+              type: string
+              nullable: true
+            at:
+              type: string
+              format: date-time
+        stewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/StewardEntry'
     PackageDetail_2:
       type: object
       required:
@@ -1320,18 +2032,6 @@ components:
         history:
           nullable: true
           description: Always null in /detail — full history available at GET /packages/history.
-    PackagesMetrics:
-      type: object
-      required:
-      - totalPackages
-      - criticalPackages
-      properties:
-        totalPackages:
-          type: integer
-          example: 0
-        criticalPackages:
-          type: integer
-          example: 0
     ScatterPoint:
       type: object
       required:
@@ -1365,23 +2065,140 @@ components:
           type: integer
         advisoryCount:
           type: integer
-    PackageListItem:
+    EscalationResolutionPath:
+      type: string
+      enum:
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
+    Error_3:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
+    StatusCounts_2:
+      type: object
+      description: Per-status package counts for the tab bar. Computed without the active status filter.
+      required:
+      - all
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+      properties:
+        all:
+          type: integer
+        unassigned:
+          type: integer
+        open:
+          type: integer
+        assessing:
+          type: integer
+        active:
+          type: integer
+        needs_attention:
+          type: integer
+        escalated:
+          type: integer
+        blocked:
+          type: integer
+        inactive:
+          type: integer
+    HealthBand_3:
+      type: string
+      enum:
+      - excellent
+      - healthy
+      - fair
+      - concerning
+      - critical
+      description: 'Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30). Falls back to scorecard thresholds: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy.
+
+        '
+    PackageRow:
       type: object
       required:
       - purl
       - name
       - ecosystem
+      - openVulns
+      - maintainerCount
+      - health
+      - stewards
       properties:
         purl:
           type: string
-          description: Used to call GET /packages/detail?purl= when a row is clicked.
-          example: pkg:npm/lodash
+          example: pkg:npm/lodash@4.17.21
         name:
           type: string
           example: lodash
         ecosystem:
           type: string
           example: npm
+        stewardshipId:
+          type:
+          - string
+          - 'null'
+          example: '4501'
+        stewardshipStatus:
+          oneOf:
+          - $ref: '#/components/schemas/StewardshipStatus'
+          - type: 'null'
+        openVulns:
+          type: integer
+          description: Count of advisory_packages rows for this package.
+          example: 3
+        maxVulnSeverity:
+          type:
+          - string
+          - 'null'
+          enum:
+          - critical
+          - high
+          - medium
+          - low
+          description: Worst advisory severity. Null if no advisories.
+        maintainerCount:
+          type: integer
+          description: Count of package_maintainers rows. Bus factor proxy.
+          example: 2
+        criticalityScore:
+          type:
+          - number
+          - 'null'
+          description: Raw criticality score (0–1 float). Use `impact` for display.
+          example: 0.94
+        impact:
+          type:
+          - integer
+          - 'null'
+          description: Display score (0–100). criticalityScore × 100, rounded. Null if no score.
+          example: 94
+        scorecardScore:
+          type:
+          - number
+          - 'null'
+          description: OpenSSF Scorecard score (0–10). Null if no repo mapped.
+          example: 5.2
         health:
           type: object
           required:
@@ -1392,23 +2209,25 @@ components:
               type:
               - integer
               - 'null'
-              description: Health score (0–100). Tinybird composite score when enriched, OpenSSF Scorecard × 10 otherwise. Null if neither is available.
-              example: 18
+              description: 'Health score (0–100). Tinybird composite score when enriched, OpenSSF Scorecard × 10 otherwise. Null if neither is available.
+
+                '
+              example: 52
             label:
-              type: string
+              type:
+              - string
+              - 'null'
               enum:
               - excellent
               - healthy
               - fair
               - concerning
               - critical
-              description: Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30), scorecard band otherwise.
-              example: critical
-        impact:
-          type:
-          - integer
-          - 'null'
-          example: 71
+              - null
+              description: 'Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30), scorecard band otherwise.
+
+                '
+              example: fair
         lifecycle:
           type:
           - string
@@ -1420,28 +2239,131 @@ components:
           - abandoned
           - archived
           - null
-        maintainerBusFactor:
+          description: Tinybird-enriched lifecycle label. Null if not yet enriched.
+          example: active
+        latestReleaseAt:
           type:
-          - integer
+          - string
           - 'null'
-          example: 1
-        openVulns:
+          format: date-time
+          description: Used by the frontend to derive the stale flag (≥ 18 months).
+        lastActivity:
+          description: Most recent stewardship activity for this package. Null if none.
           oneOf:
-          - $ref: '#/components/schemas/OpenVulns'
+          - type: object
+            required:
+            - type
+            - at
+            properties:
+              type:
+                type:
+                - string
+                - 'null'
+                example: state_changed
+              content:
+                type:
+                - string
+                - 'null'
+                example: Moved to active stewardship
+              at:
+                type: string
+                format: date-time
+          - type: 'null'
+        stewards:
+          type: array
+          description: Active stewards (deleted_at IS NULL). Empty array if none.
+          items:
+            $ref: '#/components/schemas/Steward'
+    ScatterPoint_2:
+      type: object
+      required:
+      - purl
+      - name
+      - criticalityScore
+      - healthScore
+      - healthBand
+      - openVulns
+      - advisoryCount
+      properties:
+        purl:
+          type: string
+          example: pkg:npm/lodash@4.17.21
+        name:
+          type: string
+          example: lodash
+        criticalityScore:
+          type: integer
+          description: ROUND(p.impact × 100). Y-axis position (0–100).
+          example: 94
+        healthScore:
+          type: integer
+          description: ROUND(scorecard_score × 10). X-axis position (0–100). 0 if no repo.
+          example: 52
+        healthBand:
+          type: string
+          enum:
+          - healthy
+          - fair
+          - concerning
+          - critical
+          description: 'Falls back to scorecard thresholds — never ''excellent'' (scatter uses scorecard score only, not Tinybird health_label).
+
+            '
+        stewardshipStatus:
+          oneOf:
+          - $ref: '#/components/schemas/StewardshipStatus'
           - type: 'null'
         stewardshipId:
           type:
           - string
           - 'null'
-          description: Stewardship ID. Required to call mutation endpoints (assign/escalate/status). Null if no stewardship row exists.
-          example: '42'
-        stewardship:
-          $ref: '#/components/schemas/StewardshipStatus'
-        stewards:
-          description: Assigned stewards. Empty array if none.
-          type: array
-          items:
-            $ref: '#/components/schemas/Steward_2'
+          example: '4501'
+        openVulns:
+          type: integer
+          example: 3
+        advisoryCount:
+          type: integer
+          description: Alias of openVulns — explicit field for tooltip display.
+          example: 3
+    Error_4:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Package not found.
+    Advisory_2:
+      type: object
+      required:
+      - osvId
+      - severity
+      properties:
+        osvId:
+          type: string
+          description: GHSA or CVE identifier.
+          example: CVE-2021-44906
+        severity:
+          type: string
+          enum:
+          - critical
+          - high
+          - medium
+          - low
+        resolution:
+          type:
+          - string
+          - 'null'
+          description: Resolution status. TBD.
     SecurityContact_2:
       type: object
       required:
@@ -1456,6 +2378,58 @@ components:
           - string
           - 'null'
           format: email
+    OpenVulns:
+      type: object
+      description: Open vulnerability counts by severity from advisory_packages + advisories.
+      required:
+      - low
+      - medium
+      - high
+      - critical
+      properties:
+        low:
+          type: integer
+          example: 0
+        medium:
+          type: integer
+          example: 0
+        high:
+          type: integer
+          example: 1
+        critical:
+          type: integer
+          example: 0
+    Steward_2:
+      type: object
+      required:
+      - userId
+      - role
+      - assignedAt
+      properties:
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: abc123
+        username:
+          type:
+          - string
+          - 'null'
+          description: Username of the steward. Null if not available.
+          example: jrodriguez
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the steward. Null if not available.
+          example: Jonathan R.
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
     PackageDetail_3:
       type: object
       required:
@@ -1717,815 +2691,23 @@ components:
           - 'null'
           description: Signal coverage health data enriched by Tinybird. Null until enriched.
           additionalProperties: true
-    EscalationResolutionPath:
-      type: string
-      enum:
-      - right_of_first_refusal
-      - replace_the_dependency
-      - find_vendor_for_lts
-      - consortium_adopts_maintainership
-      - compensating_controls_monitor
-      - namespace_takeover
-    StatusCounts:
-      type: object
-      description: Count of packages per stewardship status (used to drive filter pill badges).
-      required:
-      - all
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
-      properties:
-        all:
-          type: integer
-          description: Total count across all statuses (matches total from the package list without status filter).
-        unassigned:
-          type: integer
-        open:
-          type: integer
-        assessing:
-          type: integer
-        active:
-          type: integer
-        needs_attention:
-          type: integer
-        escalated:
-          type: integer
-        blocked:
-          type: integer
-        inactive:
-          type: integer
-      example:
-        all: 95
-        unassigned: 42
-        open: 5
-        assessing: 12
-        active: 30
-        needs_attention: 3
-        escalated: 1
-        blocked: 0
-        inactive: 2
-    PackageStewardshipSummary:
-      type: object
-      description: Slim stewardship summary returned per-purl by the batch endpoint.
-      nullable: true
-      required:
-      - name
-      - ecosystem
-      properties:
-        name:
-          type: string
-        ecosystem:
-          type: string
-        lifecycle:
-          type: string
-          enum:
-          - active
-          - stable
-          - declining
-          - abandoned
-          nullable: true
-        health:
-          type: number
-          format: float
-          nullable: true
-        impact:
-          type: integer
-          nullable: true
-          description: Criticality score scaled to 0–100.
-        openVulns:
-          type: object
-          nullable: true
-          properties:
-            low:
-              type: integer
-            medium:
-              type: integer
-            high:
-              type: integer
-            critical:
-              type: integer
-        stewardship:
-          $ref: '#/components/schemas/StewardshipStatus'
-          nullable: true
-        stewards:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Steward'
-        lastActivityAt:
-          type: string
-          format: date-time
-          nullable: true
-        lastActivityDescription:
-          type: string
-          nullable: true
-    PackageDetail:
+    PackageListItem:
       type: object
       required:
       - purl
       - name
       - ecosystem
-      - latestVersion
-      - versionCount
-      - health
-      - impact
-      - riskSignals
-      - security
-      - provenance
-      - supplyChainIntegrity
       properties:
         purl:
           type: string
-        name:
-          type: string
-        ecosystem:
-          $ref: '#/components/schemas/Ecosystem'
-        latestVersion:
-          type: string
-          nullable: true
-        versionCount:
-          type: integer
-          nullable: true
-        health:
-          type: object
-          required:
-          - score
-          - band
-          - subScores
-          - signalCoverageHealth
-          properties:
-            score:
-              type: integer
-              nullable: true
-              minimum: 0
-              maximum: 100
-            band:
-              $ref: '#/components/schemas/HealthBand'
-            subScores:
-              type: object
-              required:
-              - maintainerHealth
-              - securitySupplyChain
-              - developmentActivity
-              properties:
-                maintainerHealth:
-                  type: number
-                  nullable: true
-                securitySupplyChain:
-                  type: number
-                  nullable: true
-                developmentActivity:
-                  type: number
-                  nullable: true
-            signalCoverageHealth:
-              type: object
-              nullable: true
-              additionalProperties: true
-        impact:
-          type: object
-          required:
-          - score
-          - downloadsLast30Days
-          - dependentPackagesCount
-          - dependentReposCount
-          - transitiveReach
-          properties:
-            score:
-              type: integer
-              nullable: true
-              minimum: 0
-              maximum: 100
-            downloadsLast30Days:
-              type: string
-              nullable: true
-              description: Raw registry count string, not normalized.
-            dependentPackagesCount:
-              type: integer
-              nullable: true
-            dependentReposCount:
-              type: integer
-              nullable: true
-            transitiveReach:
-              type: integer
-              nullable: true
-              description: Always null for now — reserved for future computation.
-        riskSignals:
-          type: object
-          required:
-          - lifecycle
-          - maintainerBusFactor
-          - lastReleaseAt
-          - hasSecurityFile
-          - hasSecurityPolicy
-          - branchProtectionEnabled
-          - openssfScorecardScore
-          properties:
-            lifecycle:
-              type: string
-              enum:
-              - active
-              - stable
-              - declining
-              - abandoned
-              - archived
-              - null
-              nullable: true
-              description: 'Lifecycle stage on the internal scale, returned verbatim — no external crosswalk. Null when unknown or unrecognized.
-
-                '
-            maintainerBusFactor:
-              type: integer
-              nullable: true
-            lastReleaseAt:
-              type: string
-              format: date-time
-              nullable: true
-            hasSecurityFile:
-              type: boolean
-              nullable: true
-            hasSecurityPolicy:
-              type: boolean
-              nullable: true
-            branchProtectionEnabled:
-              type: boolean
-              nullable: true
-            openssfScorecardScore:
-              type: number
-              format: float
-              minimum: 0
-              maximum: 10
-              nullable: true
-        security:
-          type: object
-          required:
-          - securityPolicyUrl
-          - vulnerabilityReportingUrl
-          - bugBountyUrl
-          - pvrEnabled
-          - criticalVulnerabilityFlag
-          properties:
-            securityPolicyUrl:
-              type: string
-              nullable: true
-            vulnerabilityReportingUrl:
-              type: string
-              nullable: true
-            bugBountyUrl:
-              type: string
-              nullable: true
-            pvrEnabled:
-              type: boolean
-              nullable: true
-            criticalVulnerabilityFlag:
-              type: boolean
-              nullable: true
-        provenance:
-          type: object
-          required:
-          - resolvedRepositoryUrl
-          - declaredRepositoryUrl
-          - mappingConfidenceScore
-          - mappingConfidenceLabel
-          - lastCommitAt
-          properties:
-            resolvedRepositoryUrl:
-              type: string
-              nullable: true
-              description: 'Best available repository URL. Preferred source is the confidence-ranked package_repos → repos join — the repo CDP has actually resolved and enriched (scorecard, branch protection, etc.). When the package has no package_repos link yet, this falls back to the canonical repository_url on the package row, which is NOT confidence-resolved or enriched. Use mappingConfidenceScore / mappingConfidenceLabel to tell the two apart: both are null when the fallback URL is returned.
-
-                '
-            declaredRepositoryUrl:
-              type: string
-              nullable: true
-              description: Raw repository URL as declared in the package's own metadata.
-            mappingConfidenceScore:
-              type: number
-              format: float
-              minimum: 0
-              maximum: 1
-              nullable: true
-            mappingConfidenceLabel:
-              type: string
-              enum:
-              - High
-              - Medium
-              - Low
-              - null
-              nullable: true
-            lastCommitAt:
-              type: string
-              format: date-time
-              nullable: true
-        supplyChainIntegrity:
-          type: object
-          required:
-          - buildProvenance
-          - signedReleases
-          properties:
-            buildProvenance:
-              type: string
-              nullable: true
-              description: Always null for now — reserved.
-            signedReleases:
-              type: string
-              nullable: true
-              description: Always null for now — reserved.
-    StewardEntry:
-      type: object
-      required:
-      - id
-      - stewardshipId
-      - userId
-      - role
-      - assignedAt
-      properties:
-        id:
-          type: string
-        stewardshipId:
-          type: string
-        userId:
-          type: string
-        name:
-          type: string
-          nullable: true
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-        assignedBy:
-          type: string
-          nullable: true
-    Steward_2:
-      type: object
-      required:
-      - userId
-      - role
-      - assignedAt
-      properties:
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: abc123
-        username:
-          type:
-          - string
-          - 'null'
-          description: Username of the steward. Null if not available.
-          example: jrodriguez
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Display name of the steward. Null if not available.
-          example: Jonathan R.
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-    Ecosystem:
-      type: string
-      example: npm
-    ScatterPoint_2:
-      type: object
-      required:
-      - purl
-      - name
-      - criticalityScore
-      - healthScore
-      - healthBand
-      - openVulns
-      - advisoryCount
-      properties:
-        purl:
-          type: string
-          example: pkg:npm/lodash@4.17.21
-        name:
-          type: string
-          example: lodash
-        criticalityScore:
-          type: integer
-          description: ROUND(p.impact × 100). Y-axis position (0–100).
-          example: 94
-        healthScore:
-          type: integer
-          description: ROUND(scorecard_score × 10). X-axis position (0–100). 0 if no repo.
-          example: 52
-        healthBand:
-          type: string
-          enum:
-          - healthy
-          - fair
-          - concerning
-          - critical
-          description: 'Falls back to scorecard thresholds — never ''excellent'' (scatter uses scorecard score only, not Tinybird health_label).
-
-            '
-        stewardshipStatus:
-          oneOf:
-          - $ref: '#/components/schemas/StewardshipStatus'
-          - type: 'null'
-        stewardshipId:
-          type:
-          - string
-          - 'null'
-          example: '4501'
-        openVulns:
-          type: integer
-          example: 3
-        advisoryCount:
-          type: integer
-          description: Alias of openVulns — explicit field for tooltip display.
-          example: 3
-    Error_2:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Invalid query parameter.
-    StatusCounts_2:
-      type: object
-      description: Per-status package counts for the tab bar. Computed without the active status filter.
-      required:
-      - all
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
-      properties:
-        all:
-          type: integer
-        unassigned:
-          type: integer
-        open:
-          type: integer
-        assessing:
-          type: integer
-        active:
-          type: integer
-        needs_attention:
-          type: integer
-        escalated:
-          type: integer
-        blocked:
-          type: integer
-        inactive:
-          type: integer
-    Error_3:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Invalid query parameter.
-    Error_4:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: NOT_FOUND
-            message:
-              type: string
-              example: Package not found.
-    Advisory:
-      type: object
-      required:
-      - osvId
-      - severity
-      - resolution
-      - isCritical
-      properties:
-        osvId:
-          type: string
-          example: GHSA-xxxx-xxxx-xxxx
-        severity:
-          type: string
-          enum:
-          - critical
-          - high
-          - moderate
-          - low
-          nullable: true
-        resolution:
-          type: string
-          enum:
-          - open
-          - patched
-          nullable: true
-        isCritical:
-          type: boolean
-          description: True when CVSS score >= 7.0.
-    PackageDetailBulkEntry:
-      type: object
-      required:
-      - requestedPurl
-      - found
-      - package
-      properties:
-        requestedPurl:
-          type: string
-        found:
-          type: boolean
-        package:
-          type: object
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/PackageDetail'
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: BAD_REQUEST
-            message:
-              type: string
-    PackageHistoryEvent:
-      type: object
-      required:
-      - id
-      - actorType
-      - activityType
-      - createdAt
-      properties:
-        id:
-          type: string
-        actorUserId:
-          type: string
-          nullable: true
-        actorType:
-          type: string
-          example: user
-        activityType:
-          type: string
-          example: state_changed
-        content:
-          type: string
-          nullable: true
-        metadata:
-          type: object
-          nullable: true
-          additionalProperties: true
-        createdAt:
-          type: string
-          format: date-time
-    Steward:
-      type: object
-      required:
-      - userId
-      - role
-      - assignedAt
-      properties:
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: auth0|abc123
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
-    PaginationMeta:
-      type: object
-      required:
-      - total
-      - page
-      - pageSize
-      properties:
-        total:
-          type: integer
-        page:
-          type: integer
-        pageSize:
-          type: integer
-    PackageMetrics:
-      type: object
-      required:
-      - criticalPackages
-      properties:
-        criticalPackages:
-          type: integer
-          description: Total packages marked as critical (is_critical = true).
-    HealthBand:
-      type: string
-      enum:
-      - excellent
-      - healthy
-      - fair
-      - concerning
-      - critical
-      description: 'Health band on the internal scale (best→worst), returned verbatim — no external crosswalk.
-
-        '
-    SecurityContact:
-      type: object
-      required:
-      - channel
-      - value
-      - role
-      - confidence
-      - score
-      properties:
-        channel:
-          type: string
-          enum:
-          - email
-          - github-pvr
-          - url
-          - github-handle
-          - web-form
-        value:
-          type: string
-          example: security@expressjs.com
-        role:
-          type: string
-          enum:
-          - security-team
-          - maintainer
-          - admin
-          - committer
-          - org-owner
-        confidence:
-          $ref: '#/components/schemas/SecurityContactConfidence'
-        score:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
-    HealthBand_2:
-      type: string
-      enum:
-      - healthy
-      - fair
-      - concerning
-      - critical
-      description: 'Derived from `scorecardScore`: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy
-
-        '
-    HealthBand_3:
-      type: string
-      enum:
-      - excellent
-      - healthy
-      - fair
-      - concerning
-      - critical
-      description: 'Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30). Falls back to scorecard thresholds: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy.
-
-        '
-    Advisory_2:
-      type: object
-      required:
-      - osvId
-      - severity
-      properties:
-        osvId:
-          type: string
-          description: GHSA or CVE identifier.
-          example: CVE-2021-44906
-        severity:
-          type: string
-          enum:
-          - critical
-          - high
-          - medium
-          - low
-        resolution:
-          type:
-          - string
-          - 'null'
-          description: Resolution status. TBD.
-    PackageRow:
-      type: object
-      required:
-      - purl
-      - name
-      - ecosystem
-      - openVulns
-      - maintainerCount
-      - health
-      - stewards
-      properties:
-        purl:
-          type: string
-          example: pkg:npm/lodash@4.17.21
+          description: Used to call GET /packages/detail?purl= when a row is clicked.
+          example: pkg:npm/lodash
         name:
           type: string
           example: lodash
         ecosystem:
           type: string
           example: npm
-        stewardshipId:
-          type:
-          - string
-          - 'null'
-          example: '4501'
-        stewardshipStatus:
-          oneOf:
-          - $ref: '#/components/schemas/StewardshipStatus'
-          - type: 'null'
-        openVulns:
-          type: integer
-          description: Count of advisory_packages rows for this package.
-          example: 3
-        maxVulnSeverity:
-          type:
-          - string
-          - 'null'
-          enum:
-          - critical
-          - high
-          - medium
-          - low
-          description: Worst advisory severity. Null if no advisories.
-        maintainerCount:
-          type: integer
-          description: Count of package_maintainers rows. Bus factor proxy.
-          example: 2
-        criticalityScore:
-          type:
-          - number
-          - 'null'
-          description: Raw criticality score (0–1 float). Use `impact` for display.
-          example: 0.94
-        impact:
-          type:
-          - integer
-          - 'null'
-          description: Display score (0–100). criticalityScore × 100, rounded. Null if no score.
-          example: 94
-        scorecardScore:
-          type:
-          - number
-          - 'null'
-          description: OpenSSF Scorecard score (0–10). Null if no repo mapped.
-          example: 5.2
         health:
           type: object
           required:
@@ -2536,25 +2718,23 @@ components:
               type:
               - integer
               - 'null'
-              description: 'Health score (0–100). Tinybird composite score when enriched, OpenSSF Scorecard × 10 otherwise. Null if neither is available.
-
-                '
-              example: 52
+              description: Health score (0–100). Tinybird composite score when enriched, OpenSSF Scorecard × 10 otherwise. Null if neither is available.
+              example: 18
             label:
-              type:
-              - string
-              - 'null'
+              type: string
               enum:
               - excellent
               - healthy
               - fair
               - concerning
               - critical
-              - null
-              description: 'Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30), scorecard band otherwise.
-
-                '
-              example: fair
+              description: Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30), scorecard band otherwise.
+              example: critical
+        impact:
+          type:
+          - integer
+          - 'null'
+          example: 71
         lifecycle:
           type:
           - string
@@ -2566,118 +2746,40 @@ components:
           - abandoned
           - archived
           - null
-          description: Tinybird-enriched lifecycle label. Null if not yet enriched.
-          example: active
-        latestReleaseAt:
+        maintainerBusFactor:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        openVulns:
+          oneOf:
+          - $ref: '#/components/schemas/OpenVulns'
+          - type: 'null'
+        stewardshipId:
           type:
           - string
           - 'null'
-          format: date-time
-          description: Used by the frontend to derive the stale flag (≥ 18 months).
-        lastActivity:
-          description: Most recent stewardship activity for this package. Null if none.
-          oneOf:
-          - type: object
-            required:
-            - type
-            - at
-            properties:
-              type:
-                type:
-                - string
-                - 'null'
-                example: state_changed
-              content:
-                type:
-                - string
-                - 'null'
-                example: Moved to active stewardship
-              at:
-                type: string
-                format: date-time
-          - type: 'null'
+          description: Stewardship ID. Required to call mutation endpoints (assign/escalate/status). Null if no stewardship row exists.
+          example: '42'
+        stewardship:
+          $ref: '#/components/schemas/StewardshipStatus'
         stewards:
+          description: Assigned stewards. Empty array if none.
           type: array
-          description: Active stewards (deleted_at IS NULL). Empty array if none.
           items:
-            $ref: '#/components/schemas/Steward'
-    PackageListRow:
+            $ref: '#/components/schemas/Steward_2'
+    PackagesMetrics:
       type: object
       required:
-      - purl
-      - name
-      - ecosystem
-      - openVulns
-      - maintainerCount
-      - healthBand
-      - stewards
+      - totalPackages
+      - criticalPackages
       properties:
-        purl:
-          type: string
-          example: pkg:npm/%40angular/core@17.0.0
-        name:
-          type: string
-        ecosystem:
-          type: string
-        criticalityScore:
-          type: number
-          format: float
-          nullable: true
-        stewardshipId:
-          type: string
-          nullable: true
-        stewardshipStatus:
-          $ref: '#/components/schemas/StewardshipStatus'
-          nullable: true
-        openVulns:
+        totalPackages:
           type: integer
-        maxVulnSeverity:
-          type: string
-          enum:
-          - critical
-          - high
-          - medium
-          - low
-          nullable: true
-        maintainerCount:
+          example: 0
+        criticalPackages:
           type: integer
-        scorecardScore:
-          type: number
-          format: float
-          nullable: true
-        healthBand:
-          $ref: '#/components/schemas/HealthBand_2'
-        latestReleaseAt:
-          type: string
-          format: date-time
-          nullable: true
-        lastActivity:
-          type: object
-          nullable: true
-          required:
-          - type
-          - content
-          - at
-          properties:
-            type:
-              type: string
-            content:
-              type: string
-              nullable: true
-            at:
-              type: string
-              format: date-time
-        stewards:
-          type: array
-          items:
-            $ref: '#/components/schemas/StewardEntry'
-    SecurityContactConfidence:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
+          example: 0
   securitySchemes:
     M2MBearer:
       type: oauth2
@@ -2691,3 +2793,12 @@ components:
             read:packages: Read package detail
             read:stewardships: Read package stewardship data
             read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- crowddev-cdp-akrites-external-openapi.yml
+- crowddev-cdp-akrites-openapi.yml
+- crowddev-cdp-ossprey-openapi.yml
+- crowddev-cdp-packages-openapi.yml

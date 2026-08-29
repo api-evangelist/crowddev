@@ -1,23 +1,21 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: CDP → Akrites External Advisories Stewardship API
-  version: 0.1.0
-  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+  title: CDP Public API — Packages Stewardship API
+  version: 1.0.0
+  description: 'Read-only endpoints for the OSSPREY Self Serve program.
 
 
-    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
+    **Authentication:** OAuth 2.0 M2M bearer token. Package endpoints require `read:packages` or `read:stewardships`. The batch stewardship endpoint requires `read:stewardships` only.
 
 
-    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+    **V1 constraints:** All stewardship rows are `unassigned`. Write endpoints and state transitions are deferred to v2.
 
     '
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
-security:
-- M2MBearer:
-  - read:packages
-  - read:stewardships
+- url: https://lf-staging.crowd.dev/api/v1
+  description: Staging
 tags:
 - name: Stewardship
   description: Stewardship state — individual and batch.
@@ -111,6 +109,34 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Package not found.
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
     OpenVulns:
       type: object
       description: Open vulnerability counts by severity from advisory_packages + advisories.
@@ -132,54 +158,6 @@ components:
         critical:
           type: integer
           example: 0
-    Steward:
-      type: object
-      required:
-      - userId
-      - role
-      - assignedAt
-      properties:
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: abc123
-        username:
-          type:
-          - string
-          - 'null'
-          description: Username of the steward. Null if not available.
-          example: jrodriguez
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Display name of the steward. Null if not available.
-          example: Jonathan R.
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: NOT_FOUND
-            message:
-              type: string
-              example: Package not found.
     StewardshipSummary:
       type: object
       description: Null if the purl is not found in CDP.
@@ -243,27 +221,39 @@ components:
           - string
           - 'null'
           description: Null in v1.
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
+    Steward:
+      type: object
+      required:
+      - userId
+      - role
+      - assignedAt
+      properties:
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: abc123
+        username:
+          type:
+          - string
+          - 'null'
+          description: Username of the steward. Null if not available.
+          example: jrodriguez
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the steward. Null if not available.
+          example: Jonathan R.
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
   securitySchemes:
     M2MBearer:
-      type: oauth2
-      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
-
-        '
-      flows:
-        clientCredentials:
-          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
-          scopes:
-            read:packages: Read package detail
-            read:stewardships: Read package stewardship data
-            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

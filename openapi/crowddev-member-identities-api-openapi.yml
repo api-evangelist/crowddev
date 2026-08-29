@@ -1,23 +1,17 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: CDP → Akrites External Advisories Member Identities API
-  version: 0.1.0
-  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
-
-
-    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
-
-
-    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
-
-    '
+  title: CDP Public Member Identities API
+  version: 1.0.0
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  description: "Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.\n\nTwo authentication methods are supported depending on the endpoint:\n- **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,\n  and affiliation management endpoints.\n\n- **Static API Key** — bearer token with scopes managed in the CDP database.\n"
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
-security:
-- M2MBearer:
-  - read:packages
-  - read:stewardships
+- url: https://lf-staging.crowd.dev/api/v1
+  description: Staging
+security: []
 tags:
 - name: Member Identities
   description: Manage and verify member identities across platforms.
@@ -221,7 +215,65 @@ paths:
                   code: CONFLICT
                   message: Identity already exists on another member
 components:
+  responses:
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+    MemberNotFound:
+      description: No member found with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Member not found
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
   schemas:
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
     MemberIdentity:
       type: object
       required:
@@ -268,64 +320,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    HttpError:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code.
-            message:
-              type: string
-              description: Human-readable error description.
-  responses:
-    Forbidden:
-      description: Authentication valid but insufficient scopes.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: INSUFFICIENT_SCOPE
-              message: Insufficient scope for this operation
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
-    BadRequest:
-      description: Invalid request body or query parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: BAD_REQUEST
-              message: Validation failed
-    MemberNotFound:
-      description: No member found with the given ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: NOT_FOUND
-              message: Member not found
   parameters:
     MemberId:
       name: memberId
@@ -336,15 +330,29 @@ components:
         type: string
         format: uuid
   securitySchemes:
-    M2MBearer:
+    OAuth2Bearer:
       type: oauth2
-      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
+      description: 'OAuth 2.0 client credentials flow via Auth0. The consuming service obtains a JWT using its client ID and secret, then passes it as `Authorization: Bearer <token>`
 
         '
       flows:
         clientCredentials:
           tokenUrl: https://linuxfoundation.auth0.com/oauth/token
           scopes:
-            read:packages: Read package detail
-            read:stewardships: Read package stewardship data
-            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)
+            read:members: Read member profiles
+            write:members: Create member profiles
+            read:member-identities: Read member identities
+            write:member-identities: Create and verify member identities
+            read:maintainer-roles: Read maintainer roles
+            read:work-experiences: Read work experiences
+            write:work-experiences: Create, update, verify, and delete work experiences
+            read:project-affiliations: Read project affiliations
+            write:project-affiliations: Override project affiliations
+            read:organizations: Look up organizations
+            write:organizations: Create organizations
+    StaticApiKey:
+      type: http
+      scheme: bearer
+      description: 'Static API key — pass as `Authorization: Bearer <token>`. Keys are managed in the CDP database with SHA-256 hashing, expiration, and revocation support.
+
+        '

@@ -1,23 +1,13 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: CDP → Akrites External Advisories Member Affiliations API API
-  version: 0.1.0
-  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
-
-
-    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
-
-
-    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
-
-    '
+  title: CM API Docs Member Affiliations API
+  version: 1.0.0
+  description: API endpoints for LFX Community Data Platform application
 servers:
 - url: https://cm.lfx.dev/api/v1
-  description: Production
+  description: LFX CM Production
 security:
-- M2MBearer:
-  - read:packages
-  - read:stewardships
+- BearerAuth: []
 tags:
 - name: Member Affiliations API
   description: API endpoints for managing project affiliations, including listing and bulk updating affiliation relationships within a profile.
@@ -154,15 +144,8 @@ components:
           format: date-time
           description: End date of the affiliation
   securitySchemes:
-    M2MBearer:
-      type: oauth2
-      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
-
-        '
-      flows:
-        clientCredentials:
-          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
-          scopes:
-            read:packages: Read package detail
-            read:stewardships: Read package stewardship data
-            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from LFX authentication service

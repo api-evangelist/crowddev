@@ -1,23 +1,20 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: CDP → Akrites External Advisories Stewardships API
-  version: 0.1.0
-  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
+  title: CDP Public API — Akrites Stewardships API
+  version: 1.0.0
+  description: 'Unified namespace for OSSPREY dashboard read endpoints and stewardship write actions. All routes require an OAuth 2.0 bearer token (Auth0 M2M or user session).
 
 
-    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
-
-
-    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
+    **Rate limits:** packages and stewardships sub-groups each have an independent 60 requests/min per-IP bucket.
 
     '
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
+- url: https://lf-staging.crowd.dev/api/v1
+  description: Staging
 security:
-- M2MBearer:
-  - read:packages
-  - read:stewardships
+- BearerAuth: []
 tags:
 - name: Stewardships
   description: Open, assign, escalate, and update stewardship status.
@@ -617,21 +614,35 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    InactiveReason:
-      type: string
-      enum:
-      - quarterly_cadence_missed
-      - stepped_down
-      - no_longer_critical
-    EscalationResolutionPath:
-      type: string
-      enum:
-      - right_of_first_refusal
-      - replace_the_dependency
-      - find_vendor_for_lts
-      - consortium_adopts_maintainership
-      - compensating_controls_monitor
-      - namespace_takeover
+    StewardEntry:
+      type: object
+      required:
+      - id
+      - stewardshipId
+      - userId
+      - role
+      - assignedAt
+      properties:
+        id:
+          type: string
+        stewardshipId:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+        assignedBy:
+          type: string
+          nullable: true
     Error:
       type: object
       required:
@@ -649,6 +660,17 @@ components:
             message:
               type: string
               example: Invalid query parameter.
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
     StewardshipRecord:
       type: object
       required:
@@ -693,56 +715,23 @@ components:
         updatedAt:
           type: string
           format: date-time
-    StewardEntry:
-      type: object
-      required:
-      - id
-      - stewardshipId
-      - userId
-      - role
-      - assignedAt
-      properties:
-        id:
-          type: string
-        stewardshipId:
-          type: string
-        userId:
-          type: string
-        name:
-          type: string
-          nullable: true
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-        assignedBy:
-          type: string
-          nullable: true
-    StewardshipStatus:
+    InactiveReason:
       type: string
       enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
+      - quarterly_cadence_missed
+      - stepped_down
+      - no_longer_critical
+    EscalationResolutionPath:
+      type: string
+      enum:
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
   securitySchemes:
-    M2MBearer:
-      type: oauth2
-      description: 'Auth0 machine-to-machine client-credentials flow. Akrites exchanges its client ID/secret with Auth0 for a JWT and sends it as `Authorization: Bearer <token>`; CDP only verifies the resulting token.
-
-        '
-      flows:
-        clientCredentials:
-          tokenUrl: https://linuxfoundation.auth0.com/oauth/token
-          scopes:
-            read:packages: Read package detail
-            read:stewardships: Read package stewardship data
-            read:maintainer-roles: Read security contacts (interim scope for Contacts; see the Contacts tag)
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

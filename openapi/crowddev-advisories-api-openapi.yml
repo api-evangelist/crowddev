@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
   title: CDP → Akrites External Advisories API
   version: 0.1.0
@@ -148,43 +148,18 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Advisory:
+    AdvisoryDetail:
       type: object
       required:
-      - osvId
-      - severity
-      - resolution
-      - isCritical
+      - purl
+      - advisories
       properties:
-        osvId:
+        purl:
           type: string
-          example: GHSA-xxxx-xxxx-xxxx
-        severity:
-          type: string
-          enum:
-          - critical
-          - high
-          - moderate
-          - low
-          - null
-          nullable: true
-          description: 'Lowercased advisory severity. Any stored value outside this enum is returned as null rather than echoed verbatim.
-
-            '
-        resolution:
-          type: string
-          enum:
-          - open
-          - patched
-          - null
-          nullable: true
-          description: 'Whether the package''s latest version is still affected. Null when it can''t be determined (no latest version, or no affected ranges recorded).
-
-            '
-        isCritical:
-          type: boolean
-          nullable: true
-          description: cvss >= 7.0. Null when the advisory has no CVSS score.
+        advisories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Advisory'
     Error:
       type: object
       required:
@@ -201,6 +176,46 @@ components:
               example: BAD_REQUEST
             message:
               type: string
+    Advisory:
+      type: object
+      required:
+      - osvId
+      - severity
+      - resolution
+      - isCritical
+      properties:
+        osvId:
+          type: string
+          example: GHSA-xxxx-xxxx-xxxx
+        severity:
+          type:
+          - string
+          - 'null'
+          enum:
+          - critical
+          - high
+          - moderate
+          - low
+          - null
+          description: 'Lowercased advisory severity. Any stored value outside this enum is returned as null rather than echoed verbatim.
+
+            '
+        resolution:
+          type:
+          - string
+          - 'null'
+          enum:
+          - open
+          - patched
+          - null
+          description: 'Whether the package''s latest version is still affected. Null when it can''t be determined (no latest version, or no affected ranges recorded).
+
+            '
+        isCritical:
+          type:
+          - boolean
+          - 'null'
+          description: cvss >= 7.0. Null when the advisory has no CVSS score.
     AdvisoryDetailBulkEntry:
       type: object
       required:
@@ -213,22 +228,11 @@ components:
         found:
           type: boolean
         advisories:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           allOf:
           - $ref: '#/components/schemas/AdvisoryDetail'
-    AdvisoryDetail:
-      type: object
-      required:
-      - purl
-      - advisories
-      properties:
-        purl:
-          type: string
-        advisories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Advisory'
   securitySchemes:
     M2MBearer:
       type: oauth2
