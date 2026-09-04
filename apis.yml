@@ -37,6 +37,7 @@ accessModel:
   source:
   - https://docs.linuxfoundation.org/lfx/community-management
   - https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
+  - {url: 'https://crowd.dev', status: 301, note: 'declared website redirects to https://github.com/linuxfoundation/crowd.dev — a different registrable domain (crowd.dev -> github.com), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
   generated: '2026-08-14'
   method: searched
   note: >-
@@ -306,8 +307,9 @@ common:
   url: errors/crowddev-problem-types.yml
 - type: DataModel
   url: data-model/crowddev-data-model.yml
-- type: MCPServer
+- type: X-MCPServerCandidate
   url: mcp/crowddev-mcp.yml
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
 - type: Conformance
   url: conformance/crowddev-conformance.yml
 - type: Overlay
