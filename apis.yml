@@ -1,16 +1,12 @@
 aid: crowddev
 name: Crowd.dev
-description: >-
-  Crowd.dev is an open-source developer data platform that centralizes
-  community, product, and commercial data to unify contributor identities,
-  resolve who is engaging with an open-source project, and activate that data
-  for developer relations and community-led growth. Founded in Berlin and
-  backed by Seedcamp, crowd.dev was acquired by the Linux Foundation in April
-  2024 and now powers the LFX Community Data Platform (CDP). The codebase is
-  Apache-2.0 open source at github.com/CrowdDotDev (now linuxfoundation/crowd.dev),
-  and the CDP Public API exposes transactional REST endpoints for member and
-  organization profiles, identity verification, work-experience and
-  project-affiliation management, contributor affiliation lookups, and
+description: Crowd.dev is an open-source developer data platform that centralizes community, product,
+  and commercial data to unify contributor identities, resolve who is engaging with an open-source project,
+  and activate that data for developer relations and community-led growth. Founded in Berlin and backed
+  by Seedcamp, crowd.dev was acquired by the Linux Foundation in April 2024 and now powers the LFX Community
+  Data Platform (CDP). The codebase is Apache-2.0 open source at github.com/CrowdDotDev (now linuxfoundation/crowd.dev),
+  and the CDP Public API exposes transactional REST endpoints for member and organization profiles, identity
+  verification, work-experience and project-affiliation management, contributor affiliation lookups, and
   open-source package/stewardship intelligence.
 url: https://raw.githubusercontent.com/api-evangelist/crowddev/refs/heads/main/apis.yml
 deliveryModel:
@@ -37,14 +33,16 @@ accessModel:
   source:
   - https://docs.linuxfoundation.org/lfx/community-management
   - https://github.com/linuxfoundation/crowd.dev/blob/main/docs/adr/0016-akrites-cdp-public-api-authentication.md
-  - {url: 'https://crowd.dev', status: 301, note: 'declared website redirects to https://github.com/linuxfoundation/crowd.dev — a different registrable domain (crowd.dev -> github.com), possible rename or acquisition (probed 2026-09-03, roadmap#169)'}
+  - url: https://crowd.dev
+    status: 301
+    note: declared website redirects to https://github.com/linuxfoundation/crowd.dev — a different registrable
+      domain (crowd.dev -> github.com), possible rename or acquisition (probed 2026-09-03, roadmap#169)
   generated: '2026-08-14'
   method: searched
-  note: >-
-    The Community Data Platform is free to use and has no pricing page or paid tier. API access is
-    not self-serve: Auth0 machine-to-machine clients on the cdp_public_api audience are provisioned
-    per consumer by the Linux Foundation, and UI access is documented as Linux Foundation employees
-    only. See plans/crowddev-plans-pricing.yml.
+  note: 'The Community Data Platform is free to use and has no pricing page or paid tier. API access is
+    not self-serve: Auth0 machine-to-machine clients on the cdp_public_api audience are provisioned per
+    consumer by the Linux Foundation, and UI access is documented as Linux Foundation employees only.
+    See plans/crowddev-plans-pricing.yml.'
 image: https://avatars.githubusercontent.com/u/85551972?v=4
 x-type: company
 x-source: vc-portfolio
@@ -53,10 +51,10 @@ x-backed-by:
 x-tier: stub
 x-tier-reason: portfolio-lead
 x-acquired-by: linux-foundation
-x-acquired-date: '2024-04'
+x-acquired-date: 2024-04
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-08-14'
+modified: '2026-09-16'
 tags:
 - Company
 - Community
@@ -78,9 +76,8 @@ tags_raw:
 apis:
 - aid: crowddev:crowddev-advisories-api
   name: Crowd.dev Advisories API
-  description: >-
-    Security advisories for a package, split out of package detail. The draft contract gates these behind
-    a dedicated read:advisories scope; until Auth0 issues it, the implementation reuses read:packages
+  description: Security advisories for a package, split out of package detail. The draft contract gates
+    these behind a dedicated read:advisories scope; until Auth0 issues it, the implementation reuses read:packages
     (advisories need no stewardship read). Confirm the final scope name (read:advisories vs cdp:advisories:read)
     with Akrites/product.
   humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
@@ -102,11 +99,10 @@ apis:
     url: openapi/crowddev-affiliations-api-openapi.yml
 - aid: crowddev:crowddev-contacts-api
   name: Crowd.dev Contacts API
-  description: >-
-    Security contacts for a package — includes contact PII (e.g. reporter emails). The contract gates
-    these behind a dedicated cdp:maintainers:read scope and forbids reaching them via the packages scope;
-    until Auth0 issues it, the implementation requires read:maintainer-roles (NOT read:packages). The
-    response shape is still under discussion upstream (reportingMethods / reportingGuidelines / integrationHints
+  description: Security contacts for a package — includes contact PII (e.g. reporter emails). The contract
+    gates these behind a dedicated cdp:maintainers:read scope and forbids reaching them via the packages
+    scope; until Auth0 issues it, the implementation requires read:maintainer-roles (NOT read:packages).
+    The response shape is still under discussion upstream (reportingMethods / reportingGuidelines / integrationHints
     are reserved and always null today).
   humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
@@ -136,10 +132,9 @@ apis:
   - type: OpenAPI
     url: openapi/crowddev-maintainer-roles-api-openapi.yml
 - aid: crowddev:crowddev-member-affiliations-api-api
-  name: Crowd.dev Member Affiliations API API
-  description: >-
-    API endpoints for managing project affiliations, including listing and bulk updating affiliation relationships
-    within a profile.
+  name: Crowd.dev Member Affiliations API
+  description: API endpoints for managing project affiliations, including listing and bulk updating affiliation
+    relationships within a profile.
   humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
@@ -158,10 +153,9 @@ apis:
   - type: OpenAPI
     url: openapi/crowddev-member-identities-api-openapi.yml
 - aid: crowddev:crowddev-member-organizations-api-api
-  name: Crowd.dev Member Organizations API API
-  description: >-
-    API endpoints for managing work history organizations, including creating, reading, updating, and
-    deleting organization relationships for profiles.
+  name: Crowd.dev Member Organizations API
+  description: API endpoints for managing work history organizations, including creating, reading, updating,
+    and deleting organization relationships for profiles.
   humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
@@ -309,7 +303,10 @@ common:
   url: data-model/crowddev-data-model.yml
 - type: X-MCPServerCandidate
   url: mcp/crowddev-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
 - type: Conformance
   url: conformance/crowddev-conformance.yml
 - type: Overlay
@@ -335,9 +332,8 @@ x-enrichment:
   status: enriched
   artifacts_added: 8
   pass: local-v1
-  note: >-
-    Ownership verified: all seven OpenAPI documents are published first-party in the Apache-2.0
-    repo linuxfoundation/crowd.dev under backend/src/api/public/ and backend/id-openapi.yaml, with
-    servers[] naming cm.lfx.dev (production) and lf-staging.crowd.dev (staging). Rate limits,
-    authentication and scopes upgraded to searched from the repo's dated ADR set. No SDK, no
-    AsyncAPI, no A2A card, no well-known document and no CDP MCP server exist.
+  note: 'Ownership verified: all seven OpenAPI documents are published first-party in the Apache-2.0 repo
+    linuxfoundation/crowd.dev under backend/src/api/public/ and backend/id-openapi.yaml, with servers[]
+    naming cm.lfx.dev (production) and lf-staging.crowd.dev (staging). Rate limits, authentication and
+    scopes upgraded to searched from the repo''s dated ADR set. No SDK, no AsyncAPI, no A2A card, no well-known
+    document and no CDP MCP server exist.'
