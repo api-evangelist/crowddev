@@ -117,6 +117,8 @@ apis:
   humanURL: https://github.com/linuxfoundation/crowd.dev/tree/main/backend/src/api/public
   baseURL: https://cm.lfx.dev/api/v1
   tags:
+  - Dashboards
+  tags_raw:
   - Dashboard
   properties:
   - type: OpenAPI
