@@ -146,9 +146,7 @@ paths:
     get:
       operationId: listAkritesPackages
       summary: List packages with stewardship data
-      description: 'Paginated list of critical packages enriched with stewardship status, vulnerability counts, health band, and the latest stewardship activity. Supports rich filtering and sorting.
-
-        '
+      description: Paginated list of critical packages enriched with stewardship status, vulnerability counts, health band, and the latest stewardship activity. Supports rich filtering and sorting.
       tags:
       - Packages
       parameters:
@@ -280,9 +278,7 @@ paths:
     get:
       operationId: getAkritesPackagesScatter
       summary: Get risk matrix scatter data
-      description: 'Returns all critical packages as scatter-plot points with impact score (x-axis) and health score (y-axis). No pagination — the full dataset is returned.
-
-        '
+      description: Returns all critical packages as scatter-plot points with impact score (x-axis) and health score (y-axis). No pagination — the full dataset is returned.
       tags:
       - Packages
       responses:
@@ -319,9 +315,7 @@ paths:
     get:
       operationId: getAkritesPackagesMetrics
       summary: Get package count metrics
-      description: 'Returns total and critical package counts. Lighter alternative to `/akrites/metrics` when only package-level counts are needed.
-
-        '
+      description: Returns total and critical package counts. Lighter alternative to `/akrites/metrics` when only package-level counts are needed.
       tags:
       - Packages
       responses:
@@ -348,9 +342,7 @@ paths:
     get:
       operationId: getAkritesPackageDetail
       summary: Get package detail
-      description: 'Returns the full detail view for a single package identified by its PURL, including risk signals, security advisories, repository provenance, and current stewardship state.
-
-        '
+      description: Returns the full detail view for a single package identified by its PURL, including risk signals, security advisories, repository provenance, and current stewardship state.
       tags:
       - Packages
       parameters:
@@ -399,9 +391,7 @@ paths:
     get:
       operationId: getAkritesPackageAdvisories
       summary: Get advisories for a package
-      description: 'Returns a paginated list of security advisories for a single package identified by PURL. Intended for lazy-loading the Security tab in the package detail drawer.
-
-        '
+      description: Returns a paginated list of security advisories for a single package identified by PURL. Intended for lazy-loading the Security tab in the package detail drawer.
       tags:
       - Packages
       parameters:
@@ -511,9 +501,7 @@ paths:
     get:
       operationId: getAkritesPackageHistory
       summary: Get stewardship history for a package
-      description: 'Returns the full activity log for the stewardship associated with the given PURL, ordered newest-first. Returns an empty list if no stewardship exists. Intended for lazy-loading the History tab in the package detail drawer.
-
-        '
+      description: Returns the full activity log for the stewardship associated with the given PURL, ordered newest-first. Returns an empty list if no stewardship exists. Intended for lazy-loading the History tab in the package detail drawer.
       tags:
       - Packages
       parameters:
@@ -570,9 +558,7 @@ paths:
     post:
       operationId: batchGetStewardship
       summary: Batch stewardship lookup by PURL
-      description: 'Given up to 100 PURLs, returns a map of `purl → stewardship summary` for each. Missing packages are returned as `null`. Useful for enriching external package listings with CDP stewardship state.
-
-        '
+      description: Given up to 100 PURLs, returns a map of `purl → stewardship summary` for each. Missing packages are returned as `null`. Useful for enriching external package listings with CDP stewardship state.
       tags:
       - Packages
       requestBody:
@@ -634,7 +620,22 @@ paths:
     get:
       operationId: listOsspreyPackages
       summary: Filtered paginated package list
-      description: "Returns a paginated, filtered, sorted list of critical packages with their stewardship state and risk signals.\n\nUsed by three tabs:\n- **Queue tab** — full table with all filters\n- **Triage Board** — one request per status column, fired in parallel\n  (`?status=X&pageSize=50`)\n\n- **Summary panel** — click-through navigates to Queue with pre-filled filter\n\nThe response always includes `statusCounts` — per-status counts computed without the active `status` filter, used to drive the tab bar badge numbers.\n"
+      description: 'Returns a paginated, filtered, sorted list of critical packages with their stewardship state and risk signals.
+
+
+        Used by three tabs:
+
+        - **Queue tab** — full table with all filters
+
+        - **Triage Board** — one request per status column, fired in parallel
+
+        (`?status=X&pageSize=50`)
+
+
+        - **Summary panel** — click-through navigates to Queue with pre-filled filter
+
+
+        The response always includes `statusCounts` — per-status counts computed without the active `status` filter, used to drive the tab bar badge numbers.'
       tags:
       - Packages
       security:
@@ -825,9 +826,7 @@ paths:
       description: 'Returns all packages where `is_critical = true AND has_critical_vulnerability = true` as lightweight data points for the health-vs-impact scatter plot. No pagination — this filter set is expected to stay around 2 000 packages. Ordered by `impact DESC`.
 
 
-        Dot color is determined by `stewardshipStatus`. Legend checkboxes toggle visibility client-side — no additional API calls needed.
-
-        '
+        Dot color is determined by `stewardshipStatus`. Legend checkboxes toggle visibility client-side — no additional API calls needed.'
       tags:
       - Packages
       security:
@@ -1069,9 +1068,7 @@ paths:
     get:
       operationId: getPackage
       summary: Get full package detail
-      description: 'Returns data for the drawer''s Overview, Security, and Provenance tabs. Pass the canonical purl as a query parameter — no URL-encoding needed. Example: `?purl=pkg:npm/lodash@4.17.21`.
-
-        '
+      description: 'Returns data for the drawer''s Overview, Security, and Provenance tabs. Pass the canonical purl as a query parameter — no URL-encoding needed. Example: `?purl=pkg:npm/lodash@4.17.21`.'
       tags:
       - Packages
       security:
@@ -1178,39 +1175,9 @@ components:
       description: 'Health band on the internal scale (best→worst), returned verbatim — no external crosswalk.
 
         '
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: BAD_REQUEST
-            message:
-              type: string
-    PackageDetailBulkEntry:
-      type: object
-      required:
-      - requestedPurl
-      - found
-      - package
-      properties:
-        requestedPurl:
-          type: string
-        found:
-          type: boolean
-        package:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/PackageDetail'
+    Ecosystem:
+      type: string
+      example: npm
     PackageDetail:
       type: object
       required:
@@ -1453,103 +1420,24 @@ components:
               - string
               - 'null'
               description: Always null for now — reserved.
-    Ecosystem:
-      type: string
-      example: npm
-    StewardEntry:
+    PackageDetailBulkEntry:
       type: object
       required:
-      - id
-      - stewardshipId
-      - userId
-      - role
-      - assignedAt
+      - requestedPurl
+      - found
+      - package
       properties:
-        id:
+        requestedPurl:
           type: string
-        stewardshipId:
-          type: string
-        userId:
-          type: string
-        name:
-          type: string
-          nullable: true
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-        assignedBy:
-          type: string
-          nullable: true
-    HealthBand_2:
-      type: string
-      enum:
-      - healthy
-      - fair
-      - concerning
-      - critical
-      description: 'Derived from `scorecardScore`: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy
-
-        '
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
-    SecurityContactConfidence:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
-    PackageMetrics:
-      type: object
-      required:
-      - criticalPackages
-      properties:
-        criticalPackages:
-          type: integer
-          description: Total packages marked as critical (is_critical = true).
-    Advisory:
-      type: object
-      required:
-      - osvId
-      - severity
-      - resolution
-      - isCritical
-      properties:
-        osvId:
-          type: string
-          example: GHSA-xxxx-xxxx-xxxx
-        severity:
-          type: string
-          enum:
-          - critical
-          - high
-          - moderate
-          - low
-          nullable: true
-        resolution:
-          type: string
-          enum:
-          - open
-          - patched
-          nullable: true
-        isCritical:
+        found:
           type: boolean
-          description: True when CVSS score >= 7.0.
-    Error_2:
+        package:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/PackageDetail'
+    Error:
       type: object
       required:
       - error
@@ -1562,204 +1450,9 @@ components:
           properties:
             code:
               type: string
-              example: VALIDATION_ERROR
+              example: BAD_REQUEST
             message:
               type: string
-              example: Invalid query parameter.
-    StatusCounts:
-      type: object
-      description: Count of packages per stewardship status (used to drive filter pill badges).
-      required:
-      - all
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
-      properties:
-        all:
-          type: integer
-          description: Total count across all statuses (matches total from the package list without status filter).
-        unassigned:
-          type: integer
-        open:
-          type: integer
-        assessing:
-          type: integer
-        active:
-          type: integer
-        needs_attention:
-          type: integer
-        escalated:
-          type: integer
-        blocked:
-          type: integer
-        inactive:
-          type: integer
-      example:
-        all: 95
-        unassigned: 42
-        open: 5
-        assessing: 12
-        active: 30
-        needs_attention: 3
-        escalated: 1
-        blocked: 0
-        inactive: 2
-    PackageHistoryEvent:
-      type: object
-      required:
-      - id
-      - actorType
-      - activityType
-      - createdAt
-      properties:
-        id:
-          type: string
-        actorUserId:
-          type: string
-          nullable: true
-        actorType:
-          type: string
-          example: user
-        activityType:
-          type: string
-          example: state_changed
-        content:
-          type: string
-          nullable: true
-        metadata:
-          type: object
-          nullable: true
-          additionalProperties: true
-        createdAt:
-          type: string
-          format: date-time
-    SecurityContact:
-      type: object
-      required:
-      - channel
-      - value
-      - role
-      - confidence
-      - score
-      properties:
-        channel:
-          type: string
-          enum:
-          - email
-          - github-pvr
-          - url
-          - github-handle
-          - web-form
-        value:
-          type: string
-          example: security@expressjs.com
-        role:
-          type: string
-          enum:
-          - security-team
-          - maintainer
-          - admin
-          - committer
-          - org-owner
-        confidence:
-          $ref: '#/components/schemas/SecurityContactConfidence'
-        score:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
-    Steward:
-      type: object
-      required:
-      - userId
-      - role
-      - assignedAt
-      properties:
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: auth0|abc123
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-    PackageStewardshipSummary:
-      type: object
-      description: Slim stewardship summary returned per-purl by the batch endpoint.
-      nullable: true
-      required:
-      - name
-      - ecosystem
-      properties:
-        name:
-          type: string
-        ecosystem:
-          type: string
-        lifecycle:
-          type: string
-          enum:
-          - active
-          - stable
-          - declining
-          - abandoned
-          nullable: true
-        health:
-          type: number
-          format: float
-          nullable: true
-        impact:
-          type: integer
-          nullable: true
-          description: Criticality score scaled to 0–100.
-        openVulns:
-          type: object
-          nullable: true
-          properties:
-            low:
-              type: integer
-            medium:
-              type: integer
-            high:
-              type: integer
-            critical:
-              type: integer
-        stewardship:
-          $ref: '#/components/schemas/StewardshipStatus'
-          nullable: true
-        stewards:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Steward'
-        lastActivityAt:
-          type: string
-          format: date-time
-          nullable: true
-        lastActivityDescription:
-          type: string
-          nullable: true
-    PaginationMeta:
-      type: object
-      required:
-      - total
-      - page
-      - pageSize
-      properties:
-        total:
-          type: integer
-        page:
-          type: integer
-        pageSize:
-          type: integer
     PackageListRow:
       type: object
       required:
@@ -1830,6 +1523,203 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StewardEntry'
+    EscalationResolutionPath:
+      type: string
+      enum:
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
+    HealthBand_2:
+      type: string
+      enum:
+      - healthy
+      - fair
+      - concerning
+      - critical
+      description: 'Derived from `scorecardScore`: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy
+
+        '
+    PaginationMeta:
+      type: object
+      required:
+      - total
+      - page
+      - pageSize
+      properties:
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+    Steward:
+      type: object
+      required:
+      - userId
+      - role
+      - assignedAt
+      properties:
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: auth0|abc123
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+    PackageMetrics:
+      type: object
+      required:
+      - criticalPackages
+      properties:
+        criticalPackages:
+          type: integer
+          description: Total packages marked as critical (is_critical = true).
+    StatusCounts:
+      type: object
+      description: Count of packages per stewardship status (used to drive filter pill badges).
+      required:
+      - all
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+      properties:
+        all:
+          type: integer
+          description: Total count across all statuses (matches total from the package list without status filter).
+        unassigned:
+          type: integer
+        open:
+          type: integer
+        assessing:
+          type: integer
+        active:
+          type: integer
+        needs_attention:
+          type: integer
+        escalated:
+          type: integer
+        blocked:
+          type: integer
+        inactive:
+          type: integer
+      example:
+        all: 95
+        unassigned: 42
+        open: 5
+        assessing: 12
+        active: 30
+        needs_attention: 3
+        escalated: 1
+        blocked: 0
+        inactive: 2
+    ScatterPoint:
+      type: object
+      required:
+      - purl
+      - name
+      - criticalityScore
+      - healthScore
+      - healthBand
+      - openVulns
+      - advisoryCount
+      properties:
+        purl:
+          type: string
+        name:
+          type: string
+        criticalityScore:
+          type: integer
+          description: Impact score scaled to 0–100.
+        healthScore:
+          type: integer
+          description: OpenSSF Scorecard score scaled to 0–100.
+        healthBand:
+          $ref: '#/components/schemas/HealthBand_2'
+        stewardshipStatus:
+          $ref: '#/components/schemas/StewardshipStatus'
+          nullable: true
+        stewardshipId:
+          type: string
+          nullable: true
+        openVulns:
+          type: integer
+        advisoryCount:
+          type: integer
+    SecurityContactConfidence:
+      type: string
+      enum:
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+    PackageStewardshipSummary:
+      type: object
+      description: Slim stewardship summary returned per-purl by the batch endpoint.
+      nullable: true
+      required:
+      - name
+      - ecosystem
+      properties:
+        name:
+          type: string
+        ecosystem:
+          type: string
+        lifecycle:
+          type: string
+          enum:
+          - active
+          - stable
+          - declining
+          - abandoned
+          nullable: true
+        health:
+          type: number
+          format: float
+          nullable: true
+        impact:
+          type: integer
+          nullable: true
+          description: Criticality score scaled to 0–100.
+        openVulns:
+          type: object
+          nullable: true
+          properties:
+            low:
+              type: integer
+            medium:
+              type: integer
+            high:
+              type: integer
+            critical:
+              type: integer
+        stewardship:
+          $ref: '#/components/schemas/StewardshipStatus'
+          nullable: true
+        stewards:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Steward'
+        lastActivityAt:
+          type: string
+          format: date-time
+          nullable: true
+        lastActivityDescription:
+          type: string
+          nullable: true
     PackageDetail_2:
       type: object
       required:
@@ -2032,49 +1922,128 @@ components:
         history:
           nullable: true
           description: Always null in /detail — full history available at GET /packages/history.
-    ScatterPoint:
+    SecurityContact:
       type: object
       required:
-      - purl
-      - name
-      - criticalityScore
-      - healthScore
-      - healthBand
-      - openVulns
-      - advisoryCount
+      - channel
+      - value
+      - role
+      - confidence
+      - score
       properties:
-        purl:
+        channel:
+          type: string
+          enum:
+          - email
+          - github-pvr
+          - url
+          - github-handle
+          - web-form
+        value:
+          type: string
+          example: security@expressjs.com
+        role:
+          type: string
+          enum:
+          - security-team
+          - maintainer
+          - admin
+          - committer
+          - org-owner
+        confidence:
+          $ref: '#/components/schemas/SecurityContactConfidence'
+        score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+    StewardEntry:
+      type: object
+      required:
+      - id
+      - stewardshipId
+      - userId
+      - role
+      - assignedAt
+      properties:
+        id:
+          type: string
+        stewardshipId:
+          type: string
+        userId:
           type: string
         name:
           type: string
-        criticalityScore:
-          type: integer
-          description: Impact score scaled to 0–100.
-        healthScore:
-          type: integer
-          description: OpenSSF Scorecard score scaled to 0–100.
-        healthBand:
-          $ref: '#/components/schemas/HealthBand_2'
-        stewardshipStatus:
-          $ref: '#/components/schemas/StewardshipStatus'
           nullable: true
-        stewardshipId:
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+        assignedBy:
           type: string
           nullable: true
-        openVulns:
-          type: integer
-        advisoryCount:
-          type: integer
-    EscalationResolutionPath:
-      type: string
-      enum:
-      - right_of_first_refusal
-      - replace_the_dependency
-      - find_vendor_for_lts
-      - consortium_adopts_maintainership
-      - compensating_controls_monitor
-      - namespace_takeover
-    Error_3:
+    PackageHistoryEvent:
+      type: object
+      required:
+      - id
+      - actorType
+      - activityType
+      - createdAt
+      properties:
+        id:
+          type: string
+        actorUserId:
+          type: string
+          nullable: true
+        actorType:
+          type: string
+          example: user
+        activityType:
+          type: string
+          example: state_changed
+        content:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+    Advisory:
+      type: object
+      required:
+      - osvId
+      - severity
+      - resolution
+      - isCritical
+      properties:
+        osvId:
+          type: string
+          example: GHSA-xxxx-xxxx-xxxx
+        severity:
+          type: string
+          enum:
+          - critical
+          - high
+          - moderate
+          - low
+          nullable: true
+        resolution:
+          type: string
+          enum:
+          - open
+          - patched
+          nullable: true
+        isCritical:
+          type: boolean
+          description: True when CVSS score >= 7.0.
+    Error_2:
       type: object
       required:
       - error
@@ -2091,6 +2060,28 @@ components:
             message:
               type: string
               example: Invalid query parameter.
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+    HealthBand_3:
+      type: string
+      enum:
+      - excellent
+      - healthy
+      - fair
+      - concerning
+      - critical
+      description: 'Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30). Falls back to scorecard thresholds: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy.
+
+        '
     StatusCounts_2:
       type: object
       description: Per-status package counts for the tab bar. Computed without the active status filter.
@@ -2123,17 +2114,57 @@ components:
           type: integer
         inactive:
           type: integer
-    HealthBand_3:
-      type: string
-      enum:
-      - excellent
-      - healthy
-      - fair
-      - concerning
-      - critical
-      description: 'Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30). Falls back to scorecard thresholds: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy.
+    ScatterPoint_2:
+      type: object
+      required:
+      - purl
+      - name
+      - criticalityScore
+      - healthScore
+      - healthBand
+      - openVulns
+      - advisoryCount
+      properties:
+        purl:
+          type: string
+          example: pkg:npm/lodash@4.17.21
+        name:
+          type: string
+          example: lodash
+        criticalityScore:
+          type: integer
+          description: ROUND(p.impact × 100). Y-axis position (0–100).
+          example: 94
+        healthScore:
+          type: integer
+          description: ROUND(scorecard_score × 10). X-axis position (0–100). 0 if no repo.
+          example: 52
+        healthBand:
+          type: string
+          enum:
+          - healthy
+          - fair
+          - concerning
+          - critical
+          description: 'Falls back to scorecard thresholds — never ''excellent'' (scatter uses scorecard score only, not Tinybird health_label).
 
-        '
+            '
+        stewardshipStatus:
+          oneOf:
+          - $ref: '#/components/schemas/StewardshipStatus'
+          - type: 'null'
+        stewardshipId:
+          type:
+          - string
+          - 'null'
+          example: '4501'
+        openVulns:
+          type: integer
+          example: 3
+        advisoryCount:
+          type: integer
+          description: Alias of openVulns — explicit field for tooltip display.
+          example: 3
     PackageRow:
       type: object
       required:
@@ -2274,58 +2305,7 @@ components:
           description: Active stewards (deleted_at IS NULL). Empty array if none.
           items:
             $ref: '#/components/schemas/Steward'
-    ScatterPoint_2:
-      type: object
-      required:
-      - purl
-      - name
-      - criticalityScore
-      - healthScore
-      - healthBand
-      - openVulns
-      - advisoryCount
-      properties:
-        purl:
-          type: string
-          example: pkg:npm/lodash@4.17.21
-        name:
-          type: string
-          example: lodash
-        criticalityScore:
-          type: integer
-          description: ROUND(p.impact × 100). Y-axis position (0–100).
-          example: 94
-        healthScore:
-          type: integer
-          description: ROUND(scorecard_score × 10). X-axis position (0–100). 0 if no repo.
-          example: 52
-        healthBand:
-          type: string
-          enum:
-          - healthy
-          - fair
-          - concerning
-          - critical
-          description: 'Falls back to scorecard thresholds — never ''excellent'' (scatter uses scorecard score only, not Tinybird health_label).
-
-            '
-        stewardshipStatus:
-          oneOf:
-          - $ref: '#/components/schemas/StewardshipStatus'
-          - type: 'null'
-        stewardshipId:
-          type:
-          - string
-          - 'null'
-          example: '4501'
-        openVulns:
-          type: integer
-          example: 3
-        advisoryCount:
-          type: integer
-          description: Alias of openVulns — explicit field for tooltip display.
-          example: 3
-    Error_4:
+    Error_3:
       type: object
       required:
       - error
@@ -2338,65 +2318,20 @@ components:
           properties:
             code:
               type: string
-              example: NOT_FOUND
+              example: VALIDATION_ERROR
             message:
               type: string
-              example: Package not found.
-    Advisory_2:
+              example: Invalid query parameter.
+    PackagesMetrics:
       type: object
       required:
-      - osvId
-      - severity
+      - totalPackages
+      - criticalPackages
       properties:
-        osvId:
-          type: string
-          description: GHSA or CVE identifier.
-          example: CVE-2021-44906
-        severity:
-          type: string
-          enum:
-          - critical
-          - high
-          - medium
-          - low
-        resolution:
-          type:
-          - string
-          - 'null'
-          description: Resolution status. TBD.
-    SecurityContact_2:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-    OpenVulns:
-      type: object
-      description: Open vulnerability counts by severity from advisory_packages + advisories.
-      required:
-      - low
-      - medium
-      - high
-      - critical
-      properties:
-        low:
+        totalPackages:
           type: integer
           example: 0
-        medium:
-          type: integer
-          example: 0
-        high:
-          type: integer
-          example: 1
-        critical:
+        criticalPackages:
           type: integer
           example: 0
     Steward_2:
@@ -2430,6 +2365,104 @@ components:
         assignedAt:
           type: string
           format: date-time
+    OpenVulns:
+      type: object
+      description: Open vulnerability counts by severity from advisory_packages + advisories.
+      required:
+      - low
+      - medium
+      - high
+      - critical
+      properties:
+        low:
+          type: integer
+          example: 0
+        medium:
+          type: integer
+          example: 0
+        high:
+          type: integer
+          example: 1
+        critical:
+          type: integer
+          example: 0
+    PackageListItem:
+      type: object
+      required:
+      - purl
+      - name
+      - ecosystem
+      properties:
+        purl:
+          type: string
+          description: Used to call GET /packages/detail?purl= when a row is clicked.
+          example: pkg:npm/lodash
+        name:
+          type: string
+          example: lodash
+        ecosystem:
+          type: string
+          example: npm
+        health:
+          type: object
+          required:
+          - score
+          - label
+          properties:
+            score:
+              type:
+              - integer
+              - 'null'
+              description: Health score (0–100). Tinybird composite score when enriched, OpenSSF Scorecard × 10 otherwise. Null if neither is available.
+              example: 18
+            label:
+              type: string
+              enum:
+              - excellent
+              - healthy
+              - fair
+              - concerning
+              - critical
+              description: Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30), scorecard band otherwise.
+              example: critical
+        impact:
+          type:
+          - integer
+          - 'null'
+          example: 71
+        lifecycle:
+          type:
+          - string
+          - 'null'
+          enum:
+          - active
+          - stable
+          - declining
+          - abandoned
+          - archived
+          - null
+        maintainerBusFactor:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        openVulns:
+          oneOf:
+          - $ref: '#/components/schemas/OpenVulns'
+          - type: 'null'
+        stewardshipId:
+          type:
+          - string
+          - 'null'
+          description: Stewardship ID. Required to call mutation endpoints (assign/escalate/status). Null if no stewardship row exists.
+          example: '42'
+        stewardship:
+          $ref: '#/components/schemas/StewardshipStatus'
+        stewards:
+          description: Assigned stewards. Empty array if none.
+          type: array
+          items:
+            $ref: '#/components/schemas/Steward_2'
     PackageDetail_3:
       type: object
       required:
@@ -2691,95 +2724,59 @@ components:
           - 'null'
           description: Signal coverage health data enriched by Tinybird. Null until enriched.
           additionalProperties: true
-    PackageListItem:
+    SecurityContact_2:
       type: object
       required:
-      - purl
       - name
-      - ecosystem
       properties:
-        purl:
-          type: string
-          description: Used to call GET /packages/detail?purl= when a row is clicked.
-          example: pkg:npm/lodash
         name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+    Advisory_2:
+      type: object
+      required:
+      - osvId
+      - severity
+      properties:
+        osvId:
           type: string
-          example: lodash
-        ecosystem:
+          description: GHSA or CVE identifier.
+          example: CVE-2021-44906
+        severity:
           type: string
-          example: npm
-        health:
+          enum:
+          - critical
+          - high
+          - medium
+          - low
+        resolution:
+          type:
+          - string
+          - 'null'
+          description: Resolution status. TBD.
+    Error_4:
+      type: object
+      required:
+      - error
+      properties:
+        error:
           type: object
           required:
-          - score
-          - label
+          - code
+          - message
           properties:
-            score:
-              type:
-              - integer
-              - 'null'
-              description: Health score (0–100). Tinybird composite score when enriched, OpenSSF Scorecard × 10 otherwise. Null if neither is available.
-              example: 18
-            label:
+            code:
               type: string
-              enum:
-              - excellent
-              - healthy
-              - fair
-              - concerning
-              - critical
-              description: Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30), scorecard band otherwise.
-              example: critical
-        impact:
-          type:
-          - integer
-          - 'null'
-          example: 71
-        lifecycle:
-          type:
-          - string
-          - 'null'
-          enum:
-          - active
-          - stable
-          - declining
-          - abandoned
-          - archived
-          - null
-        maintainerBusFactor:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        openVulns:
-          oneOf:
-          - $ref: '#/components/schemas/OpenVulns'
-          - type: 'null'
-        stewardshipId:
-          type:
-          - string
-          - 'null'
-          description: Stewardship ID. Required to call mutation endpoints (assign/escalate/status). Null if no stewardship row exists.
-          example: '42'
-        stewardship:
-          $ref: '#/components/schemas/StewardshipStatus'
-        stewards:
-          description: Assigned stewards. Empty array if none.
-          type: array
-          items:
-            $ref: '#/components/schemas/Steward_2'
-    PackagesMetrics:
-      type: object
-      required:
-      - totalPackages
-      - criticalPackages
-      properties:
-        totalPackages:
-          type: integer
-          example: 0
-        criticalPackages:
-          type: integer
-          example: 0
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Package not found.
   securitySchemes:
     M2MBearer:
       type: oauth2

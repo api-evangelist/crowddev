@@ -39,6 +39,8 @@ paths:
           description: Bad request
         '404':
           description: Member not found
+      operationId: getMemberByMemberIdAffiliation
+      x-operation-id-source: derived
     patch:
       security:
       - BearerAuth: []
@@ -96,6 +98,8 @@ paths:
           description: Bad request
         '404':
           description: Member not found
+      operationId: patchMemberByMemberIdAffiliation
+      x-operation-id-source: derived
 components:
   schemas:
     Affiliation:

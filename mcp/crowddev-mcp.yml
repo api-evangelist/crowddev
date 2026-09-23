@@ -2,11 +2,10 @@ generated: '2026-08-14'
 method: derived
 status: candidate
 source: openapi/*.yml
-note: >-
-  Candidate MCP tool list derived one-per-operationId from the CDP Public API OpenAPI specs.
-  No MCP server exposes CDP Public API operations. Re-checked 2026-08-14 - `mcp` returns 0 path
-  matches across github.com/linuxfoundation/crowd.dev, and the org-wide search finds only the
-  sibling servers recorded under `related_surfaces` below.
+note: Candidate MCP tool list derived one-per-operationId from the CDP Public API OpenAPI specs. No MCP
+  server exposes CDP Public API operations. Re-checked 2026-08-14 - `mcp` returns 0 path matches across
+  github.com/linuxfoundation/crowd.dev, and the org-wide search finds only the sibling servers recorded
+  under `related_surfaces` below.
 server:
   name: crowddev-cdp
   transport: http
@@ -163,17 +162,10 @@ tools:
   source_operation: openapi/crowddev-cdp-stewardships-openapi.yml#updateStewardshipStatus
 deployment:
   mode: none
-  endpoint: null
-  install: null
-  package: null
-  auth: unknown
   verified: derived
   tools: 50
-  checked: '2026-08-14'
-  source: >-
-    Derived from openapi/*.yml. Nobody ships an MCP server for the CDP Public API; no endpoint is
-    invented here.
-
+  checked: '2026-08-12'
+  source: catalog MCP census
 related_surfaces:
 - name: LFX MCP Server
   owner: The Linux Foundation
@@ -188,21 +180,19 @@ related_surfaces:
   - https://linuxfoundation.auth0.com/
   probed:
     url: https://mcp.lfx.dev/mcp
-    method: 'POST tools/list'
+    method: POST tools/list
     http_status: 401
     body: no bearer token
     checked: '2026-08-14'
   resource_metadata: well-known/crowddev-mcp-oauth-protected-resource.json
   counted_for_this_provider: false
-  why_not: >-
-    NOT credited to this profile. The LFX MCP Server is a sibling Linux Foundation product. Its
-    published tool surface - search_projects, get_project, committees, mailing lists, memberships
-    and key contacts, meetings and past-meeting data, Discord roles, templated email,
-    query_lfx_lens / the Insights semantic layer, search_b2b_orgs - contains no CDP Public API
-    operation: no members/resolve, no member identities, no work experiences, no project
-    affiliations, no packages, advisories, contacts or stewardship. Same operator, different
-    product. Recorded so a later round does not re-litigate it, and so a reader knows the surface
-    exists.
+  why_not: 'NOT credited to this profile. The LFX MCP Server is a sibling Linux Foundation product. Its
+    published tool surface - search_projects, get_project, committees, mailing lists, memberships and
+    key contacts, meetings and past-meeting data, Discord roles, templated email, query_lfx_lens / the
+    Insights semantic layer, search_b2b_orgs - contains no CDP Public API operation: no members/resolve,
+    no member identities, no work experiences, no project affiliations, no packages, advisories, contacts
+    or stewardship. Same operator, different product. Recorded so a later round does not re-litigate it,
+    and so a reader knows the surface exists.'
 - name: aaif-mcp-server
   owner: The Linux Foundation
   repo: https://github.com/linuxfoundation/aaif-mcp-server

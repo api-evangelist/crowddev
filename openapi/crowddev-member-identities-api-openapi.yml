@@ -5,7 +5,17 @@ info:
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  description: "Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.\n\nTwo authentication methods are supported depending on the endpoint:\n- **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,\n  and affiliation management endpoints.\n\n- **Static API Key** — bearer token with scopes managed in the CDP database.\n"
+  description: 'Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.
+
+
+    Two authentication methods are supported depending on the endpoint:
+
+    - **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,
+
+    and affiliation management endpoints.
+
+
+    - **Static API Key** — bearer token with scopes managed in the CDP database.'
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
@@ -51,9 +61,7 @@ paths:
     post:
       operationId: createMemberIdentity
       summary: Add a new identity
-      description: 'Add a new identity to a member profile. Returns 409 if the identity already exists on this member or is verified on another member.
-
-        '
+      description: Add a new identity to a member profile. Returns 409 if the identity already exists on this member or is verified on another member.
       tags:
       - Member Identities
       security:
@@ -134,9 +142,7 @@ paths:
     patch:
       operationId: verifyMemberIdentity
       summary: Verify or reject an identity
-      description: 'Set an identity as verified or rejected. When rejected (`verified: false`), the identity is either soft-deleted (no linked activities) or unmerged to a new profile (has linked activities).
-
-        '
+      description: 'Set an identity as verified or rejected. When rejected (`verified: false`), the identity is either soft-deleted (no linked activities) or unmerged to a new profile (has linked activities).'
       tags:
       - Member Identities
       security:
@@ -257,23 +263,6 @@ components:
               code: UNAUTHORIZED
               message: Invalid or missing authentication
   schemas:
-    HttpError:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code.
-            message:
-              type: string
-              description: Human-readable error description.
     MemberIdentity:
       type: object
       required:
@@ -320,6 +309,23 @@ components:
         updatedAt:
           type: string
           format: date-time
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
   parameters:
     MemberId:
       name: memberId

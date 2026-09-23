@@ -5,7 +5,17 @@ info:
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  description: "Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.\n\nTwo authentication methods are supported depending on the endpoint:\n- **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,\n  and affiliation management endpoints.\n\n- **Static API Key** — bearer token with scopes managed in the CDP database.\n"
+  description: 'Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.
+
+
+    Two authentication methods are supported depending on the endpoint:
+
+    - **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,
+
+    and affiliation management endpoints.
+
+
+    - **Static API Key** — bearer token with scopes managed in the CDP database.'
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production

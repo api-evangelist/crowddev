@@ -5,7 +5,17 @@ info:
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  description: "Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.\n\nTwo authentication methods are supported depending on the endpoint:\n- **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,\n  and affiliation management endpoints.\n\n- **Static API Key** — bearer token with scopes managed in the CDP database.\n"
+  description: 'Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.
+
+
+    Two authentication methods are supported depending on the endpoint:
+
+    - **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,
+
+    and affiliation management endpoints.
+
+
+    - **Static API Key** — bearer token with scopes managed in the CDP database.'
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
@@ -20,9 +30,7 @@ paths:
     get:
       operationId: getOrganization
       summary: Look up an organization by domain or name
-      description: 'Provide domain, name, or both. When both are provided, the domain and name must belong to the same organization. If multiple organizations match, the most active one is returned.
-
-        '
+      description: Provide domain, name, or both. When both are provided, the domain and name must belong to the same organization. If multiple organizations match, the most active one is returned.
       tags:
       - Organizations
       security:
@@ -74,9 +82,7 @@ paths:
     post:
       operationId: createOrganization
       summary: Create an organization
-      description: 'Create a new organization with a verified primary domain. If an organization with the same domain already exists, it returns the existing one.
-
-        '
+      description: Create a new organization with a verified primary domain. If an organization with the same domain already exists, it returns the existing one.
       tags:
       - Organizations
       security:

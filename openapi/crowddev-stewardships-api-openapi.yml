@@ -5,9 +5,7 @@ info:
   description: 'Unified namespace for OSSPREY dashboard read endpoints and stewardship write actions. All routes require an OAuth 2.0 bearer token (Auth0 M2M or user session).
 
 
-    **Rate limits:** packages and stewardships sub-groups each have an independent 60 requests/min per-IP bucket.
-
-    '
+    **Rate limits:** packages and stewardships sub-groups each have an independent 60 requests/min per-IP bucket.'
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
@@ -23,9 +21,7 @@ paths:
     get:
       operationId: getMyPackages
       summary: List packages stewarded by the authenticated user
-      description: 'Returns a paginated list of packages where the authenticated user (`req.actor.id`) is an active steward (`lead` or `co_steward`). Includes package metadata, health, open vulnerabilities, last activity, and the user''s role and stewardship status. The `meta.statusCounts` object always reflects counts across **all** of the user''s stewardships, regardless of the active `status` filter, so the tab bar can render all buckets at once.
-
-        '
+      description: Returns a paginated list of packages where the authenticated user (`req.actor.id`) is an active steward (`lead` or `co_steward`). Includes package metadata, health, open vulnerabilities, last activity, and the user's role and stewardship status. The `meta.statusCounts` object always reflects counts across **all** of the user's stewardships, regardless of the active `status` filter, so the tab bar can render all buckets at once.
       tags:
       - Stewardships
       parameters:
@@ -239,9 +235,7 @@ paths:
     get:
       operationId: getMyActivity
       summary: Latest activity feed for the authenticated user's stewardships
-      description: 'Returns the most recent stewardship activity events scoped to packages where the authenticated user is an active steward. Results are **deduplicated by stewardship** — only the single most recent event per package is returned — and sorted newest-first. Designed to power the "Latest activity" strip on the My Stewardships page. Default `pageSize` is 3 (one card per attention-needed status); increase for a "load more" experience.
-
-        '
+      description: Returns the most recent stewardship activity events scoped to packages where the authenticated user is an active steward. Results are **deduplicated by stewardship** — only the single most recent event per package is returned — and sorted newest-first. Designed to power the "Latest activity" strip on the My Stewardships page. Default `pageSize` is 3 (one card per attention-needed status); increase for a "load more" experience.
       tags:
       - Stewardships
       parameters:
@@ -356,9 +350,7 @@ paths:
     post:
       operationId: openStewardship
       summary: Open a stewardship for a package
-      description: 'Creates a new stewardship record for the package identified by the given PURL, setting its status to `open`. The authenticated user is recorded as the actor who opened it.
-
-        '
+      description: Creates a new stewardship record for the package identified by the given PURL, setting its status to `open`. The authenticated user is recorded as the actor who opened it.
       tags:
       - Stewardships
       requestBody:
@@ -408,9 +400,7 @@ paths:
     post:
       operationId: assignSteward
       summary: Assign a steward to a stewardship
-      description: 'Assigns a user as a steward (lead or co-steward) for the given stewardship. Optionally transitions the stewardship status to `assessing` in the same operation.
-
-        '
+      description: Assigns a user as a steward (lead or co-steward) for the given stewardship. Optionally transitions the stewardship status to `assessing` in the same operation.
       tags:
       - Stewardships
       parameters:
@@ -487,9 +477,7 @@ paths:
     post:
       operationId: escalateStewardship
       summary: Escalate a stewardship
-      description: 'Transitions the stewardship to `escalated` status and records the chosen resolution path. Optionally attaches a free-text note.
-
-        '
+      description: Transitions the stewardship to `escalated` status and records the chosen resolution path. Optionally attaches a free-text note.
       tags:
       - Stewardships
       parameters:
@@ -546,9 +534,7 @@ paths:
     patch:
       operationId: updateStewardshipStatus
       summary: Update stewardship status
-      description: 'Updates the stewardship status. Valid target statuses are: `assessing`, `active`, `needs_attention`, `blocked`, `inactive`. When setting `inactive`, `inactiveReason` is required.
-
-        '
+      description: 'Updates the stewardship status. Valid target statuses are: `assessing`, `active`, `needs_attention`, `blocked`, `inactive`. When setting `inactive`, `inactiveReason` is required.'
       tags:
       - Stewardships
       parameters:
@@ -614,6 +600,21 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    EscalationResolutionPath:
+      type: string
+      enum:
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
+    InactiveReason:
+      type: string
+      enum:
+      - quarterly_cadence_missed
+      - stepped_down
+      - no_longer_critical
     StewardEntry:
       type: object
       required:
@@ -643,34 +644,6 @@ components:
         assignedBy:
           type: string
           nullable: true
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Invalid query parameter.
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
     StewardshipRecord:
       type: object
       required:
@@ -715,21 +688,34 @@ components:
         updatedAt:
           type: string
           format: date-time
-    InactiveReason:
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
+    StewardshipStatus:
       type: string
       enum:
-      - quarterly_cadence_missed
-      - stepped_down
-      - no_longer_critical
-    EscalationResolutionPath:
-      type: string
-      enum:
-      - right_of_first_refusal
-      - replace_the_dependency
-      - find_vendor_for_lts
-      - consortium_adopts_maintainership
-      - compensating_controls_monitor
-      - namespace_takeover
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
   securitySchemes:
     BearerAuth:
       type: http

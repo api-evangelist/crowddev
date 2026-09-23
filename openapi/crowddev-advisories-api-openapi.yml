@@ -2,15 +2,7 @@ openapi: 3.2.0
 info:
   title: CDP → Akrites External Advisories API
   version: 0.1.0
-  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
-
-
-    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
-
-
-    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
-
-    '
+  description: Read-only external API exposing CDP package security data to the Akrites service.
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
@@ -20,9 +12,7 @@ security:
   - read:stewardships
 tags:
 - name: Advisories
-  description: 'Security advisories for a package, split out of package detail. The draft contract gates these behind a dedicated read:advisories scope; until Auth0 issues it, the implementation reuses read:packages (advisories need no stewardship read). Confirm the final scope name (read:advisories vs cdp:advisories:read) with Akrites/product.
-
-    '
+  description: Security advisories for a package, split out of package detail. The draft contract gates these behind a dedicated read:advisories scope; until Auth0 issues it, the implementation reuses read:packages (advisories need no stewardship read). Confirm the final scope name (read:advisories vs cdp:advisories:read) with Akrites/product.
 paths:
   /akrites-external/advisories/detail:
     get:
@@ -160,22 +150,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Advisory'
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: BAD_REQUEST
-            message:
-              type: string
     Advisory:
       type: object
       required:
@@ -216,6 +190,22 @@ components:
           - boolean
           - 'null'
           description: cvss >= 7.0. Null when the advisory has no CVSS score.
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: BAD_REQUEST
+            message:
+              type: string
     AdvisoryDetailBulkEntry:
       type: object
       required:

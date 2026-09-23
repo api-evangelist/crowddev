@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: CDP Public API — Stewardship Admin Actions Stewardship Actions API
+  title: CDP Public API — Stewardship Admin Actions Stewardship…
   version: 1.0.0
   description: 'Write endpoints for OSSPREY Program admin stewardship actions.
 
@@ -8,9 +8,7 @@ info:
     **Authentication:** OAuth 2.0 M2M bearer token. All endpoints require `write:stewardships`.
 
 
-    **V1 note:** Scope `write:stewardships` is not yet added to the Auth0 staging tenant — scope enforcement is temporarily disabled. See CM-1235.
-
-    '
+    **V1 note:** Scope `write:stewardships` is not yet added to the Auth0 staging tenant — scope enforcement is temporarily disabled. See CM-1235.'
 servers:
 - url: https://cm.lfx.dev/api/v1/akrites
   description: Production
@@ -24,9 +22,7 @@ paths:
     post:
       operationId: openStewardship
       summary: Open a package for stewardship
-      description: 'Transitions the stewardship status to `open`, marking the package as available for claiming. If a stewardship row does not exist yet, one is created. If the stewardship is already `open`, this is a no-op (idempotent).
-
-        '
+      description: Transitions the stewardship status to `open`, marking the package as available for claiming. If a stewardship row does not exist yet, one is created. If the stewardship is already `open`, this is a no-op (idempotent).
       tags:
       - Stewardship Actions
       security:
@@ -107,9 +103,7 @@ paths:
     post:
       operationId: assignSteward
       summary: Assign a steward to a stewardship
-      description: 'Assigns a user as a steward with the given role. If the user is already an active steward, the role is updated (soft-delete + re-insert). Returns the unchanged stewardship record and the full active stewards list after the operation.
-
-        '
+      description: Assigns a user as a steward with the given role. If the user is already an active steward, the role is updated (soft-delete + re-insert). Returns the unchanged stewardship record and the full active stewards list after the operation.
       tags:
       - Stewardship Actions
       security:
@@ -250,9 +244,7 @@ paths:
     post:
       operationId: escalateStewardship
       summary: Escalate a stewardship
-      description: 'Transitions the stewardship to `escalated` status and logs the chosen resolution path in the activity log. Optional free-text notes can be included.
-
-        '
+      description: Transitions the stewardship to `escalated` status and logs the chosen resolution path in the activity log. Optional free-text notes can be included.
       tags:
       - Stewardship Actions
       security:
@@ -345,9 +337,7 @@ paths:
     patch:
       operationId: updateStewardshipStatus
       summary: Update stewardship status
-      description: 'Updates the stewardship status and logs a `state_changed` activity entry. Valid target statuses: `assessing`, `active`, `needs_attention`, `blocked`, `inactive`. When transitioning to `inactive`, `inactiveReason` is required.
-
-        '
+      description: 'Updates the stewardship status and logs a `state_changed` activity entry. Valid target statuses: `assessing`, `active`, `needs_attention`, `blocked`, `inactive`. When transitioning to `inactive`, `inactiveReason` is required.'
       tags:
       - Stewardship Actions
       security:
@@ -475,34 +465,15 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: NOT_FOUND
-            message:
-              type: string
-              example: Stewardship not found.
-    StewardshipStatus:
+    EscalationResolutionPath:
       type: string
       enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
     StewardRecord:
       type: object
       required:
@@ -548,6 +519,40 @@ components:
           - 'null'
           description: Auth0 sub of the admin who assigned this steward.
           example: xyz789
+    ActorInput:
+      type: object
+      required:
+      - userId
+      description: 'Profile of the actor performing this action. Stored as a snapshot on the activity log. `userId` is required. All other fields are optional and can be null.
+
+        '
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          description: Auth0 sub of the actor. Must match the authenticated user's token sub.
+          example: auth0|abc123
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: LFX username of the actor.
+          example: gaspergrom
+        displayName:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Full display name of the actor.
+          example: Gašper Grom
+        avatarUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Avatar URL of the actor.
+          example: https://avatars.githubusercontent.com/u/12345
     StewardshipRecord:
       type: object
       required:
@@ -613,49 +618,34 @@ components:
         updatedAt:
           type: string
           format: date-time
-    ActorInput:
+    Error:
       type: object
       required:
-      - userId
-      description: 'Profile of the actor performing this action. Stored as a snapshot on the activity log. `userId` is required. All other fields are optional and can be null.
-
-        '
+      - error
       properties:
-        userId:
-          type: string
-          minLength: 1
-          description: Auth0 sub of the actor. Must match the authenticated user's token sub.
-          example: auth0|abc123
-        username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: LFX username of the actor.
-          example: gaspergrom
-        displayName:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Full display name of the actor.
-          example: Gašper Grom
-        avatarUrl:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Avatar URL of the actor.
-          example: https://avatars.githubusercontent.com/u/12345
-    EscalationResolutionPath:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Stewardship not found.
+    StewardshipStatus:
       type: string
       enum:
-      - right_of_first_refusal
-      - replace_the_dependency
-      - find_vendor_for_lts
-      - consortium_adopts_maintainership
-      - compensating_controls_monitor
-      - namespace_takeover
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
   securitySchemes:
     M2MBearer:
       type: http

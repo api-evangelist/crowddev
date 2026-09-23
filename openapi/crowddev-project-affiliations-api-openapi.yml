@@ -5,7 +5,17 @@ info:
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  description: "Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.\n\nTwo authentication methods are supported depending on the endpoint:\n- **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,\n  and affiliation management endpoints.\n\n- **Static API Key** — bearer token with scopes managed in the CDP database.\n"
+  description: 'Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.
+
+
+    Two authentication methods are supported depending on the endpoint:
+
+    - **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,
+
+    and affiliation management endpoints.
+
+
+    - **Static API Key** — bearer token with scopes managed in the CDP database.'
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
@@ -20,9 +30,7 @@ paths:
     get:
       operationId: getMemberProjectAffiliations
       summary: List project affiliations
-      description: 'Retrieve per-project affiliation data for a member, including maintainer roles and resolved affiliations. Affiliations come from project-level overrides when available, otherwise from work experiences.
-
-        '
+      description: Retrieve per-project affiliation data for a member, including maintainer roles and resolved affiliations. Affiliations come from project-level overrides when available, otherwise from work experiences.
       tags:
       - Project Affiliations
       security:
@@ -54,9 +62,7 @@ paths:
     patch:
       operationId: patchMemberProjectAffiliation
       summary: Override project affiliations
-      description: 'Replace all project-level affiliation overrides for a member on a specific project. Pass an empty `affiliations` array to clear overrides (falling back to work experience-based affiliations).
-
-        '
+      description: Replace all project-level affiliation overrides for a member on a specific project. Pass an empty `affiliations` array to clear overrides (falling back to work experience-based affiliations).
       tags:
       - Project Affiliations
       security:
@@ -176,39 +182,6 @@ components:
               code: UNAUTHORIZED
               message: Invalid or missing authentication
   schemas:
-    ProjectRole:
-      type: object
-      required:
-      - id
-      - role
-      - startDate
-      - endDate
-      - repoUrl
-      - repoFileUrl
-      properties:
-        id:
-          type: string
-          format: uuid
-        role:
-          type: string
-        startDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        endDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        repoUrl:
-          type:
-          - string
-          - 'null'
-        repoFileUrl:
-          type:
-          - string
-          - 'null'
     ProjectAffiliationEntry:
       type: object
       required:
@@ -314,6 +287,39 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProjectAffiliationEntry'
+    ProjectRole:
+      type: object
+      required:
+      - id
+      - role
+      - startDate
+      - endDate
+      - repoUrl
+      - repoFileUrl
+      properties:
+        id:
+          type: string
+          format: uuid
+        role:
+          type: string
+        startDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        repoUrl:
+          type:
+          - string
+          - 'null'
+        repoFileUrl:
+          type:
+          - string
+          - 'null'
   parameters:
     MemberId:
       name: memberId

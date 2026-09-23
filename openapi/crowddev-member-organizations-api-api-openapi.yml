@@ -39,6 +39,8 @@ paths:
           description: Bad request
         '404':
           description: Member not found
+      operationId: getMemberByMemberIdOrganization
+      x-operation-id-source: derived
     post:
       security:
       - BearerAuth: []
@@ -102,6 +104,8 @@ paths:
           description: Bad request
         '404':
           description: Member not found
+      operationId: postMemberByMemberIdOrganization
+      x-operation-id-source: derived
   /member/{memberId}/organization/{workHistoryId}:
     patch:
       security:
@@ -176,6 +180,8 @@ paths:
           description: Bad request
         '404':
           description: Organization or member not found
+      operationId: patchMemberByMemberIdOrganizationByWorkHistoryId
+      x-operation-id-source: derived
     delete:
       security:
       - BearerAuth: []
@@ -205,6 +211,8 @@ paths:
                   $ref: '#/components/schemas/Organization'
         '404':
           description: Organization or member not found
+      operationId: deleteMemberByMemberIdOrganizationByWorkHistoryId
+      x-operation-id-source: derived
 components:
   schemas:
     Organization:

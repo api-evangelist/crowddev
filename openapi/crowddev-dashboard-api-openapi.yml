@@ -16,9 +16,7 @@ paths:
     get:
       operationId: getAkritesMetrics
       summary: Get KPI bar metrics
-      description: 'Returns aggregate counts that power the global KPI bar on the OSSPREY dashboard (total packages, coverage %, active stewards, unassigned critical, needs-attention, escalated).
-
-        '
+      description: Returns aggregate counts that power the global KPI bar on the OSSPREY dashboard (total packages, coverage %, active stewards, unassigned critical, needs-attention, escalated).
       tags:
       - Dashboard
       responses:
@@ -45,9 +43,7 @@ paths:
     get:
       operationId: getAkritesActivity
       summary: Get stewardship activity feed
-      description: 'Returns a paginated, reverse-chronological list of stewardship activity events across all packages (status changes, assignments, escalations, etc.).
-
-        '
+      description: Returns a paginated, reverse-chronological list of stewardship activity events across all packages (status changes, assignments, escalations, etc.).
       tags:
       - Dashboard
       parameters:
@@ -103,9 +99,7 @@ paths:
     get:
       operationId: getOsspreyMetrics
       summary: Global KPI bar metrics
-      description: 'Returns the seven aggregate metrics shown in the sticky KPI bar across all four dashboard tabs. Fetch once on page load; refresh after any write action.
-
-        '
+      description: Returns the seven aggregate metrics shown in the sticky KPI bar across all four dashboard tabs. Fetch once on page load; refresh after any write action.
       tags:
       - Dashboard
       security:
@@ -191,9 +185,7 @@ paths:
     get:
       operationId: listStewardshipActivity
       summary: Paginated stewardship activity feed
-      description: 'Returns recent stewardship events across all packages, ordered by most recent first. Used to populate the activity feed on the Overview tab. The frontend groups items by day using `createdAt`.
-
-        '
+      description: Returns recent stewardship events across all packages, ordered by most recent first. Used to populate the activity feed on the Overview tab. The frontend groups items by day using `createdAt`.
       tags:
       - Dashboard
       security:
@@ -276,34 +268,54 @@ paths:
       description: Staging
 components:
   schemas:
-    Error:
+    PaginationMeta:
       type: object
       required:
-      - error
+      - total
+      - page
+      - pageSize
       properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Invalid query parameter.
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+    OsspreyMetrics:
+      type: object
+      required:
+      - criticalPackages
+      - coveragePercent
+      - coverageTrend
+      - activeStewards
+      - unassignedCritical
+      - needsAttention
       - escalated
-      - blocked
-      - inactive
+      properties:
+        criticalPackages:
+          type: integer
+          description: Total number of packages marked as critical (is_critical = true).
+        coveragePercent:
+          type: number
+          format: float
+          description: Percentage of critical packages with an active stewardship (assessing, active, or needs_attention).
+        coverageTrend:
+          type: number
+          format: float
+          nullable: true
+          description: Coverage delta vs. previous period. Currently always null (requires snapshot mechanism).
+        activeStewards:
+          type: integer
+          description: Distinct stewards assigned to a non-inactive stewardship.
+        unassignedCritical:
+          type: integer
+          description: Critical packages with no stewardship or status = unassigned.
+        needsAttention:
+          type: integer
+          description: Critical packages whose stewardship status is needs_attention.
+        escalated:
+          type: integer
+          description: Critical packages whose stewardship status is escalated.
     ActivityEntry:
       type: object
       required:
@@ -354,54 +366,34 @@ components:
         createdAt:
           type: string
           format: date-time
-    PaginationMeta:
+    Error:
       type: object
       required:
-      - total
-      - page
-      - pageSize
+      - error
       properties:
-        total:
-          type: integer
-        page:
-          type: integer
-        pageSize:
-          type: integer
-    OsspreyMetrics:
-      type: object
-      required:
-      - criticalPackages
-      - coveragePercent
-      - coverageTrend
-      - activeStewards
-      - unassignedCritical
-      - needsAttention
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
       - escalated
-      properties:
-        criticalPackages:
-          type: integer
-          description: Total number of packages marked as critical (is_critical = true).
-        coveragePercent:
-          type: number
-          format: float
-          description: Percentage of critical packages with an active stewardship (assessing, active, or needs_attention).
-        coverageTrend:
-          type: number
-          format: float
-          nullable: true
-          description: Coverage delta vs. previous period. Currently always null (requires snapshot mechanism).
-        activeStewards:
-          type: integer
-          description: Distinct stewards assigned to a non-inactive stewardship.
-        unassignedCritical:
-          type: integer
-          description: Critical packages with no stewardship or status = unassigned.
-        needsAttention:
-          type: integer
-          description: Critical packages whose stewardship status is needs_attention.
-        escalated:
-          type: integer
-          description: Critical packages whose stewardship status is escalated.
+      - blocked
+      - inactive
     ActivityFeedItem:
       type: object
       required:

@@ -40,7 +40,8 @@
     "crowddev-cdp-stewardships-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "crowddev-cm-id-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
     "tag 'Packages' spans 4 source specs (crowddev-cdp-akrites-external-openapi.yml, crowddev-cdp-akrites-openapi.yml, crowddev-cdp-ossprey-openapi.yml, crowddev-cdp-packages-openapi.yml): per-path servers applied",
-    "tag 'Dashboard' spans 2 source specs (crowddev-cdp-akrites-openapi.yml, crowddev-cdp-ossprey-openapi.yml): per-path servers applied"
+    "tag 'Dashboard' spans 2 source specs (crowddev-cdp-akrites-openapi.yml, crowddev-cdp-ossprey-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "crowddev-advisories-api-openapi.yml: previously refined output, superseded by openapi/_original/",

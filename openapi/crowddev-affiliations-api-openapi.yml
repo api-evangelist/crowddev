@@ -5,7 +5,17 @@ info:
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-  description: "Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.\n\nTwo authentication methods are supported depending on the endpoint:\n- **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,\n  and affiliation management endpoints.\n\n- **Static API Key** — bearer token with scopes managed in the CDP database.\n"
+  description: 'Public REST API for the Community Data Platform (CDP). Provides transactional endpoints for identity verification, work experience management, project affiliations, and contributor lookup.
+
+
+    Two authentication methods are supported depending on the endpoint:
+
+    - **OAuth 2.0 Bearer (Auth0)** — used by LFX One for member, organization,
+
+    and affiliation management endpoints.
+
+
+    - **Static API Key** — bearer token with scopes managed in the CDP database.'
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
@@ -20,9 +30,7 @@ paths:
     post:
       operationId: getBulkAffiliations
       summary: Bulk contributor lookup
-      description: 'Look up affiliation data for up to 100 GitHub handles in a single request. Handles that have no matching LFX profile are returned in the `notFound` array.
-
-        '
+      description: Look up affiliation data for up to 100 GitHub handles in a single request. Handles that have no matching LFX profile are returned in the `notFound` array.
       tags:
       - Affiliations
       security:
@@ -101,9 +109,7 @@ paths:
     get:
       operationId: getAffiliationByHandle
       summary: Single contributor lookup
-      description: 'Look up affiliation data for one developer by GitHub handle. Useful for debugging and ad-hoc queries.
-
-        '
+      description: Look up affiliation data for one developer by GitHub handle. Useful for debugging and ad-hoc queries.
       tags:
       - Affiliations
       security:
@@ -150,48 +156,64 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
 components:
-  responses:
-    BadRequest:
-      description: Invalid request body or query parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: BAD_REQUEST
-              message: Validation failed
-    Forbidden:
-      description: Authentication valid but insufficient scopes.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: INSUFFICIENT_SCOPE
-              message: Insufficient scope for this operation
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
-    TooManyRequests:
-      description: Rate limit exceeded (60 requests per 60 seconds).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: RATE_LIMITED
-              message: Too many requests, please try again later
   schemas:
+    BulkAffiliationsResponse:
+      type: object
+      required:
+      - total
+      - totalFound
+      - page
+      - pageSize
+      - contributorsInPage
+      - contributors
+      - notFound
+      properties:
+        total:
+          type: integer
+          description: Total number of handles submitted in the request.
+        totalFound:
+          type: integer
+          description: Number of handles that matched an LFX profile.
+        page:
+          type: integer
+          description: Current page number.
+        pageSize:
+          type: integer
+          description: Maximum contributors per page.
+        contributorsInPage:
+          type: integer
+          description: Number of contributors returned in this page.
+        contributors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        notFound:
+          type: array
+          description: Handles from the request with no matching LFX profile.
+          items:
+            type: string
+    AffiliationPeriod:
+      type: object
+      required:
+      - organization
+      - startDate
+      - endDate
+      properties:
+        organization:
+          type: string
+          description: Name of the organization.
+        startDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Start date of the affiliation period.
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: End date, or null if currently active.
     HttpError:
       type: object
       required:
@@ -236,63 +258,47 @@ components:
           description: Resolved affiliation periods, most recent first.
           items:
             $ref: '#/components/schemas/AffiliationPeriod'
-    AffiliationPeriod:
-      type: object
-      required:
-      - organization
-      - startDate
-      - endDate
-      properties:
-        organization:
-          type: string
-          description: Name of the organization.
-        startDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Start date of the affiliation period.
-        endDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: End date, or null if currently active.
-    BulkAffiliationsResponse:
-      type: object
-      required:
-      - total
-      - totalFound
-      - page
-      - pageSize
-      - contributorsInPage
-      - contributors
-      - notFound
-      properties:
-        total:
-          type: integer
-          description: Total number of handles submitted in the request.
-        totalFound:
-          type: integer
-          description: Number of handles that matched an LFX profile.
-        page:
-          type: integer
-          description: Current page number.
-        pageSize:
-          type: integer
-          description: Maximum contributors per page.
-        contributorsInPage:
-          type: integer
-          description: Number of contributors returned in this page.
-        contributors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Contributor'
-        notFound:
-          type: array
-          description: Handles from the request with no matching LFX profile.
-          items:
-            type: string
+  responses:
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    TooManyRequests:
+      description: Rate limit exceeded (60 requests per 60 seconds).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: RATE_LIMITED
+              message: Too many requests, please try again later
   securitySchemes:
     OAuth2Bearer:
       type: oauth2

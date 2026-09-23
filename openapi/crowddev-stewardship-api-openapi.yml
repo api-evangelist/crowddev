@@ -8,9 +8,7 @@ info:
     **Authentication:** OAuth 2.0 M2M bearer token. Package endpoints require `read:packages` or `read:stewardships`. The batch stewardship endpoint requires `read:stewardships` only.
 
 
-    **V1 constraints:** All stewardship rows are `unassigned`. Write endpoints and state transitions are deferred to v2.
-
-    '
+    **V1 constraints:** All stewardship rows are `unassigned`. Write endpoints and state transitions are deferred to v2.'
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
@@ -24,9 +22,7 @@ paths:
     post:
       operationId: batchGetStewardship
       summary: Batch stewardship state for a list of purls
-      description: 'Returns lean stewardship state for up to 100 purls in one request. Purls not found in CDP return `null`.
-
-        '
+      description: Returns lean stewardship state for up to 100 purls in one request. Purls not found in CDP return `null`.
       tags:
       - Stewardship
       security:
@@ -109,34 +105,37 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
+    Steward:
       type: object
       required:
-      - error
+      - userId
+      - role
+      - assignedAt
       properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: NOT_FOUND
-            message:
-              type: string
-              example: Package not found.
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: abc123
+        username:
+          type:
+          - string
+          - 'null'
+          description: Username of the steward. Null if not available.
+          example: jrodriguez
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the steward. Null if not available.
+          example: Jonathan R.
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
     OpenVulns:
       type: object
       description: Open vulnerability counts by severity from advisory_packages + advisories.
@@ -221,37 +220,34 @@ components:
           - string
           - 'null'
           description: Null in v1.
-    Steward:
+    Error:
       type: object
       required:
-      - userId
-      - role
-      - assignedAt
+      - error
       properties:
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: abc123
-        username:
-          type:
-          - string
-          - 'null'
-          description: Username of the steward. Null if not available.
-          example: jrodriguez
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Display name of the steward. Null if not available.
-          example: Jonathan R.
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Package not found.
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
   securitySchemes:
     M2MBearer:
       type: http

@@ -2,15 +2,7 @@ openapi: 3.2.0
 info:
   title: CDP → Akrites External Contacts API
   version: 0.1.0
-  description: 'Read-only external API exposing CDP package security data to the Akrites service. Authenticated via Auth0 M2M client-credentials — CDP only verifies the resulting access token; the assertion exchange happens entirely between Akrites and Auth0.
-
-
-    Packages, Advisories and Contacts endpoints are implemented. Blast Radius is specced separately and not yet built.
-
-
-    TODO: scopes below (read:packages, read:stewardships) are the existing internal CDP UI scopes, reused here for now. Swap for a dedicated cdp:packages:read scope once Akrites gets its own Auth0 M2M scopes per the akrites-external draft contract.
-
-    '
+  description: Read-only external API exposing CDP package security data to the Akrites service.
 servers:
 - url: https://cm.lfx.dev/api/v1
   description: Production
@@ -20,17 +12,13 @@ security:
   - read:stewardships
 tags:
 - name: Contacts
-  description: 'Security contacts for a package — includes contact PII (e.g. reporter emails). The contract gates these behind a dedicated cdp:maintainers:read scope and forbids reaching them via the packages scope; until Auth0 issues it, the implementation requires read:maintainer-roles (NOT read:packages). The response shape is still under discussion upstream (reportingMethods / reportingGuidelines / integrationHints are reserved and always null today).
-
-    '
+  description: Security contacts for a package — includes contact PII (e.g. reporter emails). The contract gates these behind a dedicated cdp:maintainers:read scope and forbids reaching them via the packages scope; until Auth0 issues it, the implementation requires read:maintainer-roles (NOT read:packages). The response shape is still under discussion upstream (reportingMethods / reportingGuidelines / integrationHints are reserved and always null today).
 paths:
   /akrites-external/contacts/detail:
     get:
       operationId: getContactDetail
       summary: Get security contact detail by PURL
-      description: 'Requires read:maintainer-roles (interim for the contract''s cdp:maintainers:read). Never reachable with the packages scope.
-
-        '
+      description: Requires read:maintainer-roles (interim for the contract's cdp:maintainers:read). Never reachable with the packages scope.
       tags:
       - Contacts
       security:
@@ -151,76 +139,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ContactConfidenceBand:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
-      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: BAD_REQUEST
-            message:
-              type: string
-    ContactDetailBulkEntry:
-      type: object
-      required:
-      - requestedPurl
-      - found
-      - contact
-      properties:
-        requestedPurl:
-          type: string
-        found:
-          type: boolean
-        contact:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/ContactDetail'
-    ReportingMethod:
-      type:
-      - object
-      - 'null'
-      description: Reserved shape — always null until SECURITY.md parsing ships.
-      required:
-      - methodId
-      - type
-      - status
-      - description
-      - actionRequired
-      properties:
-        methodId:
-          type: integer
-        type:
-          type: string
-        status:
-          type: string
-          enum:
-          - preferred
-          - fallback
-        recipient:
-          type:
-          - string
-          - 'null'
-        description:
-          type: string
-        actionRequired:
-          type: string
     ReportingGuidelines:
       type:
       - object
@@ -256,43 +174,35 @@ components:
                     type: string
                   action:
                     type: string
-    SecurityContact:
-      type: object
+    ReportingMethod:
+      type:
+      - object
+      - 'null'
+      description: Reserved shape — always null until SECURITY.md parsing ships.
       required:
-      - channel
-      - value
-      - role
-      - confidenceBand
-      - confidenceScore
+      - methodId
+      - type
+      - status
+      - description
+      - actionRequired
       properties:
-        channel:
+        methodId:
+          type: integer
+        type:
+          type: string
+        status:
           type: string
           enum:
-          - email
-          - github-pvr
-          - github-handle
-          - url
-          - web-form
-          description: Mirrors the internal SecurityContact.channel enum; passed through verbatim.
-        value:
+          - preferred
+          - fallback
+        recipient:
+          type:
+          - string
+          - 'null'
+        description:
           type: string
-          example: security@example.org
-        role:
+        actionRequired:
           type: string
-          enum:
-          - security-team
-          - maintainer
-          - admin
-          - committer
-          - org-owner
-          description: Mirrors the internal SecurityContact.role enum; passed through verbatim.
-        confidenceBand:
-          $ref: '#/components/schemas/ContactConfidenceBand'
-        confidenceScore:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
     ContactDetail:
       type: object
       description: 'NOTE: shape not final — still under discussion upstream, in particular how reportingMethods / reportingGuidelines / integrationHints will be derived from SECURITY.md parsing. Those three, plus targetOrganizationName and bugBountyProgramFlag, are always null today (not stored). Expect this schema to change before the contract is frozen.
@@ -365,16 +275,51 @@ components:
     Ecosystem:
       type: string
       example: npm
-    OverallConfidenceBand:
+    SecurityContact:
+      type: object
+      required:
+      - channel
+      - value
+      - role
+      - confidenceBand
+      - confidenceScore
+      properties:
+        channel:
+          type: string
+          enum:
+          - email
+          - github-pvr
+          - github-handle
+          - url
+          - web-form
+          description: Mirrors the internal SecurityContact.channel enum; passed through verbatim.
+        value:
+          type: string
+          example: security@example.org
+        role:
+          type: string
+          enum:
+          - security-team
+          - maintainer
+          - admin
+          - committer
+          - org-owner
+          description: Mirrors the internal SecurityContact.role enum; passed through verbatim.
+        confidenceBand:
+          $ref: '#/components/schemas/ContactConfidenceBand'
+        confidenceScore:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+    ContactConfidenceBand:
       type: string
       enum:
       - PRIMARY
       - SECONDARY
       - FALLBACK
       - NONE
-      description: 'Aggregate confidence, derived from the highest-scoring contact. Uses the internal SecurityContact confidence scale, returned verbatim — same scale as ContactConfidenceBand, no external crosswalk. NONE when there are no contacts.
-
-        '
+      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
     IntegrationHints:
       type:
       - object
@@ -430,6 +375,49 @@ components:
               type:
               - string
               - 'null'
+    ContactDetailBulkEntry:
+      type: object
+      required:
+      - requestedPurl
+      - found
+      - contact
+      properties:
+        requestedPurl:
+          type: string
+        found:
+          type: boolean
+        contact:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/ContactDetail'
+    OverallConfidenceBand:
+      type: string
+      enum:
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+      description: 'Aggregate confidence, derived from the highest-scoring contact. Uses the internal SecurityContact confidence scale, returned verbatim — same scale as ContactConfidenceBand, no external crosswalk. NONE when there are no contacts.
+
+        '
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: BAD_REQUEST
+            message:
+              type: string
   securitySchemes:
     M2MBearer:
       type: oauth2
