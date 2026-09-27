@@ -609,41 +609,23 @@ components:
       - consortium_adopts_maintainership
       - compensating_controls_monitor
       - namespace_takeover
-    InactiveReason:
-      type: string
-      enum:
-      - quarterly_cadence_missed
-      - stepped_down
-      - no_longer_critical
-    StewardEntry:
+    Error:
       type: object
       required:
-      - id
-      - stewardshipId
-      - userId
-      - role
-      - assignedAt
+      - error
       properties:
-        id:
-          type: string
-        stewardshipId:
-          type: string
-        userId:
-          type: string
-        name:
-          type: string
-          nullable: true
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-        assignedBy:
-          type: string
-          nullable: true
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
     StewardshipRecord:
       type: object
       required:
@@ -688,23 +670,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Invalid query parameter.
     StewardshipStatus:
       type: string
       enum:
@@ -716,6 +681,41 @@ components:
       - escalated
       - blocked
       - inactive
+    StewardEntry:
+      type: object
+      required:
+      - id
+      - stewardshipId
+      - userId
+      - role
+      - assignedAt
+      properties:
+        id:
+          type: string
+        stewardshipId:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+        assignedBy:
+          type: string
+          nullable: true
+    InactiveReason:
+      type: string
+      enum:
+      - quarterly_cadence_missed
+      - stepped_down
+      - no_longer_critical
   securitySchemes:
     BearerAuth:
       type: http

@@ -10,17 +10,20 @@ description: Crowd.dev is an open-source developer data platform that centralize
   open-source package/stewardship intelligence.
 url: https://raw.githubusercontent.com/api-evangelist/crowddev/refs/heads/main/apis.yml
 deliveryModel:
-  model: unknown
+  model: saas
+  license_evidence:
+    not_product:
+    - linuxfoundation/crowd.dev
   open_source: unknown
   commercial: true
   callable_host: true
-  label: Delivery model not determined — needs a product licence on record
+  label: Hosted service · you call their endpoint
   confidence: low
   source:
   - openapi
   - pricing
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: free
@@ -55,13 +58,16 @@ x-acquired-date: 2024-04
 specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-09-16'
+x-docs-platform: gitbook
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-09-24
 tags:
 - Company
 - Community
 - Developer Relations
 - Developer Data Platform
 - Identity Resolution
-- Open-Source
+- Open Source
 - Community Data Platform
 - Open Source Intelligence
 tags_raw:
@@ -73,6 +79,7 @@ tags_raw:
 - Open Source
 - Community Data Platform
 - Open Source Intelligence
+- Open-Source
 apis:
 - aid: crowddev:crowddev-advisories-api
   name: Crowd.dev Advisories API

@@ -465,6 +465,40 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    ActorInput:
+      type: object
+      required:
+      - userId
+      description: 'Profile of the actor performing this action. Stored as a snapshot on the activity log. `userId` is required. All other fields are optional and can be null.
+
+        '
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          description: Auth0 sub of the actor. Must match the authenticated user's token sub.
+          example: auth0|abc123
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: LFX username of the actor.
+          example: gaspergrom
+        displayName:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Full display name of the actor.
+          example: Gašper Grom
+        avatarUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Avatar URL of the actor.
+          example: https://avatars.githubusercontent.com/u/12345
     EscalationResolutionPath:
       type: string
       enum:
@@ -519,40 +553,23 @@ components:
           - 'null'
           description: Auth0 sub of the admin who assigned this steward.
           example: xyz789
-    ActorInput:
+    Error:
       type: object
       required:
-      - userId
-      description: 'Profile of the actor performing this action. Stored as a snapshot on the activity log. `userId` is required. All other fields are optional and can be null.
-
-        '
+      - error
       properties:
-        userId:
-          type: string
-          minLength: 1
-          description: Auth0 sub of the actor. Must match the authenticated user's token sub.
-          example: auth0|abc123
-        username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: LFX username of the actor.
-          example: gaspergrom
-        displayName:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Full display name of the actor.
-          example: Gašper Grom
-        avatarUrl:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Avatar URL of the actor.
-          example: https://avatars.githubusercontent.com/u/12345
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Stewardship not found.
     StewardshipRecord:
       type: object
       required:
@@ -618,23 +635,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: NOT_FOUND
-            message:
-              type: string
-              example: Stewardship not found.
     StewardshipStatus:
       type: string
       enum:

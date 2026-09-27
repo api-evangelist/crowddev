@@ -156,7 +156,75 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
 components:
+  responses:
+    TooManyRequests:
+      description: Rate limit exceeded (60 requests per 60 seconds).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: RATE_LIMITED
+              message: Too many requests, please try again later
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
   schemas:
+    Contributor:
+      type: object
+      required:
+      - githubHandle
+      - name
+      - emails
+      - affiliations
+      properties:
+        githubHandle:
+          type: string
+          description: Verified GitHub login handle.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display name from the LFX profile.
+        emails:
+          type: array
+          description: Verified email addresses linked to the profile.
+          items:
+            type: string
+            format: email
+        affiliations:
+          type: array
+          description: Resolved affiliation periods, most recent first.
+          items:
+            $ref: '#/components/schemas/AffiliationPeriod'
     BulkAffiliationsResponse:
       type: object
       required:
@@ -192,6 +260,23 @@ components:
           description: Handles from the request with no matching LFX profile.
           items:
             type: string
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
     AffiliationPeriod:
       type: object
       required:
@@ -214,91 +299,6 @@ components:
           - 'null'
           format: date-time
           description: End date, or null if currently active.
-    HttpError:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code.
-            message:
-              type: string
-              description: Human-readable error description.
-    Contributor:
-      type: object
-      required:
-      - githubHandle
-      - name
-      - emails
-      - affiliations
-      properties:
-        githubHandle:
-          type: string
-          description: Verified GitHub login handle.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display name from the LFX profile.
-        emails:
-          type: array
-          description: Verified email addresses linked to the profile.
-          items:
-            type: string
-            format: email
-        affiliations:
-          type: array
-          description: Resolved affiliation periods, most recent first.
-          items:
-            $ref: '#/components/schemas/AffiliationPeriod'
-  responses:
-    BadRequest:
-      description: Invalid request body or query parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: BAD_REQUEST
-              message: Validation failed
-    Forbidden:
-      description: Authentication valid but insufficient scopes.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: INSUFFICIENT_SCOPE
-              message: Insufficient scope for this operation
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
-    TooManyRequests:
-      description: Rate limit exceeded (60 requests per 60 seconds).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: RATE_LIMITED
-              message: Too many requests, please try again later
   securitySchemes:
     OAuth2Bearer:
       type: oauth2

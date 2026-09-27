@@ -174,6 +174,16 @@ components:
                     type: string
                   action:
                     type: string
+    OverallConfidenceBand:
+      type: string
+      enum:
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+      description: 'Aggregate confidence, derived from the highest-scoring contact. Uses the internal SecurityContact confidence scale, returned verbatim — same scale as ContactConfidenceBand, no external crosswalk. NONE when there are no contacts.
+
+        '
     ReportingMethod:
       type:
       - object
@@ -272,6 +282,47 @@ components:
           $ref: '#/components/schemas/ReportingGuidelines'
         integrationHints:
           $ref: '#/components/schemas/IntegrationHints'
+    ContactDetailBulkEntry:
+      type: object
+      required:
+      - requestedPurl
+      - found
+      - contact
+      properties:
+        requestedPurl:
+          type: string
+        found:
+          type: boolean
+        contact:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/ContactDetail'
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: BAD_REQUEST
+            message:
+              type: string
+    ContactConfidenceBand:
+      type: string
+      enum:
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
     Ecosystem:
       type: string
       example: npm
@@ -312,14 +363,6 @@ components:
           format: float
           minimum: 0
           maximum: 1
-    ContactConfidenceBand:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
-      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
     IntegrationHints:
       type:
       - object
@@ -375,49 +418,6 @@ components:
               type:
               - string
               - 'null'
-    ContactDetailBulkEntry:
-      type: object
-      required:
-      - requestedPurl
-      - found
-      - contact
-      properties:
-        requestedPurl:
-          type: string
-        found:
-          type: boolean
-        contact:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/ContactDetail'
-    OverallConfidenceBand:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
-      description: 'Aggregate confidence, derived from the highest-scoring contact. Uses the internal SecurityContact confidence scale, returned verbatim — same scale as ContactConfidenceBand, no external crosswalk. NONE when there are no contacts.
-
-        '
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: BAD_REQUEST
-            message:
-              type: string
   securitySchemes:
     M2MBearer:
       type: oauth2

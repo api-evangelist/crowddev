@@ -140,47 +140,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/HttpError'
 components:
-  responses:
-    BadRequest:
-      description: Invalid request body or query parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: BAD_REQUEST
-              message: Validation failed
-    MemberNotFound:
-      description: No member found with the given ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: NOT_FOUND
-              message: Member not found
-    Forbidden:
-      description: Authentication valid but insufficient scopes.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: INSUFFICIENT_SCOPE
-              message: Insufficient scope for this operation
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
   schemas:
     ProjectAffiliationEntry:
       type: object
@@ -236,23 +195,39 @@ components:
           - string
           - 'null'
           description: Present only for `work-history` type affiliations.
-    HttpError:
+    ProjectRole:
       type: object
       required:
-      - error
+      - id
+      - role
+      - startDate
+      - endDate
+      - repoUrl
+      - repoFileUrl
       properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code.
-            message:
-              type: string
-              description: Human-readable error description.
+        id:
+          type: string
+          format: uuid
+        role:
+          type: string
+        startDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        repoUrl:
+          type:
+          - string
+          - 'null'
+        repoFileUrl:
+          type:
+          - string
+          - 'null'
     ProjectAffiliation:
       type: object
       required:
@@ -287,39 +262,64 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ProjectAffiliationEntry'
-    ProjectRole:
+    HttpError:
       type: object
       required:
-      - id
-      - role
-      - startDate
-      - endDate
-      - repoUrl
-      - repoFileUrl
+      - error
       properties:
-        id:
-          type: string
-          format: uuid
-        role:
-          type: string
-        startDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        endDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        repoUrl:
-          type:
-          - string
-          - 'null'
-        repoFileUrl:
-          type:
-          - string
-          - 'null'
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
+  responses:
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    MemberNotFound:
+      description: No member found with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Member not found
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
   parameters:
     MemberId:
       name: memberId

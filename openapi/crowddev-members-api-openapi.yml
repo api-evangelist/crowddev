@@ -184,16 +184,6 @@ components:
             error:
               code: BAD_REQUEST
               message: Validation failed
-    Forbidden:
-      description: Authentication valid but insufficient scopes.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: INSUFFICIENT_SCOPE
-              message: Insufficient scope for this operation
     Unauthorized:
       description: Missing or invalid authentication credentials.
       content:
@@ -204,6 +194,16 @@ components:
             error:
               code: UNAUTHORIZED
               message: Invalid or missing authentication
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
   schemas:
     HttpError:
       type: object
