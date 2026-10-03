@@ -465,111 +465,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ActorInput:
-      type: object
-      required:
-      - userId
-      description: 'Profile of the actor performing this action. Stored as a snapshot on the activity log. `userId` is required. All other fields are optional and can be null.
-
-        '
-      properties:
-        userId:
-          type: string
-          minLength: 1
-          description: Auth0 sub of the actor. Must match the authenticated user's token sub.
-          example: auth0|abc123
-        username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: LFX username of the actor.
-          example: gaspergrom
-        displayName:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Full display name of the actor.
-          example: Gašper Grom
-        avatarUrl:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Avatar URL of the actor.
-          example: https://avatars.githubusercontent.com/u/12345
-    EscalationResolutionPath:
-      type: string
-      enum:
-      - right_of_first_refusal
-      - replace_the_dependency
-      - find_vendor_for_lts
-      - consortium_adopts_maintainership
-      - compensating_controls_monitor
-      - namespace_takeover
-    StewardRecord:
-      type: object
-      required:
-      - id
-      - stewardshipId
-      - userId
-      - role
-      - assignedAt
-      properties:
-        id:
-          type: string
-          example: '7'
-        stewardshipId:
-          type: string
-          example: '42'
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: abc123
-        username:
-          type:
-          - string
-          - 'null'
-          description: LFX username of the steward. Null if not yet stored.
-          example: joanagmaia
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Full display name of the steward. Null if not yet stored.
-          example: Joana Maia
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-        assignedBy:
-          type:
-          - string
-          - 'null'
-          description: Auth0 sub of the admin who assigned this steward.
-          example: xyz789
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: NOT_FOUND
-            message:
-              type: string
-              example: Stewardship not found.
     StewardshipRecord:
       type: object
       required:
@@ -635,6 +530,40 @@ components:
         updatedAt:
           type: string
           format: date-time
+    ActorInput:
+      type: object
+      required:
+      - userId
+      description: 'Profile of the actor performing this action. Stored as a snapshot on the activity log. `userId` is required. All other fields are optional and can be null.
+
+        '
+      properties:
+        userId:
+          type: string
+          minLength: 1
+          description: Auth0 sub of the actor. Must match the authenticated user's token sub.
+          example: auth0|abc123
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: LFX username of the actor.
+          example: gaspergrom
+        displayName:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Full display name of the actor.
+          example: Gašper Grom
+        avatarUrl:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Avatar URL of the actor.
+          example: https://avatars.githubusercontent.com/u/12345
     StewardshipStatus:
       type: string
       enum:
@@ -646,6 +575,77 @@ components:
       - escalated
       - blocked
       - inactive
+    EscalationResolutionPath:
+      type: string
+      enum:
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Stewardship not found.
+    StewardRecord:
+      type: object
+      required:
+      - id
+      - stewardshipId
+      - userId
+      - role
+      - assignedAt
+      properties:
+        id:
+          type: string
+          example: '7'
+        stewardshipId:
+          type: string
+          example: '42'
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: abc123
+        username:
+          type:
+          - string
+          - 'null'
+          description: LFX username of the steward. Null if not yet stored.
+          example: joanagmaia
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Full display name of the steward. Null if not yet stored.
+          example: Joana Maia
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+        assignedBy:
+          type:
+          - string
+          - 'null'
+          description: Auth0 sub of the admin who assigned this steward.
+          example: xyz789
   securitySchemes:
     M2MBearer:
       type: http

@@ -285,27 +285,16 @@ components:
             message:
               type: string
               description: Human-readable error description.
+  parameters:
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      description: UUID of the member.
+      schema:
+        type: string
+        format: uuid
   responses:
-    BadRequest:
-      description: Invalid request body or query parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: BAD_REQUEST
-              message: Validation failed
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
     MemberNotFound:
       description: No member found with the given ID.
       content:
@@ -326,15 +315,26 @@ components:
             error:
               code: INSUFFICIENT_SCOPE
               message: Insufficient scope for this operation
-  parameters:
-    MemberId:
-      name: memberId
-      in: path
-      required: true
-      description: UUID of the member.
-      schema:
-        type: string
-        format: uuid
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
   securitySchemes:
     OAuth2Bearer:
       type: oauth2

@@ -227,57 +227,6 @@ paths:
                 $ref: '#/components/schemas/HttpError'
 components:
   schemas:
-    WorkExperienceInput:
-      type: object
-      required:
-      - organizationId
-      - jobTitle
-      - verified
-      - verifiedBy
-      - source
-      - startDate
-      properties:
-        organizationId:
-          type: string
-          format: uuid
-        jobTitle:
-          type: string
-          description: Job title at the organization.
-        verified:
-          type: boolean
-        verifiedBy:
-          type: string
-          description: Identifier of who verified this work experience.
-        source:
-          type: string
-          description: Source system (e.g. lfxOne).
-        startDate:
-          type: string
-          format: date-time
-          description: Start date of the work experience.
-        endDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: End date, or null if currently active.
-    HttpError:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code.
-            message:
-              type: string
-              description: Human-readable error description.
     WorkExperience:
       type: object
       required:
@@ -351,6 +300,57 @@ components:
           - string
           - 'null'
           format: date-time
+    WorkExperienceInput:
+      type: object
+      required:
+      - organizationId
+      - jobTitle
+      - verified
+      - verifiedBy
+      - source
+      - startDate
+      properties:
+        organizationId:
+          type: string
+          format: uuid
+        jobTitle:
+          type: string
+          description: Job title at the organization.
+        verified:
+          type: boolean
+        verifiedBy:
+          type: string
+          description: Identifier of who verified this work experience.
+        source:
+          type: string
+          description: Source system (e.g. lfxOne).
+        startDate:
+          type: string
+          format: date-time
+          description: Start date of the work experience.
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: End date, or null if currently active.
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
   parameters:
     WorkExperienceId:
       name: workExperienceId
@@ -369,26 +369,6 @@ components:
         type: string
         format: uuid
   responses:
-    BadRequest:
-      description: Invalid request body or query parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: BAD_REQUEST
-              message: Validation failed
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
     MemberNotFound:
       description: No member found with the given ID.
       content:
@@ -409,6 +389,26 @@ components:
             error:
               code: INSUFFICIENT_SCOPE
               message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
   securitySchemes:
     OAuth2Bearer:
       type: oauth2

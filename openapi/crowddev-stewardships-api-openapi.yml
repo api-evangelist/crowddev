@@ -600,32 +600,12 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    EscalationResolutionPath:
+    InactiveReason:
       type: string
       enum:
-      - right_of_first_refusal
-      - replace_the_dependency
-      - find_vendor_for_lts
-      - consortium_adopts_maintainership
-      - compensating_controls_monitor
-      - namespace_takeover
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Invalid query parameter.
+      - quarterly_cadence_missed
+      - stepped_down
+      - no_longer_critical
     StewardshipRecord:
       type: object
       required:
@@ -670,17 +650,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
     StewardEntry:
       type: object
       required:
@@ -710,12 +679,43 @@ components:
         assignedBy:
           type: string
           nullable: true
-    InactiveReason:
+    StewardshipStatus:
       type: string
       enum:
-      - quarterly_cadence_missed
-      - stepped_down
-      - no_longer_critical
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+    EscalationResolutionPath:
+      type: string
+      enum:
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
   securitySchemes:
     BearerAuth:
       type: http

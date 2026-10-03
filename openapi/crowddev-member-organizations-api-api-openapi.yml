@@ -215,25 +215,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Organization:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 550e8400-e29b-41d4-a716-446655440000
-          description: Unique identifier for the organization
-        displayName:
-          type: string
-          example: The Linux Foundation
-          description: Display name of the organization
-        logo:
-          type: string
-          example: https://avatars.githubusercontent.com/u/1040002?v=4
-          description: URL of the organization's logo
-        memberOrganizations:
-          type: array
-          items:
-            $ref: '#/components/schemas/MemberOrganization'
     MemberOrganization:
       type: object
       properties:
@@ -267,6 +248,25 @@ components:
           type: string
           example: Software Engineer
           description: Member role within the organization
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 550e8400-e29b-41d4-a716-446655440000
+          description: Unique identifier for the organization
+        displayName:
+          type: string
+          example: The Linux Foundation
+          description: Display name of the organization
+        logo:
+          type: string
+          example: https://avatars.githubusercontent.com/u/1040002?v=4
+          description: URL of the organization's logo
+        memberOrganizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/MemberOrganization'
   securitySchemes:
     BearerAuth:
       type: http

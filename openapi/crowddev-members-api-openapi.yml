@@ -173,55 +173,7 @@ paths:
                   code: CONFLICT
                   message: Multiple member profiles matched
 components:
-  responses:
-    BadRequest:
-      description: Invalid request body or query parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: BAD_REQUEST
-              message: Validation failed
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
-    Forbidden:
-      description: Authentication valid but insufficient scopes.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: INSUFFICIENT_SCOPE
-              message: Insufficient scope for this operation
   schemas:
-    HttpError:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code.
-            message:
-              type: string
-              description: Human-readable error description.
     MemberIdentityInput:
       type: object
       required:
@@ -255,6 +207,54 @@ components:
         verifiedBy:
           type: string
           description: Required when `verified` is true. Identifier of who verified.
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
+  responses:
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
   securitySchemes:
     OAuth2Bearer:
       type: oauth2

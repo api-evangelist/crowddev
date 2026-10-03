@@ -139,51 +139,68 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ReportingGuidelines:
-      type:
-      - object
-      - 'null'
-      description: Reserved shape — always null until SECURITY.md parsing ships.
+    ContactDetailBulkEntry:
+      type: object
       required:
-      - generalPrinciples
-      - qualityRequirements
+      - requestedPurl
+      - found
+      - contact
       properties:
-        generalPrinciples:
-          type: array
-          items:
-            type: string
-        qualityRequirements:
-          type: object
-          required:
-          - avoid
-          - recommend
-          properties:
-            avoid:
-              type: array
-              items:
-                type: string
-            recommend:
-              type: array
-              items:
-                type: object
-                required:
-                - scenario
-                - action
-                properties:
-                  scenario:
-                    type: string
-                  action:
-                    type: string
-    OverallConfidenceBand:
+        requestedPurl:
+          type: string
+        found:
+          type: boolean
+        contact:
+          type:
+          - object
+          - 'null'
+          allOf:
+          - $ref: '#/components/schemas/ContactDetail'
+    SecurityContact:
+      type: object
+      required:
+      - channel
+      - value
+      - role
+      - confidenceBand
+      - confidenceScore
+      properties:
+        channel:
+          type: string
+          enum:
+          - email
+          - github-pvr
+          - github-handle
+          - url
+          - web-form
+          description: Mirrors the internal SecurityContact.channel enum; passed through verbatim.
+        value:
+          type: string
+          example: security@example.org
+        role:
+          type: string
+          enum:
+          - security-team
+          - maintainer
+          - admin
+          - committer
+          - org-owner
+          description: Mirrors the internal SecurityContact.role enum; passed through verbatim.
+        confidenceBand:
+          $ref: '#/components/schemas/ContactConfidenceBand'
+        confidenceScore:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+    ContactConfidenceBand:
       type: string
       enum:
       - PRIMARY
       - SECONDARY
       - FALLBACK
       - NONE
-      description: 'Aggregate confidence, derived from the highest-scoring contact. Uses the internal SecurityContact confidence scale, returned verbatim — same scale as ContactConfidenceBand, no external crosswalk. NONE when there are no contacts.
-
-        '
+      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
     ReportingMethod:
       type:
       - object
@@ -213,6 +230,74 @@ components:
           type: string
         actionRequired:
           type: string
+    OverallConfidenceBand:
+      type: string
+      enum:
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+      description: 'Aggregate confidence, derived from the highest-scoring contact. Uses the internal SecurityContact confidence scale, returned verbatim — same scale as ContactConfidenceBand, no external crosswalk. NONE when there are no contacts.
+
+        '
+    Ecosystem:
+      type: string
+      example: npm
+    IntegrationHints:
+      type:
+      - object
+      - 'null'
+      description: Reserved shape — always null until computed.
+      required:
+      - primaryEndpoint
+      - fallbackEndpoint
+      - validationHints
+      properties:
+        primaryEndpoint:
+          type:
+          - object
+          - 'null'
+          required:
+          - type
+          - target
+          properties:
+            type:
+              type: string
+            target:
+              type: string
+        fallbackEndpoint:
+          type:
+          - object
+          - 'null'
+          required:
+          - type
+          - target
+          properties:
+            type:
+              type: string
+            target:
+              type: string
+        validationHints:
+          type:
+          - object
+          - 'null'
+          required:
+          - falsePositiveRules
+          - requirePocForSeverity
+          - debounce
+          properties:
+            falsePositiveRules:
+              type: array
+              items:
+                type: string
+            requirePocForSeverity:
+              type: array
+              items:
+                type: string
+            debounce:
+              type:
+              - string
+              - 'null'
     ContactDetail:
       type: object
       description: 'NOTE: shape not final — still under discussion upstream, in particular how reportingMethods / reportingGuidelines / integrationHints will be derived from SECURITY.md parsing. Those three, plus targetOrganizationName and bugBountyProgramFlag, are always null today (not stored). Expect this schema to change before the contract is frozen.
@@ -282,23 +367,6 @@ components:
           $ref: '#/components/schemas/ReportingGuidelines'
         integrationHints:
           $ref: '#/components/schemas/IntegrationHints'
-    ContactDetailBulkEntry:
-      type: object
-      required:
-      - requestedPurl
-      - found
-      - contact
-      properties:
-        requestedPurl:
-          type: string
-        found:
-          type: boolean
-        contact:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/ContactDetail'
     Error:
       type: object
       required:
@@ -315,109 +383,41 @@ components:
               example: BAD_REQUEST
             message:
               type: string
-    ContactConfidenceBand:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
-      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
-    Ecosystem:
-      type: string
-      example: npm
-    SecurityContact:
-      type: object
-      required:
-      - channel
-      - value
-      - role
-      - confidenceBand
-      - confidenceScore
-      properties:
-        channel:
-          type: string
-          enum:
-          - email
-          - github-pvr
-          - github-handle
-          - url
-          - web-form
-          description: Mirrors the internal SecurityContact.channel enum; passed through verbatim.
-        value:
-          type: string
-          example: security@example.org
-        role:
-          type: string
-          enum:
-          - security-team
-          - maintainer
-          - admin
-          - committer
-          - org-owner
-          description: Mirrors the internal SecurityContact.role enum; passed through verbatim.
-        confidenceBand:
-          $ref: '#/components/schemas/ContactConfidenceBand'
-        confidenceScore:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
-    IntegrationHints:
+    ReportingGuidelines:
       type:
       - object
       - 'null'
-      description: Reserved shape — always null until computed.
+      description: Reserved shape — always null until SECURITY.md parsing ships.
       required:
-      - primaryEndpoint
-      - fallbackEndpoint
-      - validationHints
+      - generalPrinciples
+      - qualityRequirements
       properties:
-        primaryEndpoint:
-          type:
-          - object
-          - 'null'
+        generalPrinciples:
+          type: array
+          items:
+            type: string
+        qualityRequirements:
+          type: object
           required:
-          - type
-          - target
+          - avoid
+          - recommend
           properties:
-            type:
-              type: string
-            target:
-              type: string
-        fallbackEndpoint:
-          type:
-          - object
-          - 'null'
-          required:
-          - type
-          - target
-          properties:
-            type:
-              type: string
-            target:
-              type: string
-        validationHints:
-          type:
-          - object
-          - 'null'
-          required:
-          - falsePositiveRules
-          - requirePocForSeverity
-          - debounce
-          properties:
-            falsePositiveRules:
+            avoid:
               type: array
               items:
                 type: string
-            requirePocForSeverity:
+            recommend:
               type: array
               items:
-                type: string
-            debounce:
-              type:
-              - string
-              - 'null'
+                type: object
+                required:
+                - scenario
+                - action
+                properties:
+                  scenario:
+                    type: string
+                  action:
+                    type: string
   securitySchemes:
     M2MBearer:
       type: oauth2
