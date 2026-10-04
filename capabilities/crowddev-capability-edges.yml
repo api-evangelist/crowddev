@@ -1,0 +1,77 @@
+slug: crowddev
+provider: Crowd.dev
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 6
+edges:
+- tag: Stewardship Actions
+  spec_file: crowddev-stewardship-actions-api-openapi.yml
+  capability_id: BC-4200.60
+  capability_id_l1: BC-4200
+  capability_name: Open Source Stewardship
+  confidence: 0.75
+  evidence: POST /stewardships/open "Open a package for stewardship"; POST /stewardships/{id}/assign "Assign
+    a steward to a stewardship"; POST /stewardships/{id}/escalate
+  reason: Write workflow for assigning and escalating stewards of open-source packages (OSSPREY programme)
+    — direct realisation of open-source stewardship over the dependency supply chain.
+- tag: Stewardships
+  spec_file: crowddev-stewardships-api-openapi.yml
+  capability_id: BC-4200.60
+  capability_id_l1: BC-4200
+  capability_name: Open Source Stewardship
+  confidence: 0.75
+  evidence: GET /akrites/stewardships/me/packages "List packages stewarded by the authenticated user";
+    POST /akrites/stewardships/open "Open a stewardship for a package"
+  reason: Same open-source package stewardship lifecycle (open, assign, escalate, status) plus a steward's
+    own package portfolio view; this is OSS stewardship, not a business service desk.
+- tag: Advisories
+  spec_file: crowddev-advisories-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.7
+  evidence: GET /akrites-external/advisories/detail  getAdvisoryDetail  Get advisories for a package by
+    PURL; 'Read-only external API exposing CDP package security data'
+  reason: Serving security advisories for software packages by PURL is vulnerability data lookup supporting
+    scanning and remediation of dependencies, which fits Vulnerability Management. Could also touch open
+    source supply chain, but the explicit 'package security data' framing points to vulnerability.
+- tag: Members
+  spec_file: crowddev-members-api-openapi.yml
+  capability_id: BC-610.20
+  capability_id_l1: BC-610
+  capability_name: Master Data Management
+  confidence: 0.7
+  evidence: POST /members  createMember  Create a member profile; POST /members/resolve  resolveMember  Resolve
+    a CDP member profile
+  reason: Creating and resolving member profiles in the Community Data Platform is identity resolution
+    / golden-record creation for contributor master data, matching Master Data Management.
+- tag: Packages
+  spec_file: crowddev-packages-api-openapi.yml
+  capability_id: BC-4200.60
+  capability_id_l1: BC-4200
+  capability_name: Open Source Stewardship
+  confidence: 0.7
+  evidence: GET /akrites/packages "List packages with stewardship data"; GET /akrites/packages/advisories
+    "Get advisories for a package"; schemas StewardshipStatus, Advisory, PackageStewardshipSummary, Ecosystem
+  reason: Operations expose open-source package inventory, ecosystem/PURL identity, health bands, advisories
+    and stewardship state — i.e. open-source supply-chain artefact stewardship. Some overlap with vulnerability
+    management, hence 0.7 rather than higher.
+- tag: Stewardship
+  spec_file: crowddev-stewardship-api-openapi.yml
+  capability_id: BC-4200.60
+  capability_id_l1: BC-4200
+  capability_name: Open Source Stewardship
+  confidence: 0.7
+  evidence: POST /packages:batch-stewardship "Batch stewardship state for a list of purls"; schemas StewardshipSummary,
+    Steward, OpenVulns
+  reason: Read-only stewardship state for open-source packages identified by PURL, including open vulnerability
+    counts — open-source supply-chain stewardship rather than generic IT operations.
