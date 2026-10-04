@@ -156,69 +156,48 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+    BadRequest:
+      description: Invalid request body or query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: BAD_REQUEST
+              message: Validation failed
+    Forbidden:
+      description: Authentication valid but insufficient scopes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: INSUFFICIENT_SCOPE
+              message: Insufficient scope for this operation
+    TooManyRequests:
+      description: Rate limit exceeded (60 requests per 60 seconds).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: RATE_LIMITED
+              message: Too many requests, please try again later
   schemas:
-    BulkAffiliationsResponse:
-      type: object
-      required:
-      - total
-      - totalFound
-      - page
-      - pageSize
-      - contributorsInPage
-      - contributors
-      - notFound
-      properties:
-        total:
-          type: integer
-          description: Total number of handles submitted in the request.
-        totalFound:
-          type: integer
-          description: Number of handles that matched an LFX profile.
-        page:
-          type: integer
-          description: Current page number.
-        pageSize:
-          type: integer
-          description: Maximum contributors per page.
-        contributorsInPage:
-          type: integer
-          description: Number of contributors returned in this page.
-        contributors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Contributor'
-        notFound:
-          type: array
-          description: Handles from the request with no matching LFX profile.
-          items:
-            type: string
-    Contributor:
-      type: object
-      required:
-      - githubHandle
-      - name
-      - emails
-      - affiliations
-      properties:
-        githubHandle:
-          type: string
-          description: Verified GitHub login handle.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display name from the LFX profile.
-        emails:
-          type: array
-          description: Verified email addresses linked to the profile.
-          items:
-            type: string
-            format: email
-        affiliations:
-          type: array
-          description: Resolved affiliation periods, most recent first.
-          items:
-            $ref: '#/components/schemas/AffiliationPeriod'
     AffiliationPeriod:
       type: object
       required:
@@ -258,47 +237,68 @@ components:
             message:
               type: string
               description: Human-readable error description.
-  responses:
-    Forbidden:
-      description: Authentication valid but insufficient scopes.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: INSUFFICIENT_SCOPE
-              message: Insufficient scope for this operation
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
-    BadRequest:
-      description: Invalid request body or query parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: BAD_REQUEST
-              message: Validation failed
-    TooManyRequests:
-      description: Rate limit exceeded (60 requests per 60 seconds).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: RATE_LIMITED
-              message: Too many requests, please try again later
+    Contributor:
+      type: object
+      required:
+      - githubHandle
+      - name
+      - emails
+      - affiliations
+      properties:
+        githubHandle:
+          type: string
+          description: Verified GitHub login handle.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display name from the LFX profile.
+        emails:
+          type: array
+          description: Verified email addresses linked to the profile.
+          items:
+            type: string
+            format: email
+        affiliations:
+          type: array
+          description: Resolved affiliation periods, most recent first.
+          items:
+            $ref: '#/components/schemas/AffiliationPeriod'
+    BulkAffiliationsResponse:
+      type: object
+      required:
+      - total
+      - totalFound
+      - page
+      - pageSize
+      - contributorsInPage
+      - contributors
+      - notFound
+      properties:
+        total:
+          type: integer
+          description: Total number of handles submitted in the request.
+        totalFound:
+          type: integer
+          description: Number of handles that matched an LFX profile.
+        page:
+          type: integer
+          description: Current page number.
+        pageSize:
+          type: integer
+          description: Maximum contributors per page.
+        contributorsInPage:
+          type: integer
+          description: Number of contributors returned in this page.
+        contributors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contributor'
+        notFound:
+          type: array
+          description: Handles from the request with no matching LFX profile.
+          items:
+            type: string
   securitySchemes:
     OAuth2Bearer:
       type: oauth2

@@ -465,6 +465,68 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Stewardship not found.
+    StewardRecord:
+      type: object
+      required:
+      - id
+      - stewardshipId
+      - userId
+      - role
+      - assignedAt
+      properties:
+        id:
+          type: string
+          example: '7'
+        stewardshipId:
+          type: string
+          example: '42'
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: abc123
+        username:
+          type:
+          - string
+          - 'null'
+          description: LFX username of the steward. Null if not yet stored.
+          example: joanagmaia
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Full display name of the steward. Null if not yet stored.
+          example: Joana Maia
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+        assignedBy:
+          type:
+          - string
+          - 'null'
+          description: Auth0 sub of the admin who assigned this steward.
+          example: xyz789
     StewardshipRecord:
       type: object
       required:
@@ -584,68 +646,6 @@ components:
       - consortium_adopts_maintainership
       - compensating_controls_monitor
       - namespace_takeover
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: NOT_FOUND
-            message:
-              type: string
-              example: Stewardship not found.
-    StewardRecord:
-      type: object
-      required:
-      - id
-      - stewardshipId
-      - userId
-      - role
-      - assignedAt
-      properties:
-        id:
-          type: string
-          example: '7'
-        stewardshipId:
-          type: string
-          example: '42'
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: abc123
-        username:
-          type:
-          - string
-          - 'null'
-          description: LFX username of the steward. Null if not yet stored.
-          example: joanagmaia
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Full display name of the steward. Null if not yet stored.
-          example: Joana Maia
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-        assignedBy:
-          type:
-          - string
-          - 'null'
-          description: Auth0 sub of the admin who assigned this steward.
-          example: xyz789
   securitySchemes:
     M2MBearer:
       type: http

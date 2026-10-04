@@ -600,12 +600,23 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    InactiveReason:
-      type: string
-      enum:
-      - quarterly_cadence_missed
-      - stepped_down
-      - no_longer_critical
+    Error:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
     StewardshipRecord:
       type: object
       required:
@@ -679,6 +690,12 @@ components:
         assignedBy:
           type: string
           nullable: true
+    InactiveReason:
+      type: string
+      enum:
+      - quarterly_cadence_missed
+      - stepped_down
+      - no_longer_critical
     StewardshipStatus:
       type: string
       enum:
@@ -699,23 +716,6 @@ components:
       - consortium_adopts_maintainership
       - compensating_controls_monitor
       - namespace_takeover
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Invalid query parameter.
   securitySchemes:
     BearerAuth:
       type: http

@@ -268,19 +268,23 @@ paths:
       description: Staging
 components:
   schemas:
-    PaginationMeta:
+    Error:
       type: object
       required:
-      - total
-      - page
-      - pageSize
+      - error
       properties:
-        total:
-          type: integer
-        page:
-          type: integer
-        pageSize:
-          type: integer
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
     ActivityEntry:
       type: object
       required:
@@ -331,17 +335,19 @@ components:
         createdAt:
           type: string
           format: date-time
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
+    PaginationMeta:
+      type: object
+      required:
+      - total
+      - page
+      - pageSize
+      properties:
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
     OsspreyMetrics:
       type: object
       required:
@@ -377,23 +383,17 @@ components:
         escalated:
           type: integer
           description: Critical packages whose stewardship status is escalated.
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: VALIDATION_ERROR
-            message:
-              type: string
-              example: Invalid query parameter.
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
     ActivityFeedItem:
       type: object
       required:

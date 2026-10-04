@@ -195,6 +195,18 @@ components:
           - boolean
           - 'null'
           description: cvss >= 7.0. Null when the advisory has no CVSS score.
+    AdvisoryDetail:
+      type: object
+      required:
+      - purl
+      - advisories
+      properties:
+        purl:
+          type: string
+        advisories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Advisory'
     Error:
       type: object
       required:
@@ -211,18 +223,6 @@ components:
               example: BAD_REQUEST
             message:
               type: string
-    AdvisoryDetail:
-      type: object
-      required:
-      - purl
-      - advisories
-      properties:
-        purl:
-          type: string
-        advisories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Advisory'
   securitySchemes:
     M2MBearer:
       type: oauth2
