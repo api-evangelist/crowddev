@@ -260,6 +260,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Pricing
+  url: https://docs.linuxfoundation.org/lfx/community-management
 - type: CapabilityMap
   url: capabilities/crowddev-capability-edges.yml
   name: Crowd.dev Business Capability Map
