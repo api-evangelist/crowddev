@@ -268,6 +268,17 @@ paths:
       description: Staging
 components:
   schemas:
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
     Error:
       type: object
       required:
@@ -285,6 +296,41 @@ components:
             message:
               type: string
               example: Invalid query parameter.
+    OsspreyMetrics:
+      type: object
+      required:
+      - criticalPackages
+      - coveragePercent
+      - coverageTrend
+      - activeStewards
+      - unassignedCritical
+      - needsAttention
+      - escalated
+      properties:
+        criticalPackages:
+          type: integer
+          description: Total number of packages marked as critical (is_critical = true).
+        coveragePercent:
+          type: number
+          format: float
+          description: Percentage of critical packages with an active stewardship (assessing, active, or needs_attention).
+        coverageTrend:
+          type: number
+          format: float
+          nullable: true
+          description: Coverage delta vs. previous period. Currently always null (requires snapshot mechanism).
+        activeStewards:
+          type: integer
+          description: Distinct stewards assigned to a non-inactive stewardship.
+        unassignedCritical:
+          type: integer
+          description: Critical packages with no stewardship or status = unassigned.
+        needsAttention:
+          type: integer
+          description: Critical packages whose stewardship status is needs_attention.
+        escalated:
+          type: integer
+          description: Critical packages whose stewardship status is escalated.
     ActivityEntry:
       type: object
       required:
@@ -348,52 +394,6 @@ components:
           type: integer
         pageSize:
           type: integer
-    OsspreyMetrics:
-      type: object
-      required:
-      - criticalPackages
-      - coveragePercent
-      - coverageTrend
-      - activeStewards
-      - unassignedCritical
-      - needsAttention
-      - escalated
-      properties:
-        criticalPackages:
-          type: integer
-          description: Total number of packages marked as critical (is_critical = true).
-        coveragePercent:
-          type: number
-          format: float
-          description: Percentage of critical packages with an active stewardship (assessing, active, or needs_attention).
-        coverageTrend:
-          type: number
-          format: float
-          nullable: true
-          description: Coverage delta vs. previous period. Currently always null (requires snapshot mechanism).
-        activeStewards:
-          type: integer
-          description: Distinct stewards assigned to a non-inactive stewardship.
-        unassignedCritical:
-          type: integer
-          description: Critical packages with no stewardship or status = unassigned.
-        needsAttention:
-          type: integer
-          description: Critical packages whose stewardship status is needs_attention.
-        escalated:
-          type: integer
-          description: Critical packages whose stewardship status is escalated.
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
     ActivityFeedItem:
       type: object
       required:

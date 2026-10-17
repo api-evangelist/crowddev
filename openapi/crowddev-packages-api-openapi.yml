@@ -1164,25 +1164,6 @@ paths:
       description: Staging
 components:
   schemas:
-    Ecosystem:
-      type: string
-      example: npm
-    Error:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: BAD_REQUEST
-            message:
-              type: string
     PackageDetailBulkEntry:
       type: object
       required:
@@ -1200,17 +1181,6 @@ components:
           - 'null'
           allOf:
           - $ref: '#/components/schemas/PackageDetail'
-    HealthBand:
-      type: string
-      enum:
-      - excellent
-      - healthy
-      - fair
-      - concerning
-      - critical
-      description: 'Health band on the internal scale (best→worst), returned verbatim — no external crosswalk.
-
-        '
     PackageDetail:
       type: object
       required:
@@ -1453,7 +1423,18 @@ components:
               - string
               - 'null'
               description: Always null for now — reserved.
-    Error_2:
+    HealthBand:
+      type: string
+      enum:
+      - excellent
+      - healthy
+      - fair
+      - concerning
+      - critical
+      description: 'Health band on the internal scale (best→worst), returned verbatim — no external crosswalk.
+
+        '
+    Error:
       type: object
       required:
       - error
@@ -1466,15 +1447,24 @@ components:
           properties:
             code:
               type: string
-              example: VALIDATION_ERROR
+              example: BAD_REQUEST
             message:
               type: string
-              example: Invalid query parameter.
-    StatusCounts:
-      type: object
-      description: Count of packages per stewardship status (used to drive filter pill badges).
-      required:
-      - all
+    Ecosystem:
+      type: string
+      example: npm
+    EscalationResolutionPath:
+      type: string
+      enum:
+      - right_of_first_refusal
+      - replace_the_dependency
+      - find_vendor_for_lts
+      - consortium_adopts_maintainership
+      - compensating_controls_monitor
+      - namespace_takeover
+    StewardshipStatus:
+      type: string
+      enum:
       - unassigned
       - open
       - assessing
@@ -1483,101 +1473,48 @@ components:
       - escalated
       - blocked
       - inactive
-      properties:
-        all:
-          type: integer
-          description: Total count across all statuses (matches total from the package list without status filter).
-        unassigned:
-          type: integer
-        open:
-          type: integer
-        assessing:
-          type: integer
-        active:
-          type: integer
-        needs_attention:
-          type: integer
-        escalated:
-          type: integer
-        blocked:
-          type: integer
-        inactive:
-          type: integer
-      example:
-        all: 95
-        unassigned: 42
-        open: 5
-        assessing: 12
-        active: 30
-        needs_attention: 3
-        escalated: 1
-        blocked: 0
-        inactive: 2
-    PackageStewardshipSummary:
-      type: object
-      description: Slim stewardship summary returned per-purl by the batch endpoint.
-      nullable: true
-      required:
-      - name
-      - ecosystem
-      properties:
-        name:
-          type: string
-        ecosystem:
-          type: string
-        lifecycle:
-          type: string
-          enum:
-          - active
-          - stable
-          - declining
-          - abandoned
-          nullable: true
-        health:
-          type: number
-          format: float
-          nullable: true
-        impact:
-          type: integer
-          nullable: true
-          description: Criticality score scaled to 0–100.
-        openVulns:
-          type: object
-          nullable: true
-          properties:
-            low:
-              type: integer
-            medium:
-              type: integer
-            high:
-              type: integer
-            critical:
-              type: integer
-        stewardship:
-          $ref: '#/components/schemas/StewardshipStatus'
-          nullable: true
-        stewards:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/Steward'
-        lastActivityAt:
-          type: string
-          format: date-time
-          nullable: true
-        lastActivityDescription:
-          type: string
-          nullable: true
-    HealthBand_2:
+    SecurityContactConfidence:
       type: string
       enum:
-      - healthy
-      - fair
-      - concerning
-      - critical
-      description: 'Derived from `scorecardScore`: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy
-
-        '
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+    SecurityContact:
+      type: object
+      required:
+      - channel
+      - value
+      - role
+      - confidence
+      - score
+      properties:
+        channel:
+          type: string
+          enum:
+          - email
+          - github-pvr
+          - url
+          - github-handle
+          - web-form
+        value:
+          type: string
+          example: security@expressjs.com
+        role:
+          type: string
+          enum:
+          - security-team
+          - maintainer
+          - admin
+          - committer
+          - org-owner
+        confidence:
+          $ref: '#/components/schemas/SecurityContactConfidence'
+        score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
     PackageHistoryEvent:
       type: object
       required:
@@ -1605,6 +1542,25 @@ components:
           nullable: true
           additionalProperties: true
         createdAt:
+          type: string
+          format: date-time
+    Steward:
+      type: object
+      required:
+      - userId
+      - role
+      - assignedAt
+      properties:
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: auth0|abc123
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
           type: string
           format: date-time
     PackageDetail_2:
@@ -1809,49 +1765,6 @@ components:
         history:
           nullable: true
           description: Always null in /detail — full history available at GET /packages/history.
-    SecurityContactConfidence:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
-    PackageMetrics:
-      type: object
-      required:
-      - criticalPackages
-      properties:
-        criticalPackages:
-          type: integer
-          description: Total packages marked as critical (is_critical = true).
-    Advisory:
-      type: object
-      required:
-      - osvId
-      - severity
-      - resolution
-      - isCritical
-      properties:
-        osvId:
-          type: string
-          example: GHSA-xxxx-xxxx-xxxx
-        severity:
-          type: string
-          enum:
-          - critical
-          - high
-          - moderate
-          - low
-          nullable: true
-        resolution:
-          type: string
-          enum:
-          - open
-          - patched
-          nullable: true
-        isCritical:
-          type: boolean
-          description: True when CVSS score >= 7.0.
     PackageListRow:
       type: object
       required:
@@ -1922,6 +1835,196 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StewardEntry'
+    HealthBand_2:
+      type: string
+      enum:
+      - healthy
+      - fair
+      - concerning
+      - critical
+      description: 'Derived from `scorecardScore`: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy
+
+        '
+    Advisory:
+      type: object
+      required:
+      - osvId
+      - severity
+      - resolution
+      - isCritical
+      properties:
+        osvId:
+          type: string
+          example: GHSA-xxxx-xxxx-xxxx
+        severity:
+          type: string
+          enum:
+          - critical
+          - high
+          - moderate
+          - low
+          nullable: true
+        resolution:
+          type: string
+          enum:
+          - open
+          - patched
+          nullable: true
+        isCritical:
+          type: boolean
+          description: True when CVSS score >= 7.0.
+    Error_2:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: VALIDATION_ERROR
+            message:
+              type: string
+              example: Invalid query parameter.
+    StewardEntry:
+      type: object
+      required:
+      - id
+      - stewardshipId
+      - userId
+      - role
+      - assignedAt
+      properties:
+        id:
+          type: string
+        stewardshipId:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+        assignedBy:
+          type: string
+          nullable: true
+    PackageMetrics:
+      type: object
+      required:
+      - criticalPackages
+      properties:
+        criticalPackages:
+          type: integer
+          description: Total packages marked as critical (is_critical = true).
+    StatusCounts:
+      type: object
+      description: Count of packages per stewardship status (used to drive filter pill badges).
+      required:
+      - all
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+      properties:
+        all:
+          type: integer
+          description: Total count across all statuses (matches total from the package list without status filter).
+        unassigned:
+          type: integer
+        open:
+          type: integer
+        assessing:
+          type: integer
+        active:
+          type: integer
+        needs_attention:
+          type: integer
+        escalated:
+          type: integer
+        blocked:
+          type: integer
+        inactive:
+          type: integer
+      example:
+        all: 95
+        unassigned: 42
+        open: 5
+        assessing: 12
+        active: 30
+        needs_attention: 3
+        escalated: 1
+        blocked: 0
+        inactive: 2
+    PackageStewardshipSummary:
+      type: object
+      description: Slim stewardship summary returned per-purl by the batch endpoint.
+      nullable: true
+      required:
+      - name
+      - ecosystem
+      properties:
+        name:
+          type: string
+        ecosystem:
+          type: string
+        lifecycle:
+          type: string
+          enum:
+          - active
+          - stable
+          - declining
+          - abandoned
+          nullable: true
+        health:
+          type: number
+          format: float
+          nullable: true
+        impact:
+          type: integer
+          nullable: true
+          description: Criticality score scaled to 0–100.
+        openVulns:
+          type: object
+          nullable: true
+          properties:
+            low:
+              type: integer
+            medium:
+              type: integer
+            high:
+              type: integer
+            critical:
+              type: integer
+        stewardship:
+          $ref: '#/components/schemas/StewardshipStatus'
+          nullable: true
+        stewards:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Steward'
+        lastActivityAt:
+          type: string
+          format: date-time
+          nullable: true
+        lastActivityDescription:
+          type: string
+          nullable: true
     ScatterPoint:
       type: object
       required:
@@ -1955,35 +2058,6 @@ components:
           type: integer
         advisoryCount:
           type: integer
-    StewardEntry:
-      type: object
-      required:
-      - id
-      - stewardshipId
-      - userId
-      - role
-      - assignedAt
-      properties:
-        id:
-          type: string
-        stewardshipId:
-          type: string
-        userId:
-          type: string
-        name:
-          type: string
-          nullable: true
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-        assignedBy:
-          type: string
-          nullable: true
     PaginationMeta:
       type: object
       required:
@@ -1997,80 +2071,17 @@ components:
           type: integer
         pageSize:
           type: integer
-    Steward:
-      type: object
-      required:
-      - userId
-      - role
-      - assignedAt
-      properties:
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: auth0|abc123
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-    SecurityContact:
-      type: object
-      required:
-      - channel
-      - value
-      - role
-      - confidence
-      - score
-      properties:
-        channel:
-          type: string
-          enum:
-          - email
-          - github-pvr
-          - url
-          - github-handle
-          - web-form
-        value:
-          type: string
-          example: security@expressjs.com
-        role:
-          type: string
-          enum:
-          - security-team
-          - maintainer
-          - admin
-          - committer
-          - org-owner
-        confidence:
-          $ref: '#/components/schemas/SecurityContactConfidence'
-        score:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
-    StewardshipStatus:
+    HealthBand_3:
       type: string
       enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
-    EscalationResolutionPath:
-      type: string
-      enum:
-      - right_of_first_refusal
-      - replace_the_dependency
-      - find_vendor_for_lts
-      - consortium_adopts_maintainership
-      - compensating_controls_monitor
-      - namespace_takeover
+      - excellent
+      - healthy
+      - fair
+      - concerning
+      - critical
+      description: 'Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30). Falls back to scorecard thresholds: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy.
+
+        '
     Error_3:
       type: object
       required:
@@ -2088,38 +2099,6 @@ components:
             message:
               type: string
               example: Invalid query parameter.
-    StatusCounts_2:
-      type: object
-      description: Per-status package counts for the tab bar. Computed without the active status filter.
-      required:
-      - all
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
-      properties:
-        all:
-          type: integer
-        unassigned:
-          type: integer
-        open:
-          type: integer
-        assessing:
-          type: integer
-        active:
-          type: integer
-        needs_attention:
-          type: integer
-        escalated:
-          type: integer
-        blocked:
-          type: integer
-        inactive:
-          type: integer
     PackageRow:
       type: object
       required:
@@ -2260,17 +2239,38 @@ components:
           description: Active stewards (deleted_at IS NULL). Empty array if none.
           items:
             $ref: '#/components/schemas/Steward'
-    HealthBand_3:
-      type: string
-      enum:
-      - excellent
-      - healthy
-      - fair
-      - concerning
-      - critical
-      description: 'Tinybird band when enriched (excellent ≥85, healthy 70–84, fair 50–69, concerning 30–49, critical <30). Falls back to scorecard thresholds: `null or < 3.0` → critical · `< 5.0` → concerning · `< 7.0` → fair · `≥ 7.0` → healthy.
-
-        '
+    StatusCounts_2:
+      type: object
+      description: Per-status package counts for the tab bar. Computed without the active status filter.
+      required:
+      - all
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+      properties:
+        all:
+          type: integer
+        unassigned:
+          type: integer
+        open:
+          type: integer
+        assessing:
+          type: integer
+        active:
+          type: integer
+        needs_attention:
+          type: integer
+        escalated:
+          type: integer
+        blocked:
+          type: integer
+        inactive:
+          type: integer
     ScatterPoint_2:
       type: object
       required:
@@ -2322,23 +2322,6 @@ components:
           type: integer
           description: Alias of openVulns — explicit field for tooltip display.
           example: 3
-    Error_4:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: NOT_FOUND
-            message:
-              type: string
-              example: Package not found.
     PackageListItem:
       type: object
       required:
@@ -2416,27 +2399,51 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Steward_2'
-    OpenVulns:
+    SecurityContact_2:
       type: object
-      description: Open vulnerability counts by severity from advisory_packages + advisories.
       required:
-      - low
-      - medium
-      - high
-      - critical
+      - name
       properties:
-        low:
-          type: integer
-          example: 0
-        medium:
-          type: integer
-          example: 0
-        high:
-          type: integer
-          example: 1
-        critical:
-          type: integer
-          example: 0
+        name:
+          type:
+          - string
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+    Steward_2:
+      type: object
+      required:
+      - userId
+      - role
+      - assignedAt
+      properties:
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: abc123
+        username:
+          type:
+          - string
+          - 'null'
+          description: Username of the steward. Null if not available.
+          example: jrodriguez
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the steward. Null if not available.
+          example: Jonathan R.
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
     PackageDetail_3:
       type: object
       required:
@@ -2698,6 +2705,56 @@ components:
           - 'null'
           description: Signal coverage health data enriched by Tinybird. Null until enriched.
           additionalProperties: true
+    OpenVulns:
+      type: object
+      description: Open vulnerability counts by severity from advisory_packages + advisories.
+      required:
+      - low
+      - medium
+      - high
+      - critical
+      properties:
+        low:
+          type: integer
+          example: 0
+        medium:
+          type: integer
+          example: 0
+        high:
+          type: integer
+          example: 1
+        critical:
+          type: integer
+          example: 0
+    Error_4:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: NOT_FOUND
+            message:
+              type: string
+              example: Package not found.
+    PackagesMetrics:
+      type: object
+      required:
+      - totalPackages
+      - criticalPackages
+      properties:
+        totalPackages:
+          type: integer
+          example: 0
+        criticalPackages:
+          type: integer
+          example: 0
     Advisory_2:
       type: object
       required:
@@ -2720,63 +2777,6 @@ components:
           - string
           - 'null'
           description: Resolution status. TBD.
-    Steward_2:
-      type: object
-      required:
-      - userId
-      - role
-      - assignedAt
-      properties:
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: abc123
-        username:
-          type:
-          - string
-          - 'null'
-          description: Username of the steward. Null if not available.
-          example: jrodriguez
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Display name of the steward. Null if not available.
-          example: Jonathan R.
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-    PackagesMetrics:
-      type: object
-      required:
-      - totalPackages
-      - criticalPackages
-      properties:
-        totalPackages:
-          type: integer
-          example: 0
-        criticalPackages:
-          type: integer
-          example: 0
-    SecurityContact_2:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
   securitySchemes:
     M2MBearer:
       type: oauth2

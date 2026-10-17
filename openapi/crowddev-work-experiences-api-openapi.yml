@@ -227,16 +227,6 @@ paths:
                 $ref: '#/components/schemas/HttpError'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
     BadRequest:
       description: Invalid request body or query parameters.
       content:
@@ -247,16 +237,6 @@ components:
             error:
               code: BAD_REQUEST
               message: Validation failed
-    MemberNotFound:
-      description: No member found with the given ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: NOT_FOUND
-              message: Member not found
     Forbidden:
       description: Authentication valid but insufficient scopes.
       content:
@@ -267,6 +247,43 @@ components:
             error:
               code: INSUFFICIENT_SCOPE
               message: Insufficient scope for this operation
+    MemberNotFound:
+      description: No member found with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Member not found
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+  parameters:
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      description: UUID of the member.
+      schema:
+        type: string
+        format: uuid
+    WorkExperienceId:
+      name: workExperienceId
+      in: path
+      required: true
+      description: UUID of the work experience.
+      schema:
+        type: string
+        format: uuid
   schemas:
     WorkExperienceInput:
       type: object
@@ -302,23 +319,6 @@ components:
           - 'null'
           format: date-time
           description: End date, or null if currently active.
-    HttpError:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              description: Machine-readable error code.
-            message:
-              type: string
-              description: Human-readable error description.
     WorkExperience:
       type: object
       required:
@@ -392,23 +392,23 @@ components:
           - string
           - 'null'
           format: date-time
-  parameters:
-    WorkExperienceId:
-      name: workExperienceId
-      in: path
-      required: true
-      description: UUID of the work experience.
-      schema:
-        type: string
-        format: uuid
-    MemberId:
-      name: memberId
-      in: path
-      required: true
-      description: UUID of the member.
-      schema:
-        type: string
-        format: uuid
+    HttpError:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code.
+            message:
+              type: string
+              description: Human-readable error description.
   securitySchemes:
     OAuth2Bearer:
       type: oauth2

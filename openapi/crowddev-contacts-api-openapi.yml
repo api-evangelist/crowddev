@@ -139,6 +139,90 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    ContactConfidenceBand:
+      type: string
+      enum:
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
+    SecurityContact:
+      type: object
+      required:
+      - channel
+      - value
+      - role
+      - confidenceBand
+      - confidenceScore
+      properties:
+        channel:
+          type: string
+          enum:
+          - email
+          - github-pvr
+          - github-handle
+          - url
+          - web-form
+          description: Mirrors the internal SecurityContact.channel enum; passed through verbatim.
+        value:
+          type: string
+          example: security@example.org
+        role:
+          type: string
+          enum:
+          - security-team
+          - maintainer
+          - admin
+          - committer
+          - org-owner
+          description: Mirrors the internal SecurityContact.role enum; passed through verbatim.
+        confidenceBand:
+          $ref: '#/components/schemas/ContactConfidenceBand'
+        confidenceScore:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+    OverallConfidenceBand:
+      type: string
+      enum:
+      - PRIMARY
+      - SECONDARY
+      - FALLBACK
+      - NONE
+      description: 'Aggregate confidence, derived from the highest-scoring contact. Uses the internal SecurityContact confidence scale, returned verbatim — same scale as ContactConfidenceBand, no external crosswalk. NONE when there are no contacts.
+
+        '
+    ReportingMethod:
+      type:
+      - object
+      - 'null'
+      description: Reserved shape — always null until SECURITY.md parsing ships.
+      required:
+      - methodId
+      - type
+      - status
+      - description
+      - actionRequired
+      properties:
+        methodId:
+          type: integer
+        type:
+          type: string
+        status:
+          type: string
+          enum:
+          - preferred
+          - fallback
+        recipient:
+          type:
+          - string
+          - 'null'
+        description:
+          type: string
+        actionRequired:
+          type: string
     ContactDetail:
       type: object
       description: 'NOTE: shape not final — still under discussion upstream, in particular how reportingMethods / reportingGuidelines / integrationHints will be derived from SECURITY.md parsing. Those three, plus targetOrganizationName and bugBountyProgramFlag, are always null today (not stored). Expect this schema to change before the contract is frozen.
@@ -208,9 +292,6 @@ components:
           $ref: '#/components/schemas/ReportingGuidelines'
         integrationHints:
           $ref: '#/components/schemas/IntegrationHints'
-    Ecosystem:
-      type: string
-      example: npm
     Error:
       type: object
       required:
@@ -262,35 +343,26 @@ components:
                     type: string
                   action:
                     type: string
-    ReportingMethod:
-      type:
-      - object
-      - 'null'
-      description: Reserved shape — always null until SECURITY.md parsing ships.
+    Ecosystem:
+      type: string
+      example: npm
+    ContactDetailBulkEntry:
+      type: object
       required:
-      - methodId
-      - type
-      - status
-      - description
-      - actionRequired
+      - requestedPurl
+      - found
+      - contact
       properties:
-        methodId:
-          type: integer
-        type:
+        requestedPurl:
           type: string
-        status:
-          type: string
-          enum:
-          - preferred
-          - fallback
-        recipient:
+        found:
+          type: boolean
+        contact:
           type:
-          - string
+          - object
           - 'null'
-        description:
-          type: string
-        actionRequired:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/ContactDetail'
     IntegrationHints:
       type:
       - object
@@ -346,78 +418,6 @@ components:
               type:
               - string
               - 'null'
-    OverallConfidenceBand:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
-      description: 'Aggregate confidence, derived from the highest-scoring contact. Uses the internal SecurityContact confidence scale, returned verbatim — same scale as ContactConfidenceBand, no external crosswalk. NONE when there are no contacts.
-
-        '
-    ContactConfidenceBand:
-      type: string
-      enum:
-      - PRIMARY
-      - SECONDARY
-      - FALLBACK
-      - NONE
-      description: Per-contact confidence — mirrors the internal SecurityContact confidence enum.
-    ContactDetailBulkEntry:
-      type: object
-      required:
-      - requestedPurl
-      - found
-      - contact
-      properties:
-        requestedPurl:
-          type: string
-        found:
-          type: boolean
-        contact:
-          type:
-          - object
-          - 'null'
-          allOf:
-          - $ref: '#/components/schemas/ContactDetail'
-    SecurityContact:
-      type: object
-      required:
-      - channel
-      - value
-      - role
-      - confidenceBand
-      - confidenceScore
-      properties:
-        channel:
-          type: string
-          enum:
-          - email
-          - github-pvr
-          - github-handle
-          - url
-          - web-form
-          description: Mirrors the internal SecurityContact.channel enum; passed through verbatim.
-        value:
-          type: string
-          example: security@example.org
-        role:
-          type: string
-          enum:
-          - security-team
-          - maintainer
-          - admin
-          - committer
-          - org-owner
-          description: Mirrors the internal SecurityContact.role enum; passed through verbatim.
-        confidenceBand:
-          $ref: '#/components/schemas/ContactConfidenceBand'
-        confidenceScore:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
   securitySchemes:
     M2MBearer:
       type: oauth2

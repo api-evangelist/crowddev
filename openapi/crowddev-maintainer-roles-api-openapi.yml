@@ -60,26 +60,6 @@ paths:
           $ref: '#/components/responses/MemberNotFound'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
-    MemberNotFound:
-      description: No member found with the given ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: NOT_FOUND
-              message: Member not found
     Forbidden:
       description: Authentication valid but insufficient scopes.
       content:
@@ -90,6 +70,35 @@ components:
             error:
               code: INSUFFICIENT_SCOPE
               message: Insufficient scope for this operation
+    MemberNotFound:
+      description: No member found with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Member not found
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+  parameters:
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      description: UUID of the member.
+      schema:
+        type: string
+        format: uuid
   schemas:
     MaintainerRole:
       type: object
@@ -158,15 +167,6 @@ components:
             message:
               type: string
               description: Human-readable error description.
-  parameters:
-    MemberId:
-      name: memberId
-      in: path
-      required: true
-      description: UUID of the member.
-      schema:
-        type: string
-        format: uuid
   securitySchemes:
     OAuth2Bearer:
       type: oauth2

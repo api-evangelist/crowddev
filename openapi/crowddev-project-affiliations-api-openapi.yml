@@ -141,16 +141,6 @@ paths:
                 $ref: '#/components/schemas/HttpError'
 components:
   responses:
-    Unauthorized:
-      description: Missing or invalid authentication credentials.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: UNAUTHORIZED
-              message: Invalid or missing authentication
     BadRequest:
       description: Invalid request body or query parameters.
       content:
@@ -161,16 +151,6 @@ components:
             error:
               code: BAD_REQUEST
               message: Validation failed
-    MemberNotFound:
-      description: No member found with the given ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/HttpError'
-          example:
-            error:
-              code: NOT_FOUND
-              message: Member not found
     Forbidden:
       description: Authentication valid but insufficient scopes.
       content:
@@ -181,7 +161,103 @@ components:
             error:
               code: INSUFFICIENT_SCOPE
               message: Insufficient scope for this operation
+    MemberNotFound:
+      description: No member found with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: NOT_FOUND
+              message: Member not found
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/HttpError'
+          example:
+            error:
+              code: UNAUTHORIZED
+              message: Invalid or missing authentication
+  parameters:
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      description: UUID of the member.
+      schema:
+        type: string
+        format: uuid
   schemas:
+    ProjectRole:
+      type: object
+      required:
+      - id
+      - role
+      - startDate
+      - endDate
+      - repoUrl
+      - repoFileUrl
+      properties:
+        id:
+          type: string
+          format: uuid
+        role:
+          type: string
+        startDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        endDate:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        repoUrl:
+          type:
+          - string
+          - 'null'
+        repoFileUrl:
+          type:
+          - string
+          - 'null'
+    ProjectAffiliation:
+      type: object
+      required:
+      - id
+      - projectSlug
+      - projectName
+      - projectLogo
+      - contributionCount
+      - roles
+      - affiliations
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Segment (project) ID.
+        projectSlug:
+          type: string
+        projectName:
+          type: string
+        projectLogo:
+          type:
+          - string
+          - 'null'
+        contributionCount:
+          type: integer
+          description: Total number of contributions in this project.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectRole'
+        affiliations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectAffiliationEntry'
     ProjectAffiliationEntry:
       type: object
       required:
@@ -236,73 +312,6 @@ components:
           - string
           - 'null'
           description: Present only for `work-history` type affiliations.
-    ProjectAffiliation:
-      type: object
-      required:
-      - id
-      - projectSlug
-      - projectName
-      - projectLogo
-      - contributionCount
-      - roles
-      - affiliations
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: Segment (project) ID.
-        projectSlug:
-          type: string
-        projectName:
-          type: string
-        projectLogo:
-          type:
-          - string
-          - 'null'
-        contributionCount:
-          type: integer
-          description: Total number of contributions in this project.
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProjectRole'
-        affiliations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProjectAffiliationEntry'
-    ProjectRole:
-      type: object
-      required:
-      - id
-      - role
-      - startDate
-      - endDate
-      - repoUrl
-      - repoFileUrl
-      properties:
-        id:
-          type: string
-          format: uuid
-        role:
-          type: string
-        startDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        endDate:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        repoUrl:
-          type:
-          - string
-          - 'null'
-        repoFileUrl:
-          type:
-          - string
-          - 'null'
     HttpError:
       type: object
       required:
@@ -320,15 +329,6 @@ components:
             message:
               type: string
               description: Human-readable error description.
-  parameters:
-    MemberId:
-      name: memberId
-      in: path
-      required: true
-      description: UUID of the member.
-      schema:
-        type: string
-        format: uuid
   securitySchemes:
     OAuth2Bearer:
       type: oauth2

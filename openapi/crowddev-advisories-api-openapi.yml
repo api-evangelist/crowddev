@@ -155,6 +155,18 @@ components:
           - 'null'
           allOf:
           - $ref: '#/components/schemas/AdvisoryDetail'
+    AdvisoryDetail:
+      type: object
+      required:
+      - purl
+      - advisories
+      properties:
+        purl:
+          type: string
+        advisories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Advisory'
     Advisory:
       type: object
       required:
@@ -195,18 +207,6 @@ components:
           - boolean
           - 'null'
           description: cvss >= 7.0. Null when the advisory has no CVSS score.
-    AdvisoryDetail:
-      type: object
-      required:
-      - purl
-      - advisories
-      properties:
-        purl:
-          type: string
-        advisories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Advisory'
     Error:
       type: object
       required:

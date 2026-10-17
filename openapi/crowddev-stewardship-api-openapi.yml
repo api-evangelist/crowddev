@@ -105,6 +105,69 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    StewardshipStatus:
+      type: string
+      enum:
+      - unassigned
+      - open
+      - assessing
+      - active
+      - needs_attention
+      - escalated
+      - blocked
+      - inactive
+    Steward:
+      type: object
+      required:
+      - userId
+      - role
+      - assignedAt
+      properties:
+        userId:
+          type: string
+          description: Auth0 sub of the assigned steward.
+          example: abc123
+        username:
+          type:
+          - string
+          - 'null'
+          description: Username of the steward. Null if not available.
+          example: jrodriguez
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the steward. Null if not available.
+          example: Jonathan R.
+        role:
+          type: string
+          enum:
+          - lead
+          - co_steward
+        assignedAt:
+          type: string
+          format: date-time
+    OpenVulns:
+      type: object
+      description: Open vulnerability counts by severity from advisory_packages + advisories.
+      required:
+      - low
+      - medium
+      - high
+      - critical
+      properties:
+        low:
+          type: integer
+          example: 0
+        medium:
+          type: integer
+          example: 0
+        high:
+          type: integer
+          example: 1
+        critical:
+          type: integer
+          example: 0
     Error:
       type: object
       required:
@@ -185,69 +248,6 @@ components:
           - string
           - 'null'
           description: Null in v1.
-    OpenVulns:
-      type: object
-      description: Open vulnerability counts by severity from advisory_packages + advisories.
-      required:
-      - low
-      - medium
-      - high
-      - critical
-      properties:
-        low:
-          type: integer
-          example: 0
-        medium:
-          type: integer
-          example: 0
-        high:
-          type: integer
-          example: 1
-        critical:
-          type: integer
-          example: 0
-    Steward:
-      type: object
-      required:
-      - userId
-      - role
-      - assignedAt
-      properties:
-        userId:
-          type: string
-          description: Auth0 sub of the assigned steward.
-          example: abc123
-        username:
-          type:
-          - string
-          - 'null'
-          description: Username of the steward. Null if not available.
-          example: jrodriguez
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Display name of the steward. Null if not available.
-          example: Jonathan R.
-        role:
-          type: string
-          enum:
-          - lead
-          - co_steward
-        assignedAt:
-          type: string
-          format: date-time
-    StewardshipStatus:
-      type: string
-      enum:
-      - unassigned
-      - open
-      - assessing
-      - active
-      - needs_attention
-      - escalated
-      - blocked
-      - inactive
   securitySchemes:
     M2MBearer:
       type: http
