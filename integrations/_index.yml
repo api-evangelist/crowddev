@@ -52,5 +52,5 @@
     - connectors/applications/crowddev
     vendor_link: https://www.crowd.dev/
     builder: Fivetran
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
