@@ -7,7 +7,8 @@
     "_original/crowddev-cdp-packages-openapi.yml",
     "_original/crowddev-cdp-public-openapi.yml",
     "_original/crowddev-cdp-stewardships-openapi.yml",
-    "_original/crowddev-cm-id-openapi.yml"
+    "_original/crowddev-cm-id-openapi.yml",
+    "_original/crowddev-openapi.json"
   ],
   "outputs": [
     "crowddev-advisories-api-openapi.yml",
@@ -25,13 +26,19 @@
     "crowddev-work-experiences-api-openapi.yml",
     "crowddev-stewardship-actions-api-openapi.yml",
     "crowddev-member-affiliations-api-api-openapi.yml",
-    "crowddev-member-organizations-api-api-openapi.yml"
+    "crowddev-member-organizations-api-api-openapi.yml",
+    "crowddev-expense-api-openapi.yml",
+    "crowddev-health-api-openapi.yml",
+    "crowddev-reset-api-openapi.yml",
+    "crowddev-tag-api-openapi.yml",
+    "crowddev-docs-api-openapi.yml",
+    "crowddev-reimbursement-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
-    "sourced from openapi/_original/ (7 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "sourced from openapi/_original/ (8 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "crowddev-cdp-akrites-external-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
     "crowddev-cdp-akrites-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "crowddev-cdp-ossprey-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
@@ -39,9 +46,20 @@
     "crowddev-cdp-public-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "crowddev-cdp-stewardships-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "crowddev-cm-id-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "crowddev-openapi.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "crowddev-openapi.json: tagged paths POST /expense/{action}/{reportId} -> Expense",
+    "crowddev-openapi.json: tagged paths GET /expense/{reportId}/approvers -> Expense",
+    "crowddev-openapi.json: tagged paths GET /health -> Health",
+    "crowddev-openapi.json: tagged paths POST /reset -> Reset",
+    "crowddev-openapi.json: tagged paths POST /tag -> Tag",
+    "crowddev-openapi.json: declared missing tag: Expense",
+    "crowddev-openapi.json: declared missing tag: Health",
+    "crowddev-openapi.json: declared missing tag: Reset",
+    "crowddev-openapi.json: declared missing tag: Tag",
+    "crowddev-openapi.json: declared missing tag: docs",
     "tag 'Packages' spans 4 source specs (crowddev-cdp-akrites-external-openapi.yml, crowddev-cdp-akrites-openapi.yml, crowddev-cdp-ossprey-openapi.yml, crowddev-cdp-packages-openapi.yml): per-path servers applied",
     "tag 'Dashboard' spans 2 source specs (crowddev-cdp-akrites-openapi.yml, crowddev-cdp-ossprey-openapi.yml): per-path servers applied",
-    "apis.yml register: already-registered"
+    "apis.yml register: written (+6 apis, 22 total)"
   ],
   "skipped": [
     "crowddev-advisories-api-openapi.yml: previously refined output, superseded by openapi/_original/",
